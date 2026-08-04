@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Article | NewsHub</title>
+
+    <!-- Google Font -->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <!-- Main CSS -->
+
+    <link
+        rel="stylesheet"
+        href="css/main.css">
+
+</head>
+
+<body>
+
+    <!--=========================================
+        NAVBAR
+    ==========================================-->
+
+    <div id="navbar"></div>
+
+    <!--=========================================
+        BREAKING NEWS
+    ==========================================-->
+
+    <section class="breaking-news section">
+
+        <div class="container">
+
+            <div class="breaking-news__container card">
+
+                <div class="breaking-news__title">
+
+                    <i class="fa-solid fa-bolt"></i>
+
+                    <span>
+
+                        Breaking
+
+                    </span>
+
+                </div>
+
+                <div
+                    id="breakingNews">
+
+                    <!-- Firebase -->
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!--=========================================
+        ARTICLE
+    ==========================================-->
+
+    <main class="section">
+
+        <div class="container">
+
+            <div class="layout">
+
+                <!--==============================
+                    ARTICLE CONTENT
+                ==============================-->
+
+                <article class="article">
+
+                    <!-- Breadcrumb -->
+
+                    <div class="breadcrumb">
+
+                        <a href="index.html">
+
+                            Home
+
+                        </a>
+
+                        <span>
+
+                            /
+
+                        </span>
+
+                        <a
+                            id="articleCategoryLink"
+                            href="#">
+
+                            Technology
+
+                        </a>
+
+                        <span>
+
+                            /
+
+                        </span>
+
+                        <span
+                            id="breadcrumbTitle">
+
+                            Loading...
+
+                        </span>
+
+                    </div>
+
+                    <!-- Category -->
+
+                    <div
+                        class="badge"
+                        id="articleCategory">
+
+                        Technology
+
+                    </div>
+
+                    <!-- Title -->
+
+                    <h1
+                        id="articleTitle">
+
+                        Loading Article...
+
+                    </h1>
+
+                    <!-- Meta -->
+
+                    <div class="article-meta">
+
+                        <div>
+
+                            <i class="fa-solid fa-user"></i>
+
+                            <span
+                                id="articleAuthor">
+
+                                Loading...
+
+                            </span>
+
+                        </div>
+
+                        <div>
+
+                            <i class="fa-solid fa-calendar"></i>
+
+                            <span
+                                id="articleDate">
+
+                            </span>
+
+                        </div>
+
+                        <div>
+
+                            <i class="fa-solid fa-eye"></i>
+
+                            <span
+                                id="articleViews">
+
+                                0
+
+                            </span>
+
+                        </div>
+
+                        <div>
+
+                            <i class="fa-solid fa-clock"></i>
+
+                            <span
+                                id="articleReadTime">
+
+                                5 min read
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Cover -->
+
+                    <div class="article-cover card">
+
+                        <img
+                            id="articleImage"
+                            src=""
+                            alt="Article Image">
+
+                    </div>
+
+                    <!-- Content -->
+
+                    <div
+                        class="article-content"
+
+                        id="articleContent">
+
+                        <!-- Firebase -->
+
+                    </div>
+
+                    <!-- Tags -->
+
+                    <div
+                        class="article-tags"
+
+                        id="articleTags">
+
+                        <!-- Firebase -->
+
+                    </div>
+
+                    <!-- Share -->
+
+                    <div class="article-share card">
+
+                        <h3>
+
+                            Share this article
+
+                        </h3>
+
+                        <div class="social-links">
+
+                            <a href="#">
+
+                                <i class="fab fa-facebook-f"></i>
+
+                            </a>
+
+                            <a href="#">
+
+                                <i class="fab fa-x-twitter"></i>
+
+                            </a>
+
+                            <a href="#">
+
+                                <i class="fab fa-whatsapp"></i>
+
+                            </a>
+
+                            <a href="#">
+
+                                <i class="fab fa-linkedin-in"></i>
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Advertisement -->
+
+                    <div class="article-ad card">
+
+                        <a
+                            href="#"
+
+                            id="articleAdLink">
+
+                            <img
+
+                                id="articleAdImage"
+
+                                src=""
+
+                                alt="Advertisement">
+
+                        </a>
+
+                    </div>                    <!--=========================================
+                        PREVIOUS / NEXT ARTICLE
+                    ==========================================-->
+
+                    <div class="article-navigation">
+
+                        <a
+                            href="#"
+                            id="previousArticle"
+                            class="card">
+
+                            <small>
+
+                                Previous Article
+
+                            </small>
+
+                            <h4>
+
+                                Loading...
+
+                            </h4>
+
+                        </a>
+
+                        <a
+                            href="#"
+                            id="nextArticle"
+                            class="card">
+
+                            <small>
+
+                                Next Article
+
+                            </small>
+
+                            <h4>
+
+                                Loading...
+
+                            </h4>
+
+                        </a>
+
+                    </div>
+
+                    <!--=========================================
+                        RELATED ARTICLES
+                    ==========================================-->
+
+                    <section class="news-section">
+
+                        <div class="section-header">
+
+                            <h2>
+
+                                Related Articles
+
+                            </h2>
+
+                        </div>
+
+                        <div
+                            class="news-grid"
+                            id="relatedArticles">
+
+                            <!-- Firebase -->
+
+                        </div>
+
+                    </section>
+
+                    <!--=========================================
+                        COMMENTS
+                    ==========================================-->
+
+                    <section class="comments">
+
+                        <div class="section-header">
+
+                            <h2>
+
+                                Comments
+
+                            </h2>
+
+                        </div>
+
+                        <form
+                            id="commentForm"
+                            class="card">
+
+                            <input
+                                type="text"
+                                id="commentName"
+                                class="input"
+                                placeholder="Your Name">
+
+                            <br><br>
+
+                            <textarea
+                                id="commentMessage"
+                                class="input"
+                                rows="6"
+                                placeholder="Write a comment..."></textarea>
+
+                            <br><br>
+
+                            <button
+                                type="submit"
+                                class="button button--primary">
+
+                                Post Comment
+
+                            </button>
+
+                        </form>
+
+                        <div
+                            id="commentsContainer">
+
+                            <!-- Firebase -->
+
+                        </div>
+
+                    </section>
+
+                </article>
+
+                <!--=========================================
+                    SIDEBAR
+                ==========================================-->
+
+                <aside class="sidebar">
+
+                    <div class="sidebar-card card">
+
+                        <div class="section-header">
+
+                            <h3>
+
+                                Trending
+
+                            </h3>
+
+                        </div>
+
+                        <div
+                            id="trendingNews">
+
+                            <!-- Firebase -->
+
+                        </div>
+
+                    </div>
+
+                    <div class="sidebar-card card">
+
+                        <div class="section-header">
+
+                            <h3>
+
+                                Advertisement
+
+                            </h3>
+
+                        </div>
+
+                        <a
+                            href="#"
+                            id="sidebarAdLink">
+
+                            <img
+                                id="sidebarAdImage"
+                                src=""
+                                alt="Advertisement">
+
+                        </a>
+
+                    </div>
+
+                    <div class="sidebar-card card">
+
+                        <div class="section-header">
+
+                            <h3>
+
+                                Popular
+
+                            </h3>
+
+                        </div>
+
+                        <div
+                            id="popularNews">
+
+                            <!-- Firebase -->
+
+                        </div>
+
+                    </div>
+
+                </aside>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <!--=========================================
+        NEWSLETTER
+    ==========================================-->
+
+    <section
+        class="newsletter section">
+
+        <div class="container">
+
+            <div class="newsletter-card card">
+
+                <h2>
+
+                    Stay Updated
+
+                </h2>
+
+                <p>
+
+                    Subscribe to receive the latest news directly in your inbox.
+
+                </p>
+
+                <form
+                    id="newsletterForm"
+                    class="newsletter-form">
+
+                    <input
+                        type="email"
+                        class="input"
+                        id="newsletterEmail"
+                        placeholder="Enter your email">
+
+                    <button
+                        class="button button--primary"
+                        type="submit">
+
+                        Subscribe
+
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!--=========================================
+        FOOTER
+    ==========================================-->
+
+    <div id="footer"></div>
+
+    <!--=========================================
+        GLOBAL COMPONENTS
+    ==========================================-->
+
+    <div id="overlay-root"></div>
+
+    <div id="toast-root"></div>
+
+    <div id="modal-root"></div>
+
+    <div id="loader-root"></div>
+
+    <!--=========================================
+        CONFIG
+    ==========================================-->
+
+    <script src="js/config.js"></script>
+
+    <!--=========================================
+        FIREBASE
+    ==========================================-->
+
+    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-app-compat.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-auth-compat.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore-compat.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-storage-compat.js"></script>
+
+    <script src="js/firebase.js"></script>
+
+    <!--=========================================
+        COMPONENTS
+    ==========================================-->
+
+    <script src="js/components/navbar.js"></script>
+
+    <script src="js/components/footer.js"></script>
+
+    <!--=========================================
+        APPLICATION
+    ==========================================-->
+
+    <script src="js/app.js"></script>
+
+    <script src="js/pages/article.js"></script>
+
+</body>
+
+</html>

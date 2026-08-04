@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>
+
+        NewsHub CMS
+
+    </title>
+
+    <!--=========================================
+        GOOGLE FONT
+    ==========================================-->
+
+    <link rel="preconnect"
+        href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!--=========================================
+        FONT AWESOME
+    ==========================================-->
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <!--=========================================
+        CSS
+    ==========================================-->
+
+    <link rel="stylesheet"
+        href="css/main.css">
+
+    <link rel="stylesheet"
+        href="css/layout.css">
+
+    <link rel="stylesheet"
+        href="css/components.css">
+
+    <link rel="stylesheet"
+        href="css/responsive.css">
+
+    <link rel="stylesheet"
+        href="css/admin.css">
+
+</head>
+
+<body>
+
+<div class="admin-wrapper">
+
+    <!--=========================================
+        SIDEBAR
+    ==========================================-->
+
+    <aside
+        id="adminSidebar"
+        class="admin-sidebar">
+
+        <div class="sidebar-top">
+
+            <div class="admin-logo">
+
+                <i class="fa-solid fa-newspaper"></i>
+
+                <span>
+
+                    NewsHub CMS
+
+                </span>
+
+            </div>
+
+            <button
+                id="collapseSidebar"
+                class="sidebar-collapse">
+
+                <i class="fa-solid fa-bars"></i>
+
+            </button>
+
+        </div>
+
+        <nav>
+
+            <ul class="sidebar-menu">
+
+                <li>
+
+                    <button
+                        class="sidebar-link active"
+                        data-page="dashboard">
+
+                        <i class="fa-solid fa-chart-line"></i>
+
+                        <span>
+
+                            Dashboard
+
+                        </span>
+
+                    </button>
+
+                </li>
+
+                <li>
+
+                    <button
+                        class="sidebar-link"
+                        data-page="publish">
+
+                        <i class="fa-solid fa-pen"></i>
+
+                        <span>
+
+                            Publish
+
+                        </span>
+
+                    </button>
+
+                </li>
+
+                <li>
+
+                    <button
+                        class="sidebar-link"
+                        data-page="articles">
+
+                        <i class="fa-solid fa-newspaper"></i>
+
+                        <span>
+
+                            Articles
+
+                        </span>
+
+                    </button>
+
+                </li>
+
+                <li>
+
+                    <button
+                        class="sidebar-link"
+                        data-page="developers">
+
+                        <i class="fa-solid fa-user-shield"></i>
+
+                        <span>
+
+                            Developers
+
+                        </span>
+
+                    </button>
+
+                </li>
+
+                <li>
+
+                    <button
+                        class="sidebar-link"
+                        data-page="users">
+
+                        <i class="fa-solid fa-users"></i>
+
+                        <span>
+
+                            Users
+
+                        </span>
+
+                    </button>
+
+                </li>
+
+                <li>
+
+                    <button
+                        class="sidebar-link"
+                        data-page="advertisements">
+
+                        <i class="fa-solid fa-rectangle-ad"></i>
+
+                        <span>
+
+                            Advertisements
+
+                        </span>
+
+                    </button>
+
+                </li>
+
+                <li>
+
+                    <button
+                        class="sidebar-link"
+                        data-page="comments">
+
+                        <i class="fa-solid fa-comments"></i>
+
+                        <span>
+
+                            Comments
+
+                        </span>
+
+                    </button>
+
+                </li>
+
+                <li>
+
+                    <button
+                        class="sidebar-link"
+                        data-page="newsletter">
+
+                        <i class="fa-solid fa-envelope"></i>
+
+                        <span>
+
+                            Newsletter
+
+                        </span>
+
+                    </button>
+
+                </li>
+
+                <li>
+
+                    <button
+                        class="sidebar-link"
+                        data-page="settings">
+
+                        <i class="fa-solid fa-gear"></i>
+
+                        <span>
+
+                            Settings
+
+                        </span>
+
+                    </button>
+
+                </li>
+
+            </ul>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <button
+                id="logoutButton"
+                class="sidebar-link danger">
+
+                <i class="fa-solid fa-right-from-bracket"></i>
+
+                <span>
+
+                    Logout
+
+                </span>
+
+            </button>
+
+        </div>
+
+    </aside>
+
+    <!--=========================================
+        MAIN
+    ==========================================-->
+
+    <main class="admin-main">
+
+        <!--=====================================
+            HEADER
+        ======================================-->
+
+        <header class="admin-header">
+
+            <div>
+
+                <h1
+                    id="pageTitle">
+
+                    Dashboard
+
+                </h1>
+
+                <p>
+
+                    Welcome back.
+
+                </p>
+
+            </div>
+
+            <div class="admin-profile">
+
+                <img
+                    id="adminPhoto"
+                    src="images/avatar.png"
+                    alt="Admin">
+
+                <div>
+
+                    <strong
+                        id="adminName">
+
+                        Loading...
+
+                    </strong>
+
+                    <small>
+
+                        Administrator
+
+                    </small>
+
+                </div>
+
+            </div>
+
+        </header>        <!--=========================================
+            PAGE CONTAINER
+        ==========================================-->
+
+        <div class="admin-pages">
+
+            <!--=====================================
+                DASHBOARD
+            ======================================-->
+
+            <section
+                id="dashboardPage"
+                class="admin-page">
+
+                <!-- Dashboard loaded by admin.js -->
+
+            </section>
+
+            <!--=====================================
+                PUBLISH ARTICLE
+            ======================================-->
+
+            <section
+                id="publishPage"
+                class="admin-page hidden">
+
+                <!-- Publish form loaded by admin.js -->
+
+            </section>
+
+            <!--=====================================
+                MANAGE ARTICLES
+            ======================================-->
+
+            <section
+                id="articlesPage"
+                class="admin-page hidden">
+
+                <!-- Articles loaded by admin.js -->
+
+            </section>
+
+            <!--=====================================
+                DEVELOPER REQUESTS
+            ======================================-->
+
+            <section
+                id="developersPage"
+                class="admin-page hidden">
+
+                <!-- Developer requests loaded by admin.js -->
+
+            </section>
+
+            <!--=====================================
+                USERS
+            ======================================-->
+
+            <section
+                id="usersPage"
+                class="admin-page hidden">
+
+                <!-- Users loaded by admin.js -->
+
+            </section>
+
+            <!--=====================================
+                ADVERTISEMENTS
+            ======================================-->
+
+            <section
+                id="advertisementsPage"
+                class="admin-page hidden">
+
+                <!-- Advertisements loaded by admin.js -->
+
+            </section>
+
+            <!--=====================================
+                COMMENTS
+            ======================================-->
+
+            <section
+                id="commentsPage"
+                class="admin-page hidden">
+
+                <!-- Comments loaded by admin.js -->
+
+            </section>
+
+            <!--=====================================
+                NEWSLETTER
+            ======================================-->
+
+            <section
+                id="newsletterPage"
+                class="admin-page hidden">
+
+                <!-- Newsletter loaded by admin.js -->
+
+            </section>
+
+            <!--=====================================
+                SETTINGS
+            ======================================-->
+
+            <section
+                id="settingsPage"
+                class="admin-page hidden">
+
+                <!-- Settings loaded by admin.js -->
+
+            </section>
+
+        </div>
+
+    </main>
+
+</div>    <!--=========================================
+        GLOBAL ROOTS
+    ==========================================-->
+
+    <div id="overlay-root"></div>
+
+    <div id="toast-root"></div>
+
+    <div id="modal-root"></div>
+
+    <div id="loader-root"></div>
+
+    <!--=========================================
+        CONFIG
+    ==========================================-->
+
+    <script src="js/config.js"></script>
+
+    <!--=========================================
+        FIREBASE SDK
+    ==========================================-->
+
+    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-app-compat.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-auth-compat.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore-compat.js"></script>
+
+    <!--=========================================
+        FIREBASE
+    ==========================================-->
+
+    <script src="js/firebase.js"></script>
+
+    <!--=========================================
+        COMPONENTS
+    ==========================================-->
+
+    <script src="js/components/modal.js"></script>
+
+    <script src="js/components/toast.js"></script>
+
+    <script src="js/components/loader.js"></script>
+
+    <!--=========================================
+        API
+    ==========================================-->
+
+    <script src="js/api.js"></script>
+
+    <!--=========================================
+        ADMIN
+    ==========================================-->
+
+    <script src="js/pages/admin.js"></script>
+
+</body>
+
+</html>

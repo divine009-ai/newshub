@@ -1,0 +1,489 @@
+/*==========================================================
+    LAYOUT
+    Version: 1.0
+==========================================================*/
+
+
+/*==========================================================
+    CONTAINER
+==========================================================*/
+
+.container{
+
+    width:min(1400px,95%);
+
+    margin:0 auto;
+
+}
+
+
+/*==========================================================
+    SECTIONS
+==========================================================*/
+
+.section{
+
+    padding:80px 0;
+
+}
+
+.section-sm{
+
+    padding:50px 0;
+
+}
+
+.section-lg{
+
+    padding:120px 0;
+
+}
+
+
+/*==========================================================
+    PAGE LAYOUT
+==========================================================*/
+
+.layout{
+
+    display:grid;
+
+    grid-template-columns:2.5fr 1fr;
+
+    gap:35px;
+
+    align-items:start;
+
+}
+
+
+/*==========================================================
+    CONTENT
+==========================================================*/
+
+.content{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:50px;
+
+    min-width:0;
+
+}
+
+
+/*==========================================================
+    SIDEBAR
+==========================================================*/
+
+.sidebar{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:30px;
+
+    position:sticky;
+
+    top:100px;
+
+}
+
+
+/*==========================================================
+    GRID
+==========================================================*/
+
+.grid{
+
+    display:grid;
+
+    gap:25px;
+
+}
+
+.grid-2{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:25px;
+
+}
+
+.grid-3{
+
+    display:grid;
+
+    grid-template-columns:repeat(3,1fr);
+
+    gap:25px;
+
+}
+
+.grid-4{
+
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:25px;
+
+}
+
+
+/*==========================================================
+    FLEX
+==========================================================*/
+
+.flex{
+
+    display:flex;
+
+}
+
+.flex-center{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+}
+
+.flex-between{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+}
+
+.flex-column{
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+
+/*==========================================================
+    GAP
+==========================================================*/
+
+.gap-10{
+
+    gap:10px;
+
+}
+
+.gap-15{
+
+    gap:15px;
+
+}
+
+.gap-20{
+
+    gap:20px;
+
+}
+
+.gap-30{
+
+    gap:30px;
+
+}
+
+.gap-40{
+
+    gap:40px;
+
+}
+
+
+/*==========================================================
+    WIDTH
+==========================================================*/
+
+.w-100{
+
+    width:100%;
+
+}
+
+.w-75{
+
+    width:75%;
+
+}
+
+.w-50{
+
+    width:50%;
+
+}
+
+.w-auto{
+
+    width:auto;
+
+}
+
+
+/*==========================================================
+    HEIGHT
+==========================================================*/
+
+.h-100{
+
+    height:100%;
+
+}
+
+.min-vh{
+
+    min-height:100vh;
+
+}
+
+
+/*==========================================================
+    ALIGNMENT
+==========================================================*/
+
+.text-left{
+
+    text-align:left;
+
+}
+
+.text-center{
+
+    text-align:center;
+
+}
+
+.text-right{
+
+    text-align:right;
+
+}
+
+.align-start{
+
+    align-items:flex-start;
+
+}
+
+.align-center{
+
+    align-items:center;
+
+}
+
+.align-end{
+
+    align-items:flex-end;
+
+}
+
+.justify-start{
+
+    justify-content:flex-start;
+
+}
+
+.justify-center{
+
+    justify-content:center;
+
+}
+
+.justify-end{
+
+    justify-content:flex-end;
+
+}
+
+.justify-between{
+
+    justify-content:space-between;
+
+}
+
+
+/*==========================================================
+    MARGIN
+==========================================================*/
+
+.mt-20{
+
+    margin-top:20px;
+
+}
+
+.mt-30{
+
+    margin-top:30px;
+
+}
+
+.mt-40{
+
+    margin-top:40px;
+
+}
+
+.mt-50{
+
+    margin-top:50px;
+
+}
+
+.mb-20{
+
+    margin-bottom:20px;
+
+}
+
+.mb-30{
+
+    margin-bottom:30px;
+
+}
+
+.mb-40{
+
+    margin-bottom:40px;
+
+}
+
+.mb-50{
+
+    margin-bottom:50px;
+
+}
+
+
+/*==========================================================
+    PADDING
+==========================================================*/
+
+.p-20{
+
+    padding:20px;
+
+}
+
+.p-30{
+
+    padding:30px;
+
+}
+
+.p-40{
+
+    padding:40px;
+
+}
+
+.p-50{
+
+    padding:50px;
+
+}
+
+
+/*==========================================================
+    OVERFLOW
+==========================================================*/
+
+.overflow-hidden{
+
+    overflow:hidden;
+
+}
+
+.overflow-auto{
+
+    overflow:auto;
+
+}
+
+
+/*==========================================================
+    DISPLAY
+==========================================================*/
+
+.hidden{
+
+    display:none !important;
+
+}
+
+.block{
+
+    display:block;
+
+}
+
+.inline{
+
+    display:inline;
+
+}
+
+.inline-block{
+
+    display:inline-block;
+
+}
+
+
+/*==========================================================
+    POSITION
+==========================================================*/
+
+.relative{
+
+    position:relative;
+
+}
+
+.absolute{
+
+    position:absolute;
+
+}
+
+.fixed{
+
+    position:fixed;
+
+}
+
+
+/*==========================================================
+    DIVIDERS
+==========================================================*/
+
+.divider{
+
+    width:100%;
+
+    height:1px;
+
+    background:var(--border);
+
+    margin:25px 0;
+
+}

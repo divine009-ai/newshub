@@ -1,0 +1,485 @@
+/*==========================================================
+    RESPONSIVE
+    Version: 1.0
+==========================================================*/
+
+
+/*==========================================================
+    LARGE DEVICES
+==========================================================*/
+
+@media (max-width:1200px){
+
+    .container{
+
+        width:96%;
+
+    }
+
+    .hero__grid{
+
+        grid-template-columns:1.6fr 1fr;
+
+    }
+
+    .layout{
+
+        grid-template-columns:2fr 1fr;
+
+    }
+
+    .footer__grid{
+
+        grid-template-columns:repeat(2,1fr);
+
+    }
+
+}
+
+
+/*==========================================================
+    TABLETS
+==========================================================*/
+
+@media (max-width:992px){
+
+    .section{
+
+        padding:70px 0;
+
+    }
+
+    .hero__grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .layout{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .sidebar{
+
+        position:static;
+
+    }
+
+    .news-grid{
+
+        grid-template-columns:repeat(2,1fr);
+
+    }
+
+    .grid-4{
+
+        grid-template-columns:repeat(2,1fr);
+
+    }
+
+    .grid-3{
+
+        grid-template-columns:repeat(2,1fr);
+
+    }
+
+    .footer__grid{
+
+        grid-template-columns:repeat(2,1fr);
+
+    }
+
+    .newsletter-form{
+
+        flex-direction:column;
+
+    }
+
+    .newsletter-form .button{
+
+        width:100%;
+
+    }
+
+}
+
+
+/*==========================================================
+    MOBILE NAVBAR
+==========================================================*/
+
+@media (max-width:768px){
+
+    .container{
+
+        width:92%;
+
+    }
+
+    h1{
+
+        font-size:2.2rem;
+
+    }
+
+    h2{
+
+        font-size:1.8rem;
+
+    }
+
+    h3{
+
+        font-size:1.3rem;
+
+    }
+
+    .section{
+
+        padding:60px 0;
+
+    }
+
+    .navbar__top{
+
+        min-height:70px;
+
+    }
+
+    .navbar__search{
+
+        display:none;
+
+    }
+
+    .navbar__mobile-button{
+
+        display:flex;
+
+    }
+
+    .navbar__menu{
+
+        display:none;
+
+        border-top:1px solid var(--border);
+
+        margin-top:20px;
+
+    }
+
+    .navbar__menu.show{
+
+        display:block;
+
+    }
+
+    .navbar__list{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+    }
+
+    .navbar__link{
+
+        width:100%;
+
+        padding:15px;
+
+    }
+
+    .hero__featured img{
+
+        height:320px;
+
+    }
+
+    .hero-card{
+
+        flex-direction:column;
+
+    }
+
+    .hero-card__image{
+
+        width:100%;
+
+        height:220px;
+
+    }
+
+    .news-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .news-card--horizontal{
+
+        flex-direction:column;
+
+    }
+
+    .news-card--horizontal .news-card__image{
+
+        width:100%;
+
+    }
+
+    .article-navigation{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .related-articles{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .article-gallery{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .author-box{
+
+        flex-direction:column;
+
+        text-align:center;
+
+    }
+
+    .footer__grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .footer__bottom{
+
+        flex-direction:column;
+
+        text-align:center;
+
+    }
+
+    .social-links{
+
+        grid-template-columns:repeat(2,1fr);
+
+    }
+
+    .toast{
+
+        width:100%;
+
+    }
+
+    #toast-root{
+
+        left:15px;
+
+        right:15px;
+
+        top:15px;
+
+    }
+
+}
+
+
+/*==========================================================
+    SMALL MOBILE
+==========================================================*/
+
+@media (max-width:576px){
+
+    h1{
+
+        font-size:1.9rem;
+
+    }
+
+    h2{
+
+        font-size:1.5rem;
+
+    }
+
+    .section-header{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+        gap:10px;
+
+    }
+
+    .hero__featured .news-card__content{
+
+        padding:20px;
+
+    }
+
+    .news-card__content{
+
+        padding:20px;
+
+    }
+
+    .sidebar-card{
+
+        padding:20px;
+
+    }
+
+    .newsletter-card{
+
+        padding:30px 20px;
+
+    }
+
+    .article h1{
+
+        font-size:2rem;
+
+    }
+
+    .article-meta{
+
+        gap:15px;
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+    }
+
+    .article-share .social-links{
+
+        display:grid;
+
+        grid-template-columns:repeat(2,1fr);
+
+    }
+
+    .comments form{
+
+        padding:20px;
+
+    }
+
+    .modal__card{
+
+        padding:25px;
+
+    }
+
+    .modal__buttons{
+
+        flex-direction:column;
+
+    }
+
+    .loader__card{
+
+        padding:25px;
+
+    }
+
+    .back-to-top{
+
+        width:48px;
+
+        height:48px;
+
+        right:15px;
+
+        bottom:15px;
+
+    }
+
+}
+
+
+/*==========================================================
+    EXTRA SMALL DEVICES
+==========================================================*/
+
+@media (max-width:400px){
+
+    .container{
+
+        width:95%;
+
+    }
+
+    .navbar__logo{
+
+        font-size:1.4rem;
+
+    }
+
+    .navbar__actions{
+
+        gap:8px;
+
+    }
+
+    .navbar__icon{
+
+        width:40px;
+
+        height:40px;
+
+    }
+
+    .button{
+
+        padding:12px 18px;
+
+        font-size:.9rem;
+
+    }
+
+    .hero__featured img{
+
+        height:250px;
+
+    }
+
+    .hero-card__image{
+
+        height:180px;
+
+    }
+
+    .sidebar-news-card{
+
+        flex-direction:column;
+
+    }
+
+    .sidebar-news-card img{
+
+        width:100%;
+
+        height:180px;
+
+    }
+
+    .footer{
+
+        padding:60px 0 25px;
+
+    }
+
+}

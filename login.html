@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>
+
+        NewsHub | Login
+
+    </title>
+
+    <!-- Google Font -->
+
+    <link rel="preconnect"
+        href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <!-- CSS -->
+
+    <link rel="stylesheet"
+        href="css/main.css">
+
+    <link rel="stylesheet"
+        href="css/layout.css">
+
+    <link rel="stylesheet"
+        href="css/components.css">
+
+    <link rel="stylesheet"
+        href="css/responsive.css">
+
+    <link rel="stylesheet"
+        href="css/login.css">
+
+</head>
+
+<body>
+
+    <section class="auth-page">
+
+        <div class="container">
+
+            <div class="auth-wrapper">
+
+                <!--==============================
+                    LEFT
+                ==============================-->
+
+                <div class="auth-left">
+
+                    <a href="index.html"
+                        class="auth-logo">
+
+                        <i class="fa-solid fa-newspaper"></i>
+
+                        <span>
+
+                            NewsHub
+
+                        </span>
+
+                    </a>
+
+                    <h1>
+
+                        Welcome Back
+
+                    </h1>
+
+                    <p>
+
+                        Sign in to continue reading the latest news or access the developer dashboard if you're an approved developer.
+
+                    </p>
+
+                </div>
+
+                <!--==============================
+                    RIGHT
+                ==============================-->
+
+                <div class="auth-card">
+
+                    <div id="loginFormContainer">
+
+                        <h2>
+
+                            Login
+
+                        </h2>
+
+                        <form
+                            id="loginForm">
+
+                            <div class="form-group">
+
+                                <label>
+
+                                    Email
+
+                                </label>
+
+                                <input
+                                    type="email"
+                                    id="loginEmail"
+                                    class="input"
+                                    placeholder="Enter your email"
+                                    required>
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <label>
+
+                                    Password
+
+                                </label>
+
+                                <div class="password-box">
+
+                                    <input
+                                        type="password"
+                                        id="loginPassword"
+                                        class="input"
+                                        placeholder="Enter your password"
+                                        required>
+
+                                    <button
+                                        type="button"
+                                        id="togglePassword">
+
+                                        <i class="fa-solid fa-eye"></i>
+
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                            <div class="form-options">
+
+                                <label>
+
+                                    <input
+                                        type="checkbox"
+                                        id="rememberMe">
+
+                                    Remember Me
+
+                                </label>
+
+                                <a href="#"
+                                    id="forgotPassword">
+
+                                    Forgot Password?
+
+                                </a>
+
+                            </div>
+
+                            <button
+                                type="submit"
+                                class="button button--primary w-100">
+
+                                Login
+
+                            </button>                            <div class="auth-divider">
+
+                                <span>
+
+                                    OR
+
+                                </span>
+
+                            </div>
+
+                            <button
+                                type="button"
+                                id="developerLogin"
+                                class="button button--secondary w-100">
+
+                                <i class="fa-solid fa-code"></i>
+
+                                I'm a Developer
+
+                            </button>
+
+                            <p class="auth-switch">
+
+                                Don't have an account?
+
+                                <a
+                                    href="#"
+                                    id="showRegister">
+
+                                    Create Account
+
+                                </a>
+
+                            </p>
+
+                        </form>
+
+                    </div>
+
+                    <!--==============================
+                        REGISTER FORM
+                    ==============================-->
+
+                    <div
+                        id="registerFormContainer"
+                        class="hidden">
+
+                        <h2>
+
+                            Create Account
+
+                        </h2>
+
+                        <form
+                            id="registerForm">
+
+                            <div class="form-group">
+
+                                <label>
+
+                                    Full Name
+
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="registerName"
+                                    class="input"
+                                    placeholder="Enter your full name"
+                                    required>
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <label>
+
+                                    Username
+
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="registerUsername"
+                                    class="input"
+                                    placeholder="Choose a username"
+                                    required>
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <label>
+
+                                    Email
+
+                                </label>
+
+                                <input
+                                    type="email"
+                                    id="registerEmail"
+                                    class="input"
+                                    placeholder="Enter your email"
+                                    required>
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <label>
+
+                                    Password
+
+                                </label>
+
+                                <input
+                                    type="password"
+                                    id="registerPassword"
+                                    class="input"
+                                    placeholder="Create a password"
+                                    required>
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <label>
+
+                                    Confirm Password
+
+                                </label>
+
+                                <input
+                                    type="password"
+                                    id="confirmPassword"
+                                    class="input"
+                                    placeholder="Confirm your password"
+                                    required>
+
+                            </div>
+
+                            <label class="developer-request">
+
+                                <input
+                                    type="checkbox"
+                                    id="applyDeveloper">
+
+                                Apply as a Developer
+
+                            </label>
+
+                            <small>
+
+                                Checking this box sends a request to the website owner.
+                                You'll receive an email if your request is approved.
+
+                            </small>
+
+                            <button
+                                type="submit"
+                                class="button button--primary w-100">
+
+                                Create Account
+
+                            </button>                            <p class="auth-switch">
+
+                                Already have an account?
+
+                                <a
+                                    href="#"
+                                    id="showLogin">
+
+                                    Login
+
+                                </a>
+
+                            </p>
+
+                        </form>
+
+                    </div>
+
+                    <!--=========================================
+                        DEVELOPER INFORMATION
+                    ==========================================-->
+
+                    <div class="auth-info-card">
+
+                        <div class="auth-info-header">
+
+                            <i class="fa-solid fa-code"></i>
+
+                            <h3>
+
+                                Become a Developer
+
+                            </h3>
+
+                        </div>
+
+                        <p>
+
+                            Love writing news, managing content or helping improve NewsHub?
+                            Apply as a developer while creating your account.
+
+                        </p>
+
+                        <div class="auth-feature-list">
+
+                            <div class="auth-feature">
+
+                                <i class="fa-solid fa-circle-check"></i>
+
+                                <span>
+
+                                    Publish Articles
+
+                                </span>
+
+                            </div>
+
+                            <div class="auth-feature">
+
+                                <i class="fa-solid fa-circle-check"></i>
+
+                                <span>
+
+                                    Manage Advertisements
+
+                                </span>
+
+                            </div>
+
+                            <div class="auth-feature">
+
+                                <i class="fa-solid fa-circle-check"></i>
+
+                                <span>
+
+                                    Review Comments
+
+                                </span>
+
+                            </div>
+
+                            <div class="auth-feature">
+
+                                <i class="fa-solid fa-circle-check"></i>
+
+                                <span>
+
+                                    Access Analytics
+
+                                </span>
+
+                            </div>
+
+                            <div class="auth-feature">
+
+                                <i class="fa-solid fa-circle-check"></i>
+
+                                <span>
+
+                                    Manage Categories
+
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!--=========================================
+                        SECURITY NOTICE
+                    ==========================================-->
+
+                    <div class="auth-security">
+
+                        <i class="fa-solid fa-shield-halved"></i>
+
+                        <div>
+
+                            <h4>
+
+                                Secure Authentication
+
+                            </h4>
+
+                            <p>
+
+                                Your account is protected using Firebase Authentication.
+                                Developer accounts require approval before access to the dashboard is granted.
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>    <!--=========================================
+        FOOTER
+    ==========================================-->
+
+    <footer class="auth-footer">
+
+        <div class="container">
+
+            <p>
+
+                © 2026 NewsHub. All Rights Reserved.
+
+            </p>
+
+        </div>
+
+    </footer>
+
+    <!--=========================================
+        GLOBAL ROOTS
+    ==========================================-->
+
+    <div id="overlay-root"></div>
+
+    <div id="toast-root"></div>
+
+    <div id="modal-root"></div>
+
+    <div id="loader-root"></div>
+
+    <!--=========================================
+        CONFIG
+    ==========================================-->
+
+    <script src="js/config.js"></script>
+
+    <!--=========================================
+        FIREBASE SDK
+    ==========================================-->
+
+    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-app-compat.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-auth-compat.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore-compat.js"></script>
+
+    <!--=========================================
+        FIREBASE
+    ==========================================-->
+
+    <script src="js/firebase.js"></script>
+
+    <!--=========================================
+        COMPONENTS
+    ==========================================-->
+
+    <script src="js/components/modal.js"></script>
+
+    <script src="js/components/toast.js"></script>
+
+    <script src="js/components/loader.js"></script>
+
+    <!--=========================================
+        API
+    ==========================================-->
+
+    <script src="js/api.js"></script>
+
+    <!--=========================================
+        LOGIN
+    ==========================================-->
+
+    <script src="js/pages/login.js"></script>
+
+</body>
+
+</html>

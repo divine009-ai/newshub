@@ -1,0 +1,336 @@
+/*==========================================================
+    HERO
+    Version: 1.0
+==========================================================*/
+
+
+/*==========================================================
+    HERO SECTION
+==========================================================*/
+
+.hero{
+
+    width:100%;
+
+}
+
+.hero__grid{
+
+    display:grid;
+
+    grid-template-columns:2fr 1fr;
+
+    gap:30px;
+
+    align-items:stretch;
+
+}
+
+
+/*==========================================================
+    FEATURED ARTICLE
+==========================================================*/
+
+.hero__featured{
+
+    overflow:hidden;
+
+    border-radius:var(--radius-lg);
+
+    background:var(--surface);
+
+}
+
+.hero__featured img{
+
+    width:100%;
+
+    height:500px;
+
+    object-fit:cover;
+
+    transition:.5s;
+
+}
+
+.hero__featured:hover img{
+
+    transform:scale(1.05);
+
+}
+
+.hero__featured .news-card__content{
+
+    padding:30px;
+
+}
+
+.hero__featured .badge{
+
+    margin-bottom:15px;
+
+}
+
+.hero__featured h2{
+
+    margin-bottom:15px;
+
+    line-height:1.3;
+
+}
+
+.hero__featured p{
+
+    margin-bottom:20px;
+
+}
+
+.hero__featured .news-card__meta{
+
+    display:flex;
+
+    gap:20px;
+
+    font-size:.9rem;
+
+    color:var(--text-light);
+
+}
+
+
+/*==========================================================
+    HERO SIDE
+==========================================================*/
+
+.hero__side{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:20px;
+
+}
+
+
+/*==========================================================
+    HERO CARD
+==========================================================*/
+
+.hero-card{
+
+    display:flex;
+
+    gap:15px;
+
+    overflow:hidden;
+
+    transition:var(--transition);
+
+}
+
+.hero-card:hover{
+
+    transform:translateY(-4px);
+
+}
+
+.hero-card__image{
+
+    width:120px;
+
+    min-width:120px;
+
+    height:100px;
+
+    overflow:hidden;
+
+    border-radius:var(--radius-md);
+
+}
+
+.hero-card__image img{
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+    transition:.4s;
+
+}
+
+.hero-card:hover .hero-card__image img{
+
+    transform:scale(1.08);
+
+}
+
+.hero-card__content{
+
+    flex:1;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+}
+
+.hero-card__content .badge{
+
+    width:fit-content;
+
+    margin-bottom:10px;
+
+}
+
+.hero-card__content h3{
+
+    font-size:1rem;
+
+    line-height:1.4;
+
+    margin-bottom:8px;
+
+}
+
+.hero-card__content h3 a{
+
+    color:var(--text);
+
+    transition:var(--transition);
+
+}
+
+.hero-card__content h3 a:hover{
+
+    color:var(--primary);
+
+}
+
+.hero-card__meta{
+
+    display:flex;
+
+    gap:15px;
+
+    font-size:.8rem;
+
+    color:var(--text-light);
+
+}
+
+
+/*==========================================================
+    HERO OVERLAY
+==========================================================*/
+
+.hero-overlay{
+
+    position:relative;
+
+    overflow:hidden;
+
+}
+
+.hero-overlay::before{
+
+    content:"";
+
+    position:absolute;
+
+    left:0;
+
+    right:0;
+
+    bottom:0;
+
+    height:60%;
+
+    background:linear-gradient(
+
+        transparent,
+
+        rgba(0,0,0,.75)
+
+    );
+
+    z-index:1;
+
+}
+
+.hero-overlay__content{
+
+    position:absolute;
+
+    left:30px;
+
+    right:30px;
+
+    bottom:30px;
+
+    z-index:2;
+
+    color:#fff;
+
+}
+
+.hero-overlay__content h2,
+
+.hero-overlay__content h3,
+
+.hero-overlay__content p{
+
+    color:#fff;
+
+}
+
+.hero-overlay__content .badge{
+
+    margin-bottom:15px;
+
+}
+
+
+/*==========================================================
+    HERO TAG
+==========================================================*/
+
+.hero-tag{
+
+    position:absolute;
+
+    top:20px;
+
+    left:20px;
+
+    z-index:3;
+
+}
+
+
+/*==========================================================
+    HERO BUTTON
+==========================================================*/
+
+.hero-button{
+
+    margin-top:20px;
+
+}
+
+
+/*==========================================================
+    HERO ANIMATION
+==========================================================*/
+
+.hero__featured,
+
+.hero-card{
+
+    animation:fadeUp .5s ease;
+
+}

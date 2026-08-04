@@ -1,0 +1,425 @@
+/*==========================================================
+    SIDEBAR
+    Version: 1.0
+==========================================================*/
+
+
+/*==========================================================
+    SIDEBAR
+==========================================================*/
+
+.sidebar{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:30px;
+
+}
+
+
+/*==========================================================
+    SIDEBAR CARD
+==========================================================*/
+
+.sidebar-card{
+
+    background:var(--surface);
+
+    border-radius:var(--radius-lg);
+
+    padding:25px;
+
+    box-shadow:var(--shadow-sm);
+
+    transition:var(--transition);
+
+}
+
+.sidebar-card:hover{
+
+    box-shadow:var(--shadow-md);
+
+}
+
+.sidebar-card h3{
+
+    margin-bottom:20px;
+
+    font-size:1.35rem;
+
+    color:var(--text);
+
+}
+
+
+/*==========================================================
+    SIDEBAR NEWS CARD
+==========================================================*/
+
+.sidebar-news-card{
+
+    display:flex;
+
+    gap:15px;
+
+    margin-bottom:20px;
+
+    align-items:flex-start;
+
+}
+
+.sidebar-news-card:last-child{
+
+    margin-bottom:0;
+
+}
+
+
+/*==========================================================
+    IMAGE
+==========================================================*/
+
+.sidebar-news-card img{
+
+    width:95px;
+
+    height:80px;
+
+    object-fit:cover;
+
+    border-radius:var(--radius-md);
+
+    transition:var(--transition);
+
+}
+
+.sidebar-news-card:hover img{
+
+    transform:scale(1.05);
+
+}
+
+
+/*==========================================================
+    CONTENT
+==========================================================*/
+
+.sidebar-news-content{
+
+    flex:1;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:10px;
+
+}
+
+.sidebar-news-content h4{
+
+    font-size:1rem;
+
+    line-height:1.5;
+
+}
+
+.sidebar-news-content h4 a{
+
+    color:var(--text);
+
+    transition:var(--transition);
+
+}
+
+.sidebar-news-content h4 a:hover{
+
+    color:var(--primary);
+
+}
+
+.sidebar-news-content small{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    color:var(--text-light);
+
+    font-size:.85rem;
+
+}
+
+.sidebar-news-content small i{
+
+    color:var(--primary);
+
+}
+
+
+/*==========================================================
+    NUMBER
+==========================================================*/
+
+.sidebar-news-number{
+
+    width:40px;
+
+    height:40px;
+
+    border-radius:50%;
+
+    background:var(--primary);
+
+    color:#fff;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-weight:700;
+
+    flex-shrink:0;
+
+}
+
+
+/*==========================================================
+    BADGE
+==========================================================*/
+
+.sidebar-news-content .badge{
+
+    width:fit-content;
+
+}
+
+
+/*==========================================================
+    TRENDING
+==========================================================*/
+
+#trendingNews{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:18px;
+
+}
+
+
+/*==========================================================
+    POPULAR
+==========================================================*/
+
+#popularNews{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:18px;
+
+}
+
+
+/*==========================================================
+    ADVERTISEMENT
+==========================================================*/
+
+#sidebarAdLink{
+
+    display:block;
+
+    border-radius:var(--radius-lg);
+
+    overflow:hidden;
+
+}
+
+#sidebarAdImage{
+
+    width:100%;
+
+    display:block;
+
+    border-radius:var(--radius-lg);
+
+    transition:var(--transition);
+
+}
+
+#sidebarAdImage:hover{
+
+    transform:scale(1.03);
+
+}
+
+
+/*==========================================================
+    SOCIAL
+==========================================================*/
+
+.social-links{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:15px;
+
+}
+
+.social-links a{
+
+    height:50px;
+
+    border-radius:var(--radius-md);
+
+    background:var(--background);
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    color:var(--text);
+
+    border:1px solid var(--border);
+
+    transition:var(--transition);
+
+}
+
+.social-links a:hover{
+
+    background:var(--primary);
+
+    color:#fff;
+
+    transform:translateY(-3px);
+
+}
+
+
+/*==========================================================
+    LOADING
+==========================================================*/
+
+.sidebar-loading{
+
+    padding:25px;
+
+    text-align:center;
+
+    color:var(--text-light);
+
+}
+
+
+/*==========================================================
+    ERROR
+==========================================================*/
+
+.sidebar-error{
+
+    padding:25px;
+
+    text-align:center;
+
+    color:var(--danger);
+
+}
+
+.sidebar-error i{
+
+    font-size:2rem;
+
+    margin-bottom:15px;
+
+    display:block;
+
+}
+
+
+/*==========================================================
+    EMPTY
+==========================================================*/
+
+.sidebar-empty{
+
+    padding:30px 15px;
+
+    text-align:center;
+
+    color:var(--text-light);
+
+}
+
+
+/*==========================================================
+    NEWSLETTER
+==========================================================*/
+
+.newsletter-card{
+
+    padding:25px;
+
+    text-align:center;
+
+}
+
+.newsletter-card h3{
+
+    margin-bottom:12px;
+
+}
+
+.newsletter-card p{
+
+    margin-bottom:20px;
+
+}
+
+.newsletter-form{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:15px;
+
+}
+
+
+/*==========================================================
+    STICKY
+==========================================================*/
+
+.sidebar.sticky{
+
+    position:sticky;
+
+    top:100px;
+
+}
+
+
+/*==========================================================
+    ANIMATION
+==========================================================*/
+
+.sidebar-card{
+
+    animation:fadeUp .4s ease;
+
+}

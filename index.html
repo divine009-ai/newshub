@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>NewsHub</title>
+
+    <!--==============================
+        GOOGLE FONT
+    ===============================-->
+
+    <link rel="preconnect"
+        href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!--==============================
+        FONT AWESOME
+    ===============================-->
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <!--==============================
+        CSS
+    ===============================-->
+
+    <link rel="stylesheet" href="css/main.css">
+
+    <link rel="stylesheet" href="css/layout.css">
+
+    <link rel="stylesheet" href="css/navbar.css">
+
+    <link rel="stylesheet" href="css/hero.css">
+
+    <link rel="stylesheet" href="css/news.css">
+
+    <link rel="stylesheet" href="css/sidebar.css">
+
+    <link rel="stylesheet" href="css/article.css">
+
+    <link rel="stylesheet" href="css/footer.css">
+
+    <link rel="stylesheet" href="css/components.css">
+
+    <link rel="stylesheet" href="css/responsive.css">
+
+</head>
+
+<body>
+
+    <!--=========================================
+        NAVBAR
+    ==========================================-->
+
+    <div id="navbar"></div>
+
+    <!--=========================================
+        BREAKING NEWS
+    ==========================================-->
+
+    <section class="breaking-news section-sm">
+
+        <div class="container">
+
+            <div class="card breaking-news__container">
+
+                <div class="breaking-news__title">
+
+                    <i class="fa-solid fa-bolt"></i>
+
+                    <span>
+
+                        Breaking
+
+                    </span>
+
+                </div>
+
+                <div id="breakingNews">
+
+                    <!-- Loaded by breakingNews.js -->
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!--=========================================
+        HERO
+    ==========================================-->
+
+    <section class="hero section">
+
+        <div class="container">
+
+            <div class="hero__grid">
+
+                <!--==============================
+                    FEATURED ARTICLE
+                ==============================-->
+
+                <div
+                    id="featuredArticle"
+                    class="hero__featured">
+
+                    <!-- Loaded by home.js -->
+
+                </div>
+
+                <!--==============================
+                    HERO SIDE
+                ==============================-->
+
+                <div
+                    id="heroSide"
+                    class="hero__side">
+
+                    <!-- Loaded by home.js -->
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!--=========================================
+        MAIN CONTENT
+    ==========================================-->
+
+    <main class="section">
+
+        <div class="container">
+
+            <div class="layout">
+
+                <!--=================================
+                    CONTENT
+                =================================-->
+
+                <div class="content">                    <!--=========================================
+                        LATEST NEWS
+                    ==========================================-->
+
+                    <section class="news-section">
+
+                        <div class="section-header">
+
+                            <h2>
+
+                                Latest News
+
+                            </h2>
+
+                            <a href="category.html?category=latest">
+
+                                View All
+
+                            </a>
+
+                        </div>
+
+                        <div
+                            id="latestNews"
+                            class="news-grid">
+
+                            <!-- Loaded by home.js -->
+
+                        </div>
+
+                    </section>
+
+                    <!--=========================================
+                        TECHNOLOGY
+                    ==========================================-->
+
+                    <section class="news-section">
+
+                        <div class="section-header">
+
+                            <h2>
+
+                                Technology
+
+                            </h2>
+
+                            <a href="category.html?category=Technology">
+
+                                View All
+
+                            </a>
+
+                        </div>
+
+                        <div
+                            id="technologyNews"
+                            class="news-grid">
+
+                            <!-- Loaded by home.js -->
+
+                        </div>
+
+                    </section>
+
+                    <!--=========================================
+                        GAMING
+                    ==========================================-->
+
+                    <section class="news-section">
+
+                        <div class="section-header">
+
+                            <h2>
+
+                                Gaming
+
+                            </h2>
+
+                            <a href="category.html?category=Gaming">
+
+                                View All
+
+                            </a>
+
+                        </div>
+
+                        <div
+                            id="gamingNews"
+                            class="news-grid">
+
+                            <!-- Loaded by home.js -->
+
+                        </div>
+
+                    </section>
+
+                    <!--=========================================
+                        BUSINESS
+                    ==========================================-->
+
+                    <section class="news-section">
+
+                        <div class="section-header">
+
+                            <h2>
+
+                                Business
+
+                            </h2>
+
+                            <a href="category.html?category=Business">
+
+                                View All
+
+                            </a>
+
+                        </div>
+
+                        <div
+                            id="businessNews"
+                            class="news-grid">
+
+                            <!-- Loaded by home.js -->
+
+                        </div>
+
+                    </section>
+
+                </div>
+
+                <!--=========================================
+                    SIDEBAR
+                ==========================================-->
+
+                <aside class="sidebar">
+
+                    <!--=====================================
+                        TRENDING
+                    ======================================-->
+
+                    <div class="sidebar-card">
+
+                        <div class="section-header">
+
+                            <h3>
+
+                                Trending
+
+                            </h3>
+
+                        </div>
+
+                        <div id="trendingNews">
+
+                            <!-- Loaded by sidebar.js -->
+
+                        </div>
+
+                    </div>                    <!--=========================================
+                        POPULAR
+                    ==========================================-->
+
+                    <div class="sidebar-card">
+
+                        <div class="section-header">
+
+                            <h3>
+
+                                Popular
+
+                            </h3>
+
+                        </div>
+
+                        <div id="popularNews">
+
+                            <!-- Loaded by sidebar.js -->
+
+                        </div>
+
+                    </div>
+
+                    <!--=========================================
+                        ADVERTISEMENT
+                    ==========================================-->
+
+                    <div class="sidebar-card">
+
+                        <div class="section-header">
+
+                            <h3>
+
+                                Advertisement
+
+                            </h3>
+
+                        </div>
+
+                        <a
+                            id="sidebarAdLink"
+                            href="#"
+                            target="_blank">
+
+                            <img
+                                id="sidebarAdImage"
+                                src=""
+                                alt="Advertisement">
+
+                        </a>
+
+                    </div>
+
+                    <!--=========================================
+                        FOLLOW US
+                    ==========================================-->
+
+                    <div class="sidebar-card">
+
+                        <div class="section-header">
+
+                            <h3>
+
+                                Follow Us
+
+                            </h3>
+
+                        </div>
+
+                        <div class="social-links">
+
+                            <a href="#">
+
+                                <i class="fab fa-facebook-f"></i>
+
+                            </a>
+
+                            <a href="#">
+
+                                <i class="fab fa-x-twitter"></i>
+
+                            </a>
+
+                            <a href="#">
+
+                                <i class="fab fa-instagram"></i>
+
+                            </a>
+
+                            <a href="#">
+
+                                <i class="fab fa-youtube"></i>
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </aside>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <!--=========================================
+        NEWSLETTER
+    ==========================================-->
+
+    <section class="newsletter section">
+
+        <div class="container">
+
+            <div class="newsletter-card">
+
+                <h2>
+
+                    Stay Updated
+
+                </h2>
+
+                <p>
+
+                    Subscribe to receive the latest news, technology updates, gaming news and business stories directly in your inbox.
+
+                </p>
+
+                <form
+                    id="newsletterForm"
+                    class="newsletter-form">
+
+                    <input
+                        type="email"
+                        id="newsletterEmail"
+                        class="input"
+                        placeholder="Enter your email address"
+                        required>
+
+                    <button
+                        type="submit"
+                        class="button button--primary">
+
+                        Subscribe
+
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </section>    <!--=========================================
+        FOOTER
+    ==========================================-->
+
+    <div id="footer"></div>
+
+    <!--=========================================
+        GLOBAL COMPONENT ROOTS
+    ==========================================-->
+
+    <div id="overlay-root"></div>
+
+    <div id="toast-root"></div>
+
+    <div id="modal-root"></div>
+
+    <div id="loader-root"></div>
+
+    <!--=========================================
+        CONFIG
+    ==========================================-->
+
+    <script src="js/config.js"></script>
+
+    <!--=========================================
+        FIREBASE SDK
+    ==========================================-->
+
+    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-app-compat.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-auth-compat.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore-compat.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-storage-compat.js"></script>
+
+    <!--=========================================
+        FIREBASE
+    ==========================================-->
+
+    <script src="js/firebase.js"></script>
+
+    <!--=========================================
+        COMPONENTS
+    ==========================================-->
+
+    <script src="js/components/navbar.js"></script>
+
+    <script src="js/components/footer.js"></script>
+
+    <script src="js/components/sidebar.js"></script>
+
+    <script src="js/components/newsletter.js"></script>
+
+    <script src="js/components/breakingNews.js"></script>
+
+    <script src="js/components/modal.js"></script>
+
+    <script src="js/components/toast.js"></script>
+
+    <script src="js/components/loader.js"></script>
+
+    <!--=========================================
+        API
+    ==========================================-->
+
+    <script src="js/api.js"></script>
+
+    <!--=========================================
+        HOME PAGE
+    ==========================================-->
+
+    <script src="js/pages/home.js"></script>
+
+</body>
+
+</html>
