@@ -3465,20 +3465,3 @@ toggle.addEventListener("click",()=>{
     sidebar.classList.toggle("show");
 
 });
-const sidebar = document.querySelector(".admin-sidebar");
-const toggle = document.querySelector(".mobile-toggle");
-const overlay = document.querySelector(".sidebar-overlay");
-
-toggle.addEventListener("click",()=>{
-
-    sidebar.classList.toggle("show");
-    overlay.classList.toggle("show");
-
-});
-
-overlay.addEventListener("click",()=>{
-
-    sidebar.classList.remove("show");
-    overlay.classList.remove("show");
-
-});

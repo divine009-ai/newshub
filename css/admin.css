@@ -315,27 +315,17 @@ body{
 
     }
 
-.mobile-toggle{
-
-    display:none;
-
-}
-
-@media(max-width:768px){
-
     .mobile-toggle{
 
         display:flex;
 
-        position:fixed;
+        align-items:center;
 
-        top:18px;
+        justify-content:center;
 
-        right:18px;
+        width:50px;
 
-        width:52px;
-
-        height:52px;
+        height:50px;
 
         border:none;
 
@@ -347,19 +337,13 @@ body{
 
         font-size:1.2rem;
 
-        justify-content:center;
-
-        align-items:center;
-
         cursor:pointer;
 
-        z-index:10001;
+        box-shadow:0 12px 25px rgba(37,99,235,.35);
 
-        box-shadow:0 10px 25px rgba(37,99,235,.35);
+        margin-bottom:20px;
 
     }
-
-}
 
     .admin-sidebar{
 
@@ -432,30 +416,5 @@ body{
         grid-template-columns:1fr;
 
     }
-
-}
-.sidebar-overlay{
-
-    position:fixed;
-
-    inset:0;
-
-    background:rgba(0,0,0,.45);
-
-    opacity:0;
-
-    visibility:hidden;
-
-    transition:.3s;
-
-    z-index:9998;
-
-}
-
-.sidebar-overlay.show{
-
-    opacity:1;
-
-    visibility:visible;
 
 }
