@@ -293,3 +293,128 @@ body{
     }
 
 }
+/*==========================================================
+    MOBILE NAVIGATION
+==========================================================*/
+
+.mobile-toggle{
+
+    display:none;
+
+}
+
+@media (max-width:768px){
+
+    .admin-wrapper{
+
+        display:block;
+
+        width:100%;
+
+        padding:15px;
+
+    }
+
+    .mobile-toggle{
+
+        display:flex;
+
+        align-items:center;
+
+        justify-content:center;
+
+        width:50px;
+
+        height:50px;
+
+        border:none;
+
+        border-radius:14px;
+
+        background:#2563eb;
+
+        color:#fff;
+
+        font-size:1.2rem;
+
+        cursor:pointer;
+
+        box-shadow:0 12px 25px rgba(37,99,235,.35);
+
+        margin-bottom:20px;
+
+    }
+
+    .admin-sidebar{
+
+        position:fixed;
+
+        top:0;
+
+        left:-320px;
+
+        width:280px;
+
+        height:100vh;
+
+        border-radius:0;
+
+        z-index:9999;
+
+        transition:left .35s ease;
+
+    }
+
+    .admin-sidebar.show{
+
+        left:0;
+
+    }
+
+    .admin-main{
+
+        width:100%;
+
+        padding:0;
+
+        margin:0;
+
+    }
+
+    .admin-header{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+        gap:20px;
+
+    }
+
+    .admin-profile{
+
+        width:100%;
+
+    }
+
+    .dashboard-grid{
+
+        grid-template-columns:1fr;
+
+        gap:20px;
+
+    }
+
+    .dashboard-card{
+
+        width:100%;
+
+    }
+
+    .quick-actions{
+
+        grid-template-columns:1fr;
+
+    }
+
+}

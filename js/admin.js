@@ -3457,3 +3457,11 @@ console.log(
 );
 
 });
+const sidebar = document.querySelector(".admin-sidebar");
+const toggle = document.querySelector(".mobile-toggle");
+
+toggle.addEventListener("click",()=>{
+
+    sidebar.classList.toggle("show");
+
+});
