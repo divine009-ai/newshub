@@ -17,7 +17,17 @@ class Loader {
         SHOW
     ==========================================*/
 
-    show({
+    show(options = {}) {
+
+        if (typeof options === "string") {
+
+            options = {
+                message: options
+            };
+
+        }
+
+        const {
 
         title = "Loading",
 
@@ -25,7 +35,7 @@ class Loader {
 
         progress = false
 
-    } = {}) {
+        } = options;
 
         if (!this.root) return;
 

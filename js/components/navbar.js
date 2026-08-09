@@ -78,13 +78,19 @@ class Navbar {
 
                 </button>
 
-                <a
-                    href="login.html"
-                    class="button button--primary">
+                <div
+                    id="authAction"
+                    class="navbar__auth">
 
-                    Login
+                    <a
+                        href="login.html"
+                        class="button button--primary">
 
-                </a>
+                        Login
+
+                    </a>
+
+                </div>
 
                 <button
                     id="menuToggle"
@@ -183,6 +189,71 @@ class Navbar {
 
     }
 
+    updateAuth(profile) {
+
+        const authAction = document.getElementById("authAction");
+
+        if (!authAction) return;
+
+        if (!profile) {
+
+            authAction.innerHTML = `
+                <a href="login.html" class="button button--primary">
+                    Login
+                </a>
+            `;
+
+            return;
+
+        }
+
+        const canAdmin =
+            profile.role === "admin" &&
+            profile.approved &&
+            profile.status !== "blocked";
+
+        authAction.innerHTML = `
+            <div class="navbar__user">
+                <span>${profile.name || profile.username || "Account"}</span>
+                ${canAdmin ? '<a href="admin.html">Admin</a>' : ""}
+                <button id="navbarLogout" type="button">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                </button>
+            </div>
+        `;
+
+        const logout = document.getElementById("navbarLogout");
+
+        if (logout) {
+
+            logout.addEventListener("click", async () => {
+
+                if (typeof auth !== "undefined") {
+
+                    await auth.signOut();
+
+                }
+
+                this.updateAuth(null);
+
+            });
+
+        }
+
+    }
+
+    authState() {
+
+        this.updateAuth(window.currentUserProfile || null);
+
+        window.addEventListener("newshub:user", event => {
+
+            this.updateAuth(event.detail);
+
+        });
+
+    }
+
     init() {
 
         this.render();
@@ -192,6 +263,8 @@ class Navbar {
         this.themeToggle();
 
         this.search();
+
+        this.authState();
 
     }
 

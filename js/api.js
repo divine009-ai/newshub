@@ -16,12 +16,38 @@ class API {
         HELPERS
     ==========================================*/
 
-    mapDocuments(snapshot) {
+    normalizeRecord(collection, id, data) {
 
-        return snapshot.docs.map(doc => ({
-            id: doc.id,
-            ...doc.data()
-        }));
+        if (collection !== "articles") {
+
+            return {
+                id,
+                ...data
+            };
+
+        }
+
+        const createdDate = data.createdAt && typeof data.createdAt.toDate === "function"
+            ? data.createdAt.toDate()
+            : null;
+
+        return {
+            id,
+            ...data,
+            image: data.coverImage || data.image || "images/avatar.png",
+            date: data.date || (createdDate ? createdDate.toLocaleDateString() : ""),
+            views: data.views || 0,
+            likes: data.likes || 0,
+            comments: data.comments || 0
+        };
+
+    }
+
+    mapDocuments(snapshot, collection = "") {
+
+        return snapshot.docs.map(doc =>
+            this.normalizeRecord(collection, doc.id, doc.data())
+        );
 
     }
 
@@ -38,12 +64,7 @@ class API {
 
         }
 
-        return {
-
-            id: doc.id,
-            ...doc.data()
-
-        };
+        return this.normalizeRecord(collection, doc.id, doc.data());
 
     }
 
@@ -71,13 +92,7 @@ class API {
 
         }
 
-        return {
-
-            id: snapshot.docs[0].id,
-
-            ...snapshot.docs[0].data()
-
-        };
+        return this.normalizeRecord("articles", snapshot.docs[0].id, snapshot.docs[0].data());
 
     }
 
@@ -99,7 +114,7 @@ class API {
 
             .get();
 
-        return this.mapDocuments(snapshot);
+        return this.mapDocuments(snapshot, "articles");
 
     }
 
@@ -121,7 +136,7 @@ class API {
 
             .get();
 
-        return this.mapDocuments(snapshot);
+        return this.mapDocuments(snapshot, "articles");
 
     }
 
@@ -145,7 +160,7 @@ class API {
 
             .get();
 
-        return this.mapDocuments(snapshot);
+        return this.mapDocuments(snapshot, "articles");
 
     }
 
@@ -185,7 +200,7 @@ class API {
 
             .get();
 
-        return this.mapDocuments(snapshot);
+        return this.mapDocuments(snapshot, "articles");
 
     }
 
@@ -207,7 +222,7 @@ class API {
 
             .get();
 
-        return this.mapDocuments(snapshot);
+        return this.mapDocuments(snapshot, "articles");
 
     }
 
@@ -229,7 +244,7 @@ class API {
 
             .get();
 
-        return this.mapDocuments(snapshot);
+        return this.mapDocuments(snapshot, "articles");
 
     }
 
@@ -251,7 +266,7 @@ class API {
 
             .get();
 
-        return this.mapDocuments(snapshot)
+        return this.mapDocuments(snapshot, "articles")
 
             .filter(article => article.id !== currentId)
 
@@ -283,13 +298,7 @@ class API {
 
         }
 
-        return {
-
-            id: snapshot.docs[0].id,
-
-            ...snapshot.docs[0].data()
-
-        };
+        return this.normalizeRecord("articles", snapshot.docs[0].id, snapshot.docs[0].data());
 
     }
 
@@ -319,13 +328,7 @@ class API {
 
         }
 
-        return {
-
-            id: snapshot.docs[0].id,
-
-            ...snapshot.docs[0].data()
-
-        };
+        return this.normalizeRecord("articles", snapshot.docs[0].id, snapshot.docs[0].data());
 
     }
 
@@ -365,7 +368,7 @@ class API {
 
             .get();
 
-        return this.mapDocuments(snapshot);
+        return this.mapDocuments(snapshot, "comments");
 
     }
 
@@ -423,9 +426,26 @@ class API {
 
     async getAdvertisement(position) {
 
+        const doc = await this.db
+
+            .collection("advertisements")
+
+            .doc(position)
+
+            .get();
+
+        if (doc.exists && doc.data().active) {
+
+            return {
+                id: doc.id,
+                ...doc.data()
+            };
+
+        }
+
         const snapshot = await this.db
 
-            .collection("ads")
+            .collection("advertisements")
 
             .where("position", "==", position)
 
@@ -451,6 +471,18 @@ class API {
 
     }
 
+    async getSidebarAdvertisement() {
+
+        return await this.getAdvertisement("sidebar");
+
+    }
+
+    async getArticleAdvertisement() {
+
+        return await this.getAdvertisement("article");
+
+    }
+
     /*==========================================
         SEARCH
     ==========================================*/
@@ -471,7 +503,7 @@ class API {
 
             .get();
 
-        return this.mapDocuments(snapshot);
+        return this.mapDocuments(snapshot, "articles");
 
     }
 

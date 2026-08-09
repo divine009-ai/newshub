@@ -81,20 +81,13 @@ class Newsletter {
 
     async subscribe(email) {
 
-        /*
-            Firebase Code
-            Will Be Added Later
-        */
+        if (typeof api === "undefined") {
 
-        return new Promise(resolve => {
+            throw new Error("Firebase API is not ready.");
 
-            setTimeout(() => {
+        }
 
-                resolve(true);
-
-            },1000);
-
-        });
+        return await api.subscribe(email);
 
     }
 
