@@ -1,56 +1,29 @@
 /*==========================================================
-    NEWSHUB CMS
-    ADMIN CSS
-    PART 1 — CORE LAYOUT
-==========================================================*/
-
-
-/*==========================================================
-    VARIABLES
+    ADMIN LAYOUT
 ==========================================================*/
 
 :root{
 
-    --admin-bg:#f5f7fb;
+    --sidebar-width:280px;
 
-    --admin-surface:#ffffff;
+    --header-height:80px;
 
-    --admin-sidebar:#0f172a;
+    --background:#f5f7fb;
 
-    --admin-sidebar-2:#172554;
+    --surface:#ffffff;
 
-    --admin-primary:#2563eb;
+    --sidebar:#0f172a;
 
-    --admin-primary-dark:#1d4ed8;
+    --primary:#2563eb;
 
-    --admin-text:#0f172a;
+    --border:#e5e7eb;
 
-    --admin-muted:#64748b;
+    --shadow:0 15px 35px rgba(15,23,42,.08);
 
-    --admin-border:#e2e8f0;
-
-    --admin-radius:22px;
-
-    --admin-sidebar-width:280px;
-
-    --admin-shadow:
-        0 12px 35px rgba(15,23,42,.08);
+    --radius:22px;
 
 }
 
-
-/*==========================================================
-    RESET — ADMIN ONLY
-==========================================================*/
-
-.admin-wrapper,
-.admin-wrapper *,
-.admin-wrapper *::before,
-.admin-wrapper *::after{
-
-    box-sizing:border-box;
-
-}
 
 
 /*==========================================================
@@ -61,30 +34,26 @@ body{
 
     margin:0;
 
-    background:var(--admin-bg);
-
-    color:var(--admin-text);
+    background:var(--background);
 
     overflow-x:hidden;
 
 }
 
 
+
 /*==========================================================
-    MAIN WRAPPER
+    WRAPPER
 ==========================================================*/
 
 .admin-wrapper{
 
-    width:100%;
+    display:flex;
 
     min-height:100vh;
 
-    display:flex;
-
-    align-items:flex-start;
-
 }
+
 
 
 /*==========================================================
@@ -93,186 +62,53 @@ body{
 
 .admin-sidebar{
 
-    flex:0 0 var(--admin-sidebar-width);
+    width:var(--sidebar-width);
 
-    width:var(--admin-sidebar-width);
+    background:var(--sidebar);
 
-    min-width:0;
+    color:#fff;
 
-    height:100vh;
-
-    position:sticky;
-
-    top:0;
-
-    z-index:100;
+    padding:20px;
 
     display:flex;
 
     flex-direction:column;
 
-    background:
-        linear-gradient(
-            180deg,
-            var(--admin-sidebar) 0%,
-            var(--admin-sidebar-2) 100%
-        );
-
-    color:#ffffff;
-
-    padding:24px 18px;
-
-    overflow-x:hidden;
-
-    overflow-y:auto;
-
-    overscroll-behavior:contain;
-
-    scrollbar-width:thin;
-
-    scrollbar-color:
-        rgba(255,255,255,.25)
-        transparent;
-
-    box-shadow:
-        8px 0 30px rgba(15,23,42,.08);
-
-    transition:
-        width .3s ease,
-        flex-basis .3s ease,
-        padding .3s ease;
+    gap:20px;
 
 }
 
-
-/*==========================================================
-    SIDEBAR SCROLLBAR
-==========================================================*/
-
-.admin-sidebar::-webkit-scrollbar{
-
-    width:6px;
-
-}
-
-.admin-sidebar::-webkit-scrollbar-track{
-
-    background:transparent;
-
-}
-
-.admin-sidebar::-webkit-scrollbar-thumb{
-
-    background:rgba(255,255,255,.22);
-
-    border-radius:50px;
-
-}
-
-.admin-sidebar::-webkit-scrollbar-thumb:hover{
-
-    background:rgba(255,255,255,.4);
-
-}
-
-
-/*==========================================================
-    SIDEBAR TOP
-==========================================================*/
-
-.sidebar-top{
-
-    flex:0 0 auto;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:space-between;
-
-    gap:12px;
-
-    margin-bottom:28px;
-
-}
 
 
 /*==========================================================
     LOGO
 ==========================================================*/
 
-.admin-logo{
+.sidebar-top{
 
-    min-width:0;
+    margin-bottom:15px;
+
+}
+
+.admin-logo{
 
     display:flex;
 
     align-items:center;
 
-    gap:14px;
+    gap:15px;
 
 }
 
 .admin-logo i{
 
-    flex:0 0 58px;
+    width:52px;
 
-    width:58px;
+    height:52px;
 
-    height:58px;
+    border-radius:15px;
 
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    border-radius:17px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #2563eb,
-            #60a5fa
-        );
-
-    color:#ffffff;
-
-    font-size:1.45rem;
-
-    box-shadow:
-        0 12px 28px rgba(37,99,235,.35);
-
-}
-
-.admin-logo span{
-
-    color:#ffffff;
-
-    font-size:1.15rem;
-
-    font-weight:700;
-
-    white-space:nowrap;
-
-}
-
-
-/*==========================================================
-    COLLAPSE BUTTON
-==========================================================*/
-
-.sidebar-collapse{
-
-    flex:0 0 auto;
-
-    width:42px;
-
-    height:42px;
-
-    border:0;
-
-    border-radius:12px;
+    background:linear-gradient(135deg,#2563eb,#3b82f6);
 
     display:flex;
 
@@ -280,34 +116,35 @@ body{
 
     justify-content:center;
 
-    background:rgba(255,255,255,.08);
-
-    color:#ffffff;
-
-    cursor:pointer;
-
-    transition:.25s ease;
+    font-size:1.4rem;
 
 }
 
-.sidebar-collapse:hover{
+.admin-logo h2{
 
-    background:rgba(255,255,255,.16);
+    margin:0;
+
+    color:#fff;
+
+    font-size:1.25rem;
 
 }
+
+.admin-logo p{
+
+    margin:4px 0 0;
+
+    color:#94a3b8;
+
+    font-size:.85rem;
+
+}
+
 
 
 /*==========================================================
-    NAVIGATION
+    MENU
 ==========================================================*/
-
-.admin-sidebar nav{
-
-    flex:1 1 auto;
-
-    min-height:0;
-
-}
 
 .sidebar-menu{
 
@@ -321,26 +158,31 @@ body{
 
     flex-direction:column;
 
-    gap:8px;
+    gap:10px;
+
+    flex:1;
 
 }
 
 
+
 /*==========================================================
-    SIDEBAR LINKS
+    LINKS
 ==========================================================*/
 
 .sidebar-link{
 
     width:100%;
 
-    min-height:54px;
+    height:54px;
 
-    border:0;
+    border:none;
 
-    border-radius:15px;
+    background:transparent;
 
-    padding:0 16px;
+    color:#cbd5e1;
+
+    border-radius:14px;
 
     display:flex;
 
@@ -348,46 +190,23 @@ body{
 
     gap:15px;
 
-    background:transparent;
-
-    color:#cbd5e1;
-
-    font-family:inherit;
-
-    font-size:.94rem;
-
-    font-weight:600;
-
-    text-align:left;
+    padding:0 18px;
 
     cursor:pointer;
 
-    transition:
-        background .25s ease,
-        color .25s ease,
-        transform .25s ease;
+    transition:.25s;
+
+    font-size:.95rem;
+
+    font-weight:600;
 
 }
 
 .sidebar-link i{
 
-    flex:0 0 22px;
-
     width:22px;
 
     text-align:center;
-
-    font-size:1rem;
-
-}
-
-.sidebar-link span{
-
-    white-space:nowrap;
-
-    overflow:hidden;
-
-    text-overflow:ellipsis;
 
 }
 
@@ -395,374 +214,206 @@ body{
 
     background:rgba(255,255,255,.08);
 
-    color:#ffffff;
+    color:#fff;
 
 }
 
 .sidebar-link.active{
 
-    background:
-        linear-gradient(
-            135deg,
-            var(--admin-primary),
-            var(--admin-primary-dark)
-        );
+    background:var(--primary);
 
-    color:#ffffff;
-
-    box-shadow:
-        0 10px 25px rgba(37,99,235,.3);
+    color:#fff;
 
 }
 
 
+
 /*==========================================================
-    SIDEBAR BOTTOM
+    SIDEBAR FOOTER
 ==========================================================*/
 
 .sidebar-bottom{
 
-    flex:0 0 auto;
-
-    margin-top:20px;
-
-    padding-top:18px;
-
-    border-top:1px solid rgba(255,255,255,.08);
+    margin-top:auto;
 
 }
 
-.sidebar-link.danger{
-
-    color:#fca5a5;
-
-}
-
-.sidebar-link.danger:hover{
-
-    background:rgba(239,68,68,.15);
-
-    color:#fecaca;
-
-}
 
 
 /*==========================================================
-    COLLAPSED SIDEBAR
-    Uses the existing JS .collapsed class
-==========================================================*/
-
-.admin-sidebar.collapsed{
-
-    flex-basis:86px;
-
-    width:86px;
-
-    padding-left:14px;
-
-    padding-right:14px;
-
-}
-
-.admin-sidebar.collapsed .admin-logo{
-
-    justify-content:center;
-
-}
-
-.admin-sidebar.collapsed .admin-logo span{
-
-    display:none;
-
-}
-
-.admin-sidebar.collapsed .sidebar-top{
-
-    justify-content:center;
-
-    flex-direction:column;
-
-}
-
-.admin-sidebar.collapsed .sidebar-collapse{
-
-    margin-top:4px;
-
-}
-
-.admin-sidebar.collapsed .sidebar-link{
-
-    justify-content:center;
-
-    padding-left:0;
-
-    padding-right:0;
-
-}
-
-.admin-sidebar.collapsed .sidebar-link span{
-
-    display:none;
-
-}
-
-.admin-sidebar.collapsed .sidebar-bottom{
-
-    display:flex;
-
-    justify-content:center;
-
-}
-
-
-/*==========================================================
-    MAIN CONTENT
+    MAIN
 ==========================================================*/
 
 .admin-main{
 
-    flex:1 1 auto;
+    flex:1;
+
+    padding:30px;
 
     min-width:0;
 
-    width:calc(
-        100% - var(--admin-sidebar-width)
-    );
-
-    padding:32px;
-
 }
+
 
 
 /*==========================================================
-    PAGE CONTAINER
+    PAGE
 ==========================================================*/
-
-.admin-pages{
-
-    width:100%;
-
-    min-width:0;
-
-}
 
 .admin-page{
 
     width:100%;
 
-    min-width:0;
-
 }
+
 
 
 /*==========================================================
-    HIDDEN PAGES
+    RESPONSIVE
 ==========================================================*/
 
-.admin-page.hidden{
+@media(max-width:992px){
 
-    display:none !important;
+    .admin-wrapper{
 
-}
-
-
-/*==========================================================
-    TABLE SAFETY
-==========================================================*/
-
-.admin-main table{
-
-    max-width:100%;
-
-}
-
-.admin-main img{
-
-    max-width:100%;
-
-}
-
-
-/*==========================================================
-    TABLET
-==========================================================*/
-
-@media (max-width:992px){
-
-    :root{
-
-        --admin-sidebar-width:240px;
+        flex-direction:column;
 
     }
 
     .admin-sidebar{
 
-        padding:20px 14px;
+        width:100%;
 
     }
 
     .admin-main{
 
-        padding:24px;
+        padding:20px;
 
     }
 
 }
-
-
 /*==========================================================
-    MOBILE
+    MOBILE NAVIGATION
 ==========================================================*/
+
+.mobile-toggle{
+
+    display:none;
+
+}
 
 @media (max-width:768px){
 
     .admin-wrapper{
 
+        display:block;
+
+        width:100%;
+
+        padding:15px;
+
+    }
+
+    .mobile-toggle{
+
         display:flex;
 
-        flex-direction:column;
+        align-items:center;
 
-        width:100%;
-
-        min-height:100vh;
-
-    }
-
-    .admin-sidebar{
-
-        position:relative;
-
-        top:auto;
-
-        flex:0 0 auto;
-
-        width:100%;
-
-        height:auto;
-
-        max-height:calc(100dvh - 20px);
-
-        padding:16px;
-
-        border-radius:0 0 22px 22px;
-
-        overflow-x:hidden;
-
-        overflow-y:auto;
-
-        box-shadow:
-            0 8px 25px rgba(15,23,42,.12);
-
-    }
-
-    .sidebar-top{
-
-        margin-bottom:18px;
-
-    }
-
-    .sidebar-menu{
-
-        gap:6px;
-
-    }
-
-    .sidebar-link{
-
-        min-height:50px;
-
-    }
-
-    .admin-main{
-
-        width:100%;
-
-        padding:20px 16px 40px;
-
-    }
-
-    .admin-sidebar.collapsed{
-
-        width:100%;
-
-        flex-basis:auto;
-
-        height:76px;
-
-        max-height:76px;
-
-        overflow:hidden;
-
-        padding:12px 16px;
-
-        border-radius:0 0 20px 20px;
-
-    }
-
-    .admin-sidebar.collapsed .sidebar-top{
-
-        flex-direction:row;
-
-        justify-content:space-between;
-
-        margin:0;
-
-    }
-
-    .admin-sidebar.collapsed .admin-logo{
-
-        justify-content:flex-start;
-
-    }
-
-    .admin-sidebar.collapsed .sidebar-collapse{
-
-        margin:0;
-
-    }
-
-    .admin-sidebar.collapsed .sidebar-menu,
-
-    .admin-sidebar.collapsed .sidebar-bottom{
-
-        display:none;
-
-    }
-
-}
-
-
-/*==========================================================
-    SMALL PHONES
-==========================================================*/
-
-@media (max-width:480px){
-
-    .admin-main{
-
-        padding:18px 14px 35px;
-
-    }
-
-    .admin-sidebar{
-
-        padding:14px;
-
-    }
-
-    .admin-logo i{
+        justify-content:center;
 
         width:50px;
 
         height:50px;
 
-        flex-basis:50px;
+        border:none;
+
+        border-radius:14px;
+
+        background:#2563eb;
+
+        color:#fff;
+
+        font-size:1.2rem;
+
+        cursor:pointer;
+
+        box-shadow:0 12px 25px rgba(37,99,235,.35);
+
+        margin-bottom:20px;
 
     }
 
-    .admin-logo span{
+    .admin-sidebar{
 
-        font-size:1.05rem;
+        position:fixed;
+
+        top:0;
+
+        left:-320px;
+
+        width:280px;
+
+        height:100vh;
+
+        border-radius:0;
+
+        z-index:9999;
+
+        transition:left .35s ease;
+
+    }
+
+    .admin-sidebar.show{
+
+        left:0;
+
+    }
+
+    .admin-main{
+
+        width:100%;
+
+        padding:0;
+
+        margin:0;
+
+    }
+
+    .admin-header{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+        gap:20px;
+
+    }
+
+    .admin-profile{
+
+        width:100%;
+
+    }
+
+    .dashboard-grid{
+
+        grid-template-columns:1fr;
+
+        gap:20px;
+
+    }
+
+    .dashboard-card{
+
+        width:100%;
+
+    }
+
+    .quick-actions{
+
+        grid-template-columns:1fr;
 
     }
 
