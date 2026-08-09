@@ -75,6 +75,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         registerContainer.classList.add("hidden");
 
+        loginEmail.focus();
+
     }
 
 
@@ -88,6 +90,8 @@ document.addEventListener("DOMContentLoaded", () => {
         registerContainer.classList.remove("hidden");
 
         loginContainer.classList.add("hidden");
+
+        registerName.focus();
 
     }
 
@@ -135,6 +139,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 loginPassword.type = "text";
 
+                togglePassword.setAttribute("aria-label", "Hide password");
+
                 togglePassword.innerHTML =
                     '<i class="fa-solid fa-eye-slash"></i>';
 
@@ -143,6 +149,8 @@ document.addEventListener("DOMContentLoaded", () => {
             else {
 
                 loginPassword.type = "password";
+
+                togglePassword.setAttribute("aria-label", "Show password");
 
                 togglePassword.innerHTML =
                     '<i class="fa-solid fa-eye"></i>';
