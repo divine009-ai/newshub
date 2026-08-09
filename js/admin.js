@@ -3460,8 +3460,22 @@ console.log(
 const sidebar = document.querySelector(".admin-sidebar");
 const toggle = document.querySelector(".mobile-toggle");
 
+if (sidebar && toggle) {
+
 toggle.addEventListener("click",()=>{
 
     sidebar.classList.toggle("show");
 
 });
+
+document.querySelectorAll(".sidebar-link[data-page]").forEach(link=>{
+
+    link.addEventListener("click",()=>{
+
+        sidebar.classList.remove("show");
+
+    });
+
+});
+
+}
