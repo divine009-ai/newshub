@@ -144,7 +144,7 @@ class API {
         CATEGORY
     ==========================================*/
 
-    async getCategoryNews(category) {
+    async getCategoryNews(category, limit = 6) {
 
         const snapshot = await this.db
 
@@ -156,7 +156,7 @@ class API {
 
             .orderBy("createdAt", "desc")
 
-            .limit(6)
+            .limit(limit)
 
             .get();
 
@@ -489,21 +489,32 @@ class API {
 
     async searchArticles(keyword) {
 
+        const normalizedKeyword = String(keyword || "").toLowerCase();
+
         const snapshot = await this.db
 
             .collection("articles")
 
             .where("published", "==", true)
 
-            .orderBy("title")
+            .orderBy("createdAt", "desc")
 
-            .startAt(keyword)
-
-            .endAt(keyword + "\uf8ff")
+            .limit(50)
 
             .get();
 
-        return this.mapDocuments(snapshot, "articles");
+        return this.mapDocuments(snapshot, "articles").filter(article => {
+
+            const haystack = [
+                article.title,
+                article.description,
+                article.category,
+                article.author
+            ].join(" ").toLowerCase();
+
+            return haystack.includes(normalizedKeyword);
+
+        });
 
     }
 

@@ -72,37 +72,37 @@ const CONFIG = {
 
         {
             title: "Technology",
-            link: "category.html?category=technology"
+            link: "category.html?category=Technology"
         },
 
         {
             title: "Gaming",
-            link: "category.html?category=gaming"
+            link: "category.html?category=Gaming"
         },
 
         {
             title: "Business",
-            link: "category.html?category=business"
+            link: "category.html?category=Business"
         },
 
         {
             title: "Sports",
-            link: "category.html?category=sports"
+            link: "category.html?category=Sports"
         },
 
         {
             title: "Entertainment",
-            link: "category.html?category=entertainment"
+            link: "category.html?category=Entertainment"
         },
 
         {
             title: "AI",
-            link: "category.html?category=ai"
+            link: "category.html?category=AI"
         },
 
         {
             title: "World",
-            link: "category.html?category=world"
+            link: "category.html?category=World"
         }
 
     ],

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Category | NewsHub</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/navbar.css">
+    <link rel="stylesheet" href="css/hero.css">
+    <link rel="stylesheet" href="css/news.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/article.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/site.css?v=5">
+
+</head>
+
+<body>
+
+    <div id="navbar"></div>
+
+    <section class="breaking-news section-sm">
+        <div class="container">
+            <div class="card breaking-news__container">
+                <div class="breaking-news__title">
+                    <i class="fa-solid fa-bolt"></i>
+                    <span>Breaking</span>
+                </div>
+                <div id="breakingNews"></div>
+            </div>
+        </div>
+    </section>
+
+    <header class="category-hero section">
+        <div class="container">
+            <div class="category-hero__inner">
+                <div class="breadcrumb">
+                    <a href="index.html">Home</a>
+                    <span>/</span>
+                    <span id="categoryBreadcrumb">Category</span>
+                </div>
+                <h1 id="categoryTitle">Category</h1>
+                <p id="categoryDescription">Latest published stories.</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="section category-main">
+        <div class="container">
+            <div class="layout">
+                <div class="content">
+                    <section class="news-section">
+                        <div class="section-header">
+                            <h2>Stories</h2>
+                        </div>
+                        <div
+                            id="categoryArticles"
+                            class="news-grid category-grid">
+                        </div>
+                    </section>
+                </div>
+
+                <aside class="sidebar">
+                    <div class="sidebar-card card">
+                        <div class="section-header">
+                            <h3>Trending</h3>
+                        </div>
+                        <div id="trendingNews"></div>
+                    </div>
+
+                    <div class="sidebar-card card">
+                        <div class="section-header">
+                            <h3>Popular</h3>
+                        </div>
+                        <div id="popularNews"></div>
+                    </div>
+
+                    <div class="sidebar-card card">
+                        <div class="section-header">
+                            <h3>Advertisement</h3>
+                        </div>
+                        <a
+                            id="sidebarAdLink"
+                            href="#"
+                            target="_blank">
+                            <img
+                                id="sidebarAdImage"
+                                src=""
+                                alt="Advertisement">
+                        </a>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </main>
+
+    <section class="newsletter section">
+        <div class="container">
+            <div class="newsletter-card card">
+                <h2>Stay Updated</h2>
+                <p>Subscribe to receive the latest news directly in your inbox.</p>
+                <form
+                    id="newsletterForm"
+                    class="newsletter-form">
+                    <input
+                        type="email"
+                        class="input"
+                        id="newsletterEmail"
+                        placeholder="Enter your email">
+                    <button
+                        class="button button--primary"
+                        type="submit">
+                        Subscribe
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <div id="footer"></div>
+
+    <div id="overlay-root"></div>
+    <div id="toast-root"></div>
+    <div id="modal-root"></div>
+    <div id="loader-root"></div>
+
+    <script src="js/config.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-storage-compat.js"></script>
+
+    <script src="js/firebase.js"></script>
+
+    <script src="js/components/navbar.js?v=6"></script>
+    <script src="js/components/footer.js"></script>
+    <script src="js/components/sidebar.js"></script>
+    <script src="js/components/newsletter.js"></script>
+    <script src="js/components/breakingNews.js"></script>
+    <script src="js/components/modal.js"></script>
+    <script src="js/components/toast.js"></script>
+    <script src="js/components/loader.js"></script>
+
+    <script src="js/api.js"></script>
+    <script src="js/authGuard.js"></script>
+    <script src="js/pages/category.js?v=3"></script>
+
+</body>
+
+</html>

@@ -9,6 +9,22 @@ class Navbar {
         this.container = document.getElementById("navbar");
 
         this.currentPage = window.location.pathname.split("/").pop() || "index.html";
+        this.params = new URLSearchParams(window.location.search);
+
+    }
+
+    isActive(item) {
+
+        const [itemPage, query = ""] = item.link.split("?");
+
+        if (this.currentPage !== itemPage) return false;
+
+        if (itemPage !== "category.html") return true;
+
+        const itemCategory = new URLSearchParams(query).get("category");
+        const currentCategory = this.params.get("category");
+
+        return (itemCategory || "").toLowerCase() === (currentCategory || "").toLowerCase();
 
     }
 
@@ -16,7 +32,7 @@ class Navbar {
 
         return CONFIG.navigation.map(item => {
 
-            const active = this.currentPage === item.link.split("?")[0]
+            const active = this.isActive(item)
                 ? "active"
                 : "";
 
@@ -92,13 +108,16 @@ class Navbar {
 
                 </div>
 
-                <button
+                <a
+                    href="#navbarMenu"
                     id="menuToggle"
-                    class="navbar__icon navbar__mobile-button">
+                    class="navbar__icon navbar__mobile-button"
+                    role="button"
+                    aria-label="Open navigation menu">
 
                     <i class="fa-solid fa-bars"></i>
 
-                </button>
+                </a>
 
             </div>
 
@@ -132,11 +151,42 @@ class Navbar {
 
         if (!button || !menu) return;
 
-        button.addEventListener("click", () => {
+        button.setAttribute("aria-expanded", "false");
 
-            menu.classList.toggle("show");
+        menu.querySelectorAll("a").forEach(link => {
+
+            link.addEventListener("click", () => {
+
+                this.closeMobileMenu();
+
+            });
 
         });
+
+    }
+
+    toggleMobileMenu() {
+
+        const button = document.getElementById("menuToggle");
+        const menu = document.getElementById("navbarMenu");
+
+        if (!button || !menu) return;
+
+        const isOpen = menu.classList.toggle("show");
+
+        button.setAttribute("aria-expanded", String(isOpen));
+
+    }
+
+    closeMobileMenu() {
+
+        const button = document.getElementById("menuToggle");
+        const menu = document.getElementById("navbarMenu");
+
+        if (!button || !menu) return;
+
+        menu.classList.remove("show");
+        button.setAttribute("aria-expanded", "false");
 
     }
 
@@ -169,7 +219,7 @@ class Navbar {
             if (keyword !== "") {
 
                 window.location.href =
-                    `search.html?q=${encodeURIComponent(keyword)}`;
+                    `category.html?search=${encodeURIComponent(keyword)}`;
 
             }
 
@@ -257,6 +307,9 @@ class Navbar {
     init() {
 
         this.render();
+
+        window.newshubNavbar = this;
+        window.newshubToggleNavbar = () => this.toggleMobileMenu();
 
         this.mobileMenu();
 

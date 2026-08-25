@@ -132,19 +132,9 @@ class Footer {
 
                     <li>
 
-                        <a href="about.html">
+                        <a href="category.html?category=latest">
 
-                            About
-
-                        </a>
-
-                    </li>
-
-                    <li>
-
-                        <a href="contact.html">
-
-                            Contact
+                            Latest News
 
                         </a>
 
@@ -152,9 +142,9 @@ class Footer {
 
                     <li>
 
-                        <a href="privacy.html">
+                        <a href="category.html?category=Technology">
 
-                            Privacy Policy
+                            Technology
 
                         </a>
 
@@ -162,9 +152,19 @@ class Footer {
 
                     <li>
 
-                        <a href="terms.html">
+                        <a href="category.html?category=Gaming">
 
-                            Terms & Conditions
+                            Gaming
+
+                        </a>
+
+                    </li>
+
+                    <li>
+
+                        <a href="login.html">
+
+                            Login
 
                         </a>
 
@@ -220,7 +220,7 @@ class Footer {
 
             <p>
 
-                © ${year} ${CONFIG.app.name}. All Rights Reserved.
+                &copy; ${year} ${CONFIG.app.name}. All Rights Reserved.
 
             </p>
 
