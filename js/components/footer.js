@@ -28,27 +28,68 @@ class Footer {
 
     createSocials() {
 
-        return `
-            <a href="${CONFIG.social.facebook}" target="_blank">
-                <i class="fab fa-facebook-f"></i>
-            </a>
+        const icons = {
+            facebook: "fa-facebook-f",
+            instagram: "fa-instagram",
+            twitter: "fa-x-twitter",
+            youtube: "fa-youtube",
+            tiktok: "fa-tiktok",
+            linkedin: "fa-linkedin-in"
+        };
 
-            <a href="${CONFIG.social.twitter}" target="_blank">
-                <i class="fab fa-x-twitter"></i>
-            </a>
+        return Object.entries(this.social || {})
+            .filter(([, url]) => this.isValidUrl(url))
+            .map(([platform, url]) => `
+                <a href="${url}" target="_blank" rel="noopener" aria-label="${platform}">
+                    <i class="fab ${icons[platform] || "fa-globe"}"></i>
+                </a>
+            `)
+            .join("");
 
-            <a href="${CONFIG.social.instagram}" target="_blank">
-                <i class="fab fa-instagram"></i>
-            </a>
+    }
 
-            <a href="${CONFIG.social.youtube}" target="_blank">
-                <i class="fab fa-youtube"></i>
-            </a>
+    isValidUrl(value) {
 
-            <a href="${CONFIG.social.linkedin}" target="_blank">
-                <i class="fab fa-linkedin-in"></i>
-            </a>
-        `;
+        try {
+
+            const url = new URL(value);
+
+            return ["http:", "https:"].includes(url.protocol);
+
+        }
+        catch(error) {
+
+            return false;
+
+        }
+
+    }
+
+    async loadSettings() {
+
+        this.social = CONFIG.social || {};
+
+        if (typeof db === "undefined") return;
+
+        try {
+
+            const doc = await db
+                .collection("settings")
+                .doc("website")
+                .get();
+
+            if (doc.exists && doc.data().social) {
+
+                this.social = doc.data().social;
+
+            }
+
+        }
+        catch(error) {
+
+            console.warn("Footer social settings could not be loaded:", error);
+
+        }
 
     }
 
@@ -240,7 +281,9 @@ class Footer {
 
     }
 
-    init() {
+    async init() {
+
+        await this.loadSettings();
 
         this.render();
 

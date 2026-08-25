@@ -35,6 +35,7 @@ class API {
             id,
             ...data,
             image: data.coverImage || data.image || "images/avatar.png",
+            video: data.coverVideo || data.video || "",
             date: data.date || (createdDate ? createdDate.toLocaleDateString() : ""),
             views: data.views || 0,
             likes: data.likes || 0,
@@ -424,24 +425,7 @@ class API {
         ADVERTISEMENTS
     ==========================================*/
 
-    async getAdvertisement(position) {
-
-        const doc = await this.db
-
-            .collection("advertisements")
-
-            .doc(position)
-
-            .get();
-
-        if (doc.exists && doc.data().active) {
-
-            return {
-                id: doc.id,
-                ...doc.data()
-            };
-
-        }
+    async getAdvertisements(position, category = "") {
 
         const snapshot = await this.db
 
@@ -451,35 +435,70 @@ class API {
 
             .where("active", "==", true)
 
-            .limit(1)
-
             .get();
 
         if (snapshot.empty) {
 
-            return null;
+            return [];
 
         }
 
-        return {
+        const now = new Date();
+        const requestedCategory = String(category || "").toLowerCase();
 
-            id: snapshot.docs[0].id,
+        return snapshot.docs
+            .map(doc => ({ id: doc.id, ...doc.data() }))
+            .filter(ad => {
 
-            ...snapshot.docs[0].data()
+                const adCategory = String(ad.category || "global").toLowerCase();
 
-        };
+                if (adCategory !== "global" && requestedCategory && adCategory !== requestedCategory) {
+
+                    return false;
+
+                }
+
+                if (adCategory !== "global" && !requestedCategory) {
+
+                    return false;
+
+                }
+
+                const start = ad.startDate ? new Date(ad.startDate) : null;
+                const end = ad.endDate ? new Date(ad.endDate) : null;
+
+                if (start && !Number.isNaN(start.getTime()) && start > now) return false;
+                if (end && !Number.isNaN(end.getTime()) && end < now) return false;
+
+                return true;
+
+            });
 
     }
 
-    async getSidebarAdvertisement() {
+    async getAdvertisement(position, category = "") {
 
-        return await this.getAdvertisement("sidebar");
+        const advertisements = await this.getAdvertisements(position, category);
+
+        return advertisements[0] || null;
 
     }
 
-    async getArticleAdvertisement() {
+    async getSidebarAdvertisement(category = "") {
 
-        return await this.getAdvertisement("article");
+        return await this.getAdvertisement("sidebar", category);
+
+    }
+
+    async getArticleAdvertisement(category = "") {
+
+        return await this.getAdvertisement("article", category);
+
+    }
+
+    async getWebsiteSettings() {
+
+        return await this.getDocument("settings", "website") || {};
 
     }
 

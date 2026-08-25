@@ -142,7 +142,13 @@ class Sidebar {
 
         if (!this.adImage || !this.adLink) return;
 
-        if (!ad) {
+        const ads = Array.isArray(ad)
+            ? ad
+            : ad
+                ? [ad]
+                : [];
+
+        if (ads.length === 0) {
 
             this.adImage.style.display = "none";
 
@@ -150,13 +156,40 @@ class Sidebar {
 
         }
 
-        this.adImage.src = ad.image;
+        const firstAd = ads[0];
 
-        this.adImage.alt = "Advertisement";
+        this.adImage.src = firstAd.image;
 
-        this.adLink.href = ad.link;
+        this.adImage.alt = firstAd.title || "Advertisement";
+
+        this.adLink.href = firstAd.link || "#";
 
         this.adLink.target = "_blank";
+        this.adLink.rel = "noopener";
+
+        if (ads.length > 1) {
+
+            const wrapper = this.adLink.parentElement;
+
+            wrapper.querySelectorAll(".sidebar-ad-extra").forEach(element => element.remove());
+
+            ads.slice(1).forEach(extraAd => {
+
+                const link = document.createElement("a");
+
+                link.className = "sidebar-ad-extra";
+                link.href = extraAd.link || "#";
+                link.target = "_blank";
+                link.rel = "noopener";
+                link.innerHTML = `
+                    <img src="${extraAd.image || ""}" alt="${extraAd.title || "Advertisement"}">
+                `;
+
+                wrapper.appendChild(link);
+
+            });
+
+        }
 
     }
 

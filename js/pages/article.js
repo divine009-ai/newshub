@@ -156,10 +156,12 @@ class ArticlePage {
 
         if (image) {
 
-            image.src = article.image;
+            image.src = article.image || "images/avatar.png";
             image.alt = title;
 
         }
+
+        this.renderArticleVideo(article.video || article.coverVideo || "");
 
         const content = document.getElementById("articleContent");
 
@@ -182,6 +184,96 @@ class ArticlePage {
         }
 
         this.setupShareLinks(title);
+
+    }
+
+    youtubeEmbedUrl(videoUrl) {
+
+        if (!videoUrl) return "";
+
+        try {
+
+            const url = new URL(videoUrl);
+
+            if (url.hostname.includes("youtu.be")) {
+
+                return `https://www.youtube.com/embed/${this.escape(url.pathname.replace("/", ""))}`;
+
+            }
+
+            if (url.hostname.includes("youtube.com")) {
+
+                if (url.pathname.startsWith("/embed/")) {
+
+                    return videoUrl;
+
+                }
+
+                const id = url.searchParams.get("v");
+
+                return id ? `https://www.youtube.com/embed/${this.escape(id)}` : "";
+
+            }
+
+        }
+        catch(error) {
+
+            return "";
+
+        }
+
+        return "";
+
+    }
+
+    renderArticleVideo(videoUrl = "") {
+
+        const container = document.getElementById("articleVideo");
+
+        if (!container) return;
+
+        const url = String(videoUrl || "").trim();
+
+        if (!url) {
+
+            container.classList.add("hidden");
+            container.innerHTML = "";
+            return;
+
+        }
+
+        if (/\.(mp4|webm|ogg)(\?.*)?$/i.test(url)) {
+
+            container.classList.remove("hidden");
+            container.innerHTML = `
+                <video controls preload="metadata">
+                    <source src="${this.escape(url)}">
+                    Your browser does not support the video tag.
+                </video>
+            `;
+            return;
+
+        }
+
+        const embedUrl = this.youtubeEmbedUrl(url);
+
+        if (embedUrl) {
+
+            container.classList.remove("hidden");
+            container.innerHTML = `
+                <iframe
+                    src="${this.escape(embedUrl)}"
+                    title="Article video"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen>
+                </iframe>
+            `;
+            return;
+
+        }
+
+        container.classList.add("hidden");
+        container.innerHTML = "";
 
     }
 
@@ -228,8 +320,8 @@ class ArticlePage {
             api.getTrendingNews(),
             api.getPopularNews(),
             api.getBreakingNews(),
-            api.getSidebarAdvertisement(),
-            api.getArticleAdvertisement(),
+            api.getAdvertisements("sidebar", this.article.category || ""),
+            api.getAdvertisements("article", this.article.category || ""),
             api.getComments(this.articleId)
         ]);
 
@@ -331,18 +423,47 @@ class ArticlePage {
 
         if (!image || !link) return;
 
-        if (!ad) {
+        const ads = Array.isArray(ad)
+            ? ad
+            : ad
+                ? [ad]
+                : [];
+
+        if (ads.length === 0) {
 
             image.closest(".article-ad")?.classList.add("hidden");
             return;
 
         }
 
-        image.src = ad.image || "";
-        image.alt = ad.title || "Advertisement";
-        link.href = ad.link || "#";
+        const firstAd = ads[0];
+
+        image.closest(".article-ad")?.classList.remove("hidden");
+        image.src = firstAd.image || "";
+        image.alt = firstAd.title || "Advertisement";
+        link.href = firstAd.link || "#";
         link.target = "_blank";
         link.rel = "noopener";
+
+        const wrapper = image.closest(".article-ad");
+
+        wrapper.querySelectorAll(".article-ad-extra").forEach(element => element.remove());
+
+        ads.slice(1).forEach(extraAd => {
+
+            const extraLink = document.createElement("a");
+
+            extraLink.className = "article-ad-extra";
+            extraLink.href = extraAd.link || "#";
+            extraLink.target = "_blank";
+            extraLink.rel = "noopener";
+            extraLink.innerHTML = `
+                <img src="${extraAd.image || ""}" alt="${extraAd.title || "Advertisement"}">
+            `;
+
+            wrapper.appendChild(extraLink);
+
+        });
 
     }
 

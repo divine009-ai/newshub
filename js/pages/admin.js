@@ -229,11 +229,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 currentUser.name;
 
-            if (currentUser.photo) {
+            if (currentUser.photoURL || currentUser.photo) {
 
                 adminPhoto.src =
 
-                    currentUser.photo;
+                    currentUser.photoURL || currentUser.photo;
 
             }
 
@@ -559,7 +559,8 @@ document.addEventListener("DOMContentLoaded", () => {
         INITIALIZE
     ======================================================*/
 
-    loadDashboard();    /*======================================================
+    loadDashboard();    
+    /*======================================================
         PUBLISH PAGE
     ======================================================*/
 
@@ -757,6 +758,35 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     </div>
 
+                    <div class="form-row">
+
+                        <div class="form-group">
+
+                            <label>
+
+                                Author
+
+                            </label>
+
+                            <input
+                                type="text"
+                                id="articleAuthor">
+
+                        </div>
+
+                        <label>
+
+                            <input
+                                type="checkbox"
+                                id="published"
+                                checked>
+
+                            Published
+
+                        </label>
+
+                    </div>
+
                     <div class="form-group">
 
                         <label>
@@ -820,43 +850,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function initializePublishForm() {
 
-        const title =
+        const title = document.getElementById("articleTitle");
+        const slug = document.getElementById("articleSlug");
+        const form = document.getElementById("publishForm");
+        const author = document.getElementById("articleAuthor");
 
-            document.getElementById(
+        if (author && !author.value) {
 
-                "articleTitle"
+            author.value = currentUser?.name || "";
 
-            );
-
-        const slug =
-
-            document.getElementById(
-
-                "articleSlug"
-
-            );
-
-        const form =
-
-            document.getElementById(
-
-                "publishForm"
-
-            );
+        }
 
         title.addEventListener("input", () => {
 
-            slug.value =
-
-                title.value
-
-                .toLowerCase()
-
-                .trim()
-
-                .replace(/[^a-z0-9]+/g,"-")
-
-                .replace(/^-|-$/g,"");
+            slug.value = createSlug(title.value);
 
         });
 
@@ -864,111 +871,50 @@ document.addEventListener("DOMContentLoaded", () => {
 
             e.preventDefault();
 
-            try{
+            const editingId = form.dataset.editing;
 
-                loader.show(
+            try {
 
-                    "Publishing article..."
+                if (editingId) {
 
-                );
+                    await updateArticle(editingId);
 
-                await db
+                    return;
 
-                .collection("articles")
+                }
 
-                .add({
+                loader.show("Publishing article...");
 
-                    title:
-
-                        title.value,
-
-                    slug:
-
-                        slug.value,
-
-                    description:
-
-                        document.getElementById("articleDescription").value,
-
-                    content:
-
-                        document.getElementById("articleContent").value,
-
-                    coverImage:
-
-                        document.getElementById("coverImage").value,
-
-                    coverVideo:
-
-                        document.getElementById("coverVideo").value,
-
-                    category:
-
-                        document.getElementById("articleCategory").value,
-
-                    tags:
-
-                        document
-
-                        .getElementById("articleTags")
-
-                        .value
-
-                        .split(",")
-
-                        .map(tag=>tag.trim()),
-
-                    author:
-
-                        currentUser.name,
-
-                    featured:
-
-                        document.getElementById("featured").checked,
-
-                    breaking:
-
-                        document.getElementById("breaking").checked,
-
-                    published:true,
-
-                    views:0,
-
-                    likes:0,
-
-                    comments:0,
-
-                    createdAt:
-
-                        firebase.firestore.FieldValue.serverTimestamp(),
-
-                    updatedAt:
-
-                        firebase.firestore.FieldValue.serverTimestamp()
-
+                const articleData = collectArticleFormData({
+                    includeCounters: true,
+                    includeCreatedAt: true
                 });
+
+                const docRef = await db
+                    .collection("articles")
+                    .add(articleData);
+
+                await markNewsletterNotificationPending(docRef.id, articleData);
 
                 loader.hide();
 
-                toast.success(
-
-                    "Article published successfully."
-
-                );
+                toast.success("Article published successfully.");
 
                 form.reset();
 
-            }
+                if (author) author.value = currentUser?.name || "";
 
-            catch(error){
+                renderArticlesPage();
+                loadDashboard();
+
+            }
+            catch(error) {
 
                 loader.hide();
 
-                modal.error(
+                console.error("Failed to publish article:", error);
 
-                    error.message
-
-                );
+                modal.error(error.message || "Failed to publish article.");
 
             }
 
@@ -977,6 +923,130 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
+
+    function createSlug(value = "") {
+
+        return value
+            .toLowerCase()
+            .trim()
+            .replace(/[^a-z0-9]+/g, "-")
+            .replace(/^-|-$/g, "");
+
+    }
+
+    function isValidOptionalUrl(value) {
+
+        if (!value) return true;
+
+        try {
+
+            const url = new URL(value);
+
+            return ["http:", "https:"].includes(url.protocol);
+
+        }
+        catch(error) {
+
+            return false;
+
+        }
+
+    }
+
+    function isSupportedVideoUrl(value) {
+
+        if (!value) return true;
+
+        if (!isValidOptionalUrl(value)) return false;
+
+        return (
+            /\.(mp4|webm|ogg)(\?.*)?$/i.test(value) ||
+            /(?:youtube\.com|youtu\.be)/i.test(value)
+        );
+
+    }
+
+    function collectArticleFormData(options = {}) {
+
+        const title = document.getElementById("articleTitle").value.trim();
+        const imageUrl = document.getElementById("coverImage").value.trim();
+        const videoUrl = document.getElementById("coverVideo").value.trim();
+
+        if (!title) throw new Error("Article title is required.");
+
+        if (!isValidOptionalUrl(imageUrl)) {
+
+            throw new Error("Please enter a valid image URL.");
+
+        }
+
+        if (!isSupportedVideoUrl(videoUrl)) {
+
+            throw new Error("Video URL is invalid. Use a direct video URL or a YouTube URL.");
+
+        }
+
+        const data = {
+            title,
+            slug: document.getElementById("articleSlug").value.trim() || createSlug(title),
+            description: document.getElementById("articleDescription").value.trim(),
+            content: document.getElementById("articleContent").value.trim(),
+            coverImage: imageUrl,
+            image: imageUrl,
+            coverVideo: videoUrl,
+            video: videoUrl,
+            category: document.getElementById("articleCategory").value,
+            tags: document
+                .getElementById("articleTags")
+                .value
+                .split(",")
+                .map(tag => tag.trim())
+                .filter(Boolean),
+            author: document.getElementById("articleAuthor").value.trim() || currentUser?.name || "NewsHub",
+            featured: document.getElementById("featured").checked,
+            breaking: document.getElementById("breaking").checked,
+            published: document.getElementById("published").checked,
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        };
+
+        if (options.includeCounters) {
+
+            data.views = 0;
+            data.likes = 0;
+            data.comments = 0;
+
+        }
+
+        if (options.includeCreatedAt) {
+
+            data.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+
+        }
+
+        return data;
+
+    }
+
+    async function markNewsletterNotificationPending(articleId, articleData) {
+
+        if (!articleData.published) return;
+
+        await db
+            .collection("newsletterNotifications")
+            .doc(articleId)
+            .set({
+                articleId,
+                status: "pending",
+                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            }, { merge: true })
+            .catch(error => {
+
+                console.warn("Newsletter notification could not be queued:", error);
+
+            });
+
+    }
 
     renderPublishPage();    
     /*======================================================
@@ -1203,6 +1273,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
         document
 
+            .querySelectorAll(".edit")
+
+            .forEach(button => {
+
+                button.addEventListener("click", () => {
+
+                    editArticle(button.dataset.id);
+
+                });
+
+            });
+
+        document
+
             .querySelectorAll(".delete")
 
             .forEach(button=>{
@@ -1376,14 +1460,20 @@ async function editArticle(articleId) {
         document.getElementById("coverVideo").value =
             article.coverVideo || "";
 
+        document.getElementById("articleAuthor").value =
+            article.author || currentUser?.name || "";
+
         document.getElementById("articleContent").value =
             article.content || "";
 
         document.getElementById("featured").checked =
-            article.featured;
+            Boolean(article.featured);
 
         document.getElementById("breaking").checked =
-            article.breaking;
+            Boolean(article.breaking);
+
+        document.getElementById("published").checked =
+            article.published !== false;
 
         const form = document.getElementById("publishForm");
 
@@ -1420,29 +1510,20 @@ async function updateArticle(articleId) {
 
         loader.show("Updating article...");
 
-const editingId = form.dataset.editing;
+        const form = document.getElementById("publishForm");
 
-if (editingId) {
+        const articleData = collectArticleFormData();
 
-    await updateArticle(editingId);
+        await db
+            .collection("articles")
+            .doc(articleId)
+            .update(articleData);
 
-    delete form.dataset.editing;
-
-    return;
-
-}
-
-await db.collection("articles").add({
-
-            });
+        delete form.dataset.editing;
 
         loader.hide();
 
-        toast.success(
-
-            "Article updated successfully."
-
-        );
+        toast.success("Article updated successfully.");
 
         renderArticlesPage();
 
@@ -1456,7 +1537,9 @@ await db.collection("articles").add({
 
         loader.hide();
 
-        modal.error(error.message);
+        console.error("Failed to update article:", error);
+
+        modal.error(error.message || "Failed to update article.");
 
     }
 
@@ -1468,23 +1551,7 @@ await db.collection("articles").add({
     EDIT BUTTON
 ==========================================================*/
 
-document
-
-.querySelectorAll(".edit")
-
-.forEach(button => {
-
-    button.addEventListener("click", () => {
-
-        editArticle(
-
-            button.dataset.id
-
-        );
-
-    });
-
-});/*==========================================================
+/*==========================================================
     DEVELOPER REQUESTS
 ==========================================================*/
 
@@ -2513,6 +2580,415 @@ function initializeAdvertisementActions() {
 
 
 
+function escapeAdmin(value = "") {
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+function advertisementForm(ad = {}, id = "") {
+
+    return `
+        <div class="admin-card">
+            <div class="admin-card-header">
+                <div>
+                    <h3>${id ? "Edit Advertisement" : "Create Advertisement"}</h3>
+                    <p>Manage advertiser media, placement and category targeting.</p>
+                </div>
+                <button class="admin-btn" type="button" id="cancelAdForm">Cancel</button>
+            </div>
+
+            <form id="advertisementForm" class="admin-form" data-id="${escapeAdmin(id)}">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Title</label>
+                        <input id="adTitle" value="${escapeAdmin(ad.title || "")}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Advertiser</label>
+                        <input id="adAdvertiser" value="${escapeAdmin(ad.advertiser || "")}">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Position</label>
+                        <select id="adPosition">
+                            ${["sidebar", "article", "homepage"].map(position => `
+                                <option value="${position}" ${String(ad.position || "sidebar") === position ? "selected" : ""}>${position}</option>
+                            `).join("")}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select id="adCategory">
+                            ${["global", "Technology", "Gaming", "Business", "Sports", "Entertainment", "AI", "World"].map(category => `
+                                <option value="${category}" ${String(ad.category || "global") === category ? "selected" : ""}>${category}</option>
+                            `).join("")}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Image/Media URL</label>
+                    <input id="adImage" value="${escapeAdmin(ad.image || "")}" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Destination URL</label>
+                    <input id="adLink" value="${escapeAdmin(ad.link || "")}" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Start Date</label>
+                        <input type="date" id="adStartDate" value="${escapeAdmin(ad.startDate || "")}">
+                    </div>
+                    <div class="form-group">
+                        <label>End Date</label>
+                        <input type="date" id="adEndDate" value="${escapeAdmin(ad.endDate || "")}">
+                    </div>
+                </div>
+
+                <label>
+                    <input type="checkbox" id="adActive" ${ad.active !== false ? "checked" : ""}>
+                    Advertisement Active
+                </label>
+
+                <button class="admin-btn primary" type="submit">
+                    ${id ? "Save Advertisement" : "Create Advertisement"}
+                </button>
+            </form>
+        </div>
+    `;
+
+}
+
+function collectAdvertisementFormData() {
+
+    const image = document.getElementById("adImage").value.trim();
+    const link = document.getElementById("adLink").value.trim();
+
+    if (!image) {
+
+        throw new Error("Advertisement image URL is required.");
+
+    }
+
+    if (!link) {
+
+        throw new Error("Advertisement destination URL is required.");
+
+    }
+
+    if (!isValidOptionalUrl(image)) {
+
+        throw new Error("Please enter a valid advertisement image URL.");
+
+    }
+
+    if (!isValidOptionalUrl(link)) {
+
+        throw new Error("Please enter a valid destination URL.");
+
+    }
+
+    return {
+        title: document.getElementById("adTitle").value.trim(),
+        advertiser: document.getElementById("adAdvertiser").value.trim(),
+        image,
+        link,
+        category: document.getElementById("adCategory").value,
+        position: document.getElementById("adPosition").value,
+        startDate: document.getElementById("adStartDate").value,
+        endDate: document.getElementById("adEndDate").value,
+        active: document.getElementById("adActive").checked,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    };
+
+}
+
+async function renderAdvertisementsPage() {
+
+    try {
+
+        loader.show("Loading advertisements...");
+
+        const snapshot = await db
+            .collection("advertisements")
+            .get();
+
+        const rows = snapshot.docs.map(doc => {
+
+            const ad = doc.data();
+
+            return `
+                <tr>
+                    <td>${escapeAdmin(ad.title || "-")}</td>
+                    <td>${escapeAdmin(ad.advertiser || "-")}</td>
+                    <td>${escapeAdmin(ad.position || "-")}</td>
+                    <td>${escapeAdmin(ad.category || "global")}</td>
+                    <td>
+                        <span class="badge ${ad.active ? "active" : "blocked"}">
+                            ${ad.active ? "Active" : "Inactive"}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="table-actions">
+                            <button class="toggle-ad" data-id="${doc.id}" data-active="${ad.active ? "true" : "false"}">
+                                <i class="fa-solid ${ad.active ? "fa-pause" : "fa-play"}"></i>
+                            </button>
+                            <button class="edit-ad" data-id="${doc.id}">
+                                <i class="fa-solid fa-pen"></i>
+                            </button>
+                            <button class="delete-ad" data-id="${doc.id}">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `;
+
+        }).join("");
+
+        pages.advertisements.innerHTML = `
+            <div class="admin-card">
+                <div class="admin-card-header">
+                    <div>
+                        <h3>Advertisements</h3>
+                        <p>Create, edit, delete and target multiple advertisements.</p>
+                    </div>
+                    <button class="admin-btn primary" type="button" id="createAdvertisement">
+                        <i class="fa-solid fa-plus"></i>
+                        Create Advertisement
+                    </button>
+                </div>
+
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Advertiser</th>
+                            <th>Position</th>
+                            <th>Category</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${rows || '<tr><td colspan="6">No advertisements yet.</td></tr>'}
+                    </tbody>
+                </table>
+            </div>
+        `;
+
+        initializeAdvertisementActions();
+
+        loader.hide();
+
+    }
+    catch(error) {
+
+        loader.hide();
+        console.error("Failed to load advertisements:", error);
+        modal.error(error.message || "Failed to load advertisements.");
+
+    }
+
+}
+
+function initializeAdvertisementActions() {
+
+    const createButton = document.getElementById("createAdvertisement");
+
+    if (createButton) {
+
+        createButton.addEventListener("click", () => {
+
+            pages.advertisements.innerHTML = advertisementForm();
+            initializeAdvertisementForm();
+
+        });
+
+    }
+
+    document.querySelectorAll(".edit-ad").forEach(button => {
+
+        button.addEventListener("click", async () => {
+
+            try {
+
+                loader.show("Loading advertisement...");
+
+                const doc = await db
+                    .collection("advertisements")
+                    .doc(button.dataset.id)
+                    .get();
+
+                loader.hide();
+
+                if (!doc.exists) {
+
+                    modal.error("Advertisement not found.");
+                    return;
+
+                }
+
+                pages.advertisements.innerHTML = advertisementForm(doc.data(), doc.id);
+                initializeAdvertisementForm();
+
+            }
+            catch(error) {
+
+                loader.hide();
+                console.error("Failed to load advertisement:", error);
+                modal.error(error.message || "Failed to load advertisement.");
+
+            }
+
+        });
+
+    });
+
+    document.querySelectorAll(".delete-ad").forEach(button => {
+
+        button.addEventListener("click", async () => {
+
+            if (!confirm("Delete this advertisement?")) return;
+
+            try {
+
+                loader.show("Deleting advertisement...");
+
+                await db
+                    .collection("advertisements")
+                    .doc(button.dataset.id)
+                    .delete();
+
+                loader.hide();
+                toast.success("Advertisement deleted successfully.");
+                renderAdvertisementsPage();
+
+            }
+            catch(error) {
+
+                loader.hide();
+                console.error("Failed to delete advertisement:", error);
+                modal.error(error.message || "Failed to delete advertisement.");
+
+            }
+
+        });
+
+    });
+
+    document.querySelectorAll(".toggle-ad").forEach(button => {
+
+        button.addEventListener("click", async () => {
+
+            try {
+
+                const nextActive = button.dataset.active !== "true";
+
+                loader.show(nextActive ? "Activating advertisement..." : "Deactivating advertisement...");
+
+                await db
+                    .collection("advertisements")
+                    .doc(button.dataset.id)
+                    .update({
+                        active: nextActive,
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+
+                loader.hide();
+                toast.success(nextActive ? "Advertisement activated." : "Advertisement deactivated.");
+                renderAdvertisementsPage();
+
+            }
+            catch(error) {
+
+                loader.hide();
+                console.error("Failed to update advertisement status:", error);
+                modal.error(error.message || "Failed to update advertisement.");
+
+            }
+
+        });
+
+    });
+
+}
+
+function initializeAdvertisementForm() {
+
+    const form = document.getElementById("advertisementForm");
+    const cancel = document.getElementById("cancelAdForm");
+
+    if (cancel) {
+
+        cancel.addEventListener("click", renderAdvertisementsPage);
+
+    }
+
+    if (!form) return;
+
+    form.addEventListener("submit", async event => {
+
+        event.preventDefault();
+
+        try {
+
+            const id = form.dataset.id;
+            const data = collectAdvertisementFormData();
+
+            if (!data.title) throw new Error("Advertisement title is required.");
+
+            loader.show(id ? "Saving advertisement..." : "Creating advertisement...");
+
+            if (id) {
+
+                await db
+                    .collection("advertisements")
+                    .doc(id)
+                    .update(data);
+
+                toast.success("Advertisement updated.");
+
+            }
+            else {
+
+                await db
+                    .collection("advertisements")
+                    .add({
+                        ...data,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+
+                toast.success("Advertisement created successfully.");
+
+            }
+
+            loader.hide();
+            renderAdvertisementsPage();
+
+        }
+        catch(error) {
+
+            loader.hide();
+            console.error("Failed to save advertisement:", error);
+            modal.error(error.message || "Failed to save advertisement.");
+
+        }
+
+    });
+
+}
+
 renderAdvertisementsPage();/*==========================================================
     COMMENTS
 ==========================================================*/
@@ -3151,6 +3627,36 @@ async function renderSettingsPage() {
 
                     </div>
 
+                    <div class="admin-card-header">
+
+                        <div>
+
+                            <h3>
+
+                                Social Media
+
+                            </h3>
+
+                            <p>
+
+                                Configure public footer social links.
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    ${["facebook", "instagram", "twitter", "youtube", "tiktok", "linkedin"].map(platform => `
+                        <div class="form-group">
+                            <label>${platform === "twitter" ? "X/Twitter" : platform.charAt(0).toUpperCase() + platform.slice(1)}</label>
+                            <input
+                                id="social_${platform}"
+                                value="${escapeAdmin((settings.social && settings.social[platform]) || "")}"
+                                placeholder="https://...">
+                        </div>
+                    `).join("")}
+
                     <label>
 
                         <input
@@ -3209,13 +3715,31 @@ function initializeSettings() {
 
     .getElementById("settingsForm")
 
-    .addEventListener("submit", async e => {
+        .addEventListener("submit", async e => {
 
         e.preventDefault();
 
-        try {
+            try {
 
-            loader.show("Saving settings...");
+                loader.show("Saving settings...");
+
+            const social = {};
+
+            ["facebook", "instagram", "twitter", "youtube", "tiktok", "linkedin"].forEach(platform => {
+
+                const value = document.getElementById(`social_${platform}`).value.trim();
+
+                if (!value) return;
+
+                if (!isValidOptionalUrl(value)) {
+
+                    throw new Error(`${platform === "twitter" ? "X/Twitter" : platform} URL must start with http:// or https://.`);
+
+                }
+
+                social[platform] = value;
+
+            });
 
             await db
 
@@ -3243,9 +3767,11 @@ function initializeSettings() {
 
                     maintenance:
 
-                        document.getElementById("maintenanceMode").checked
+                        document.getElementById("maintenanceMode").checked,
 
-                });
+                    social
+
+                }, { merge: true });
 
             loader.hide();
 
@@ -3456,3 +3982,25 @@ console.log(
 );
 
 });
+const sidebar = document.querySelector(".admin-sidebar");
+const toggle = document.querySelector(".mobile-toggle");
+
+if (sidebar && toggle) {
+
+toggle.addEventListener("click",()=>{
+
+    sidebar.classList.toggle("show");
+
+});
+
+document.querySelectorAll(".sidebar-link[data-page]").forEach(link=>{
+
+    link.addEventListener("click",()=>{
+
+        sidebar.classList.remove("show");
+
+    });
+
+});
+
+}

@@ -451,8 +451,20 @@ p,
 }
 
 #sidebarAdLink,
-#sidebarAdImage{
+#sidebarAdImage,
+.sidebar-ad-extra,
+.sidebar-ad-extra img{
     border-radius:8px;
+}
+
+.sidebar-ad-extra{
+    display:block;
+    margin-top:14px;
+    overflow:hidden;
+}
+
+.sidebar-ad-extra img{
+    width:100%;
 }
 
 .social-links a{
@@ -512,6 +524,19 @@ p,
     background:#0f172a;
 }
 
+.article-video{
+    overflow:hidden;
+    background:#020617;
+}
+
+.article-video video,
+.article-video iframe{
+    display:block;
+    width:100%;
+    aspect-ratio:16 / 9;
+    border:0;
+}
+
 .article-content{
     max-width:76ch;
     color:#dbe3ef;
@@ -534,6 +559,16 @@ p,
 .article-navigation a{
     background:rgba(15,23,42,.78);
     backdrop-filter:blur(12px);
+}
+
+.article-ad-extra{
+    display:block;
+    margin-top:14px;
+}
+
+.article-ad-extra img{
+    width:100%;
+    display:block;
 }
 
 .comments form{

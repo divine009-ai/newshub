@@ -107,7 +107,7 @@ class Home {
 
             api.getBreakingNews(),
 
-            api.getSidebarAdvertisement()
+            api.getAdvertisements("sidebar")
 
         ]);
 

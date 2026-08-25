@@ -60,6 +60,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const confirmPassword =
         document.getElementById("confirmPassword");
 
+    const registerPhoto =
+        document.getElementById("registerPhoto");
+
     const applyDeveloper =
         document.getElementById("applyDeveloper");
 
@@ -216,6 +219,53 @@ document.addEventListener("DOMContentLoaded", () => {
             loader.hide();
 
         }
+
+    }
+
+    function validateProfileImage(file) {
+
+        if (!file) return;
+
+        const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
+        const maxSize = 2 * 1024 * 1024;
+
+        if (!allowedTypes.includes(file.type)) {
+
+            throw new Error("Please select a valid image file: JPG, PNG or WebP.");
+
+        }
+
+        if (file.size > maxSize) {
+
+            throw new Error("Profile picture must be 2MB or smaller.");
+
+        }
+
+    }
+
+    async function uploadProfileImage(user, file) {
+
+        if (!file) return "";
+
+        validateProfileImage(file);
+
+        if (typeof firebase.storage !== "function") {
+
+            throw new Error("Firebase Storage is not available.");
+
+        }
+
+        const extension = file.name.split(".").pop().toLowerCase();
+        const ref = firebase
+            .storage()
+            .ref()
+            .child(`profile-pictures/${user.uid}.${extension}`);
+
+        await ref.put(file, {
+            contentType: file.type
+        });
+
+        return await ref.getDownloadURL();
 
     }    /*======================================================
         LOGIN
@@ -427,6 +477,9 @@ document.addEventListener("DOMContentLoaded", () => {
             const developer =
                 applyDeveloper.checked;
 
+            const photoFile =
+                registerPhoto?.files?.[0] || null;
+
             if (
                 !name ||
                 !username ||
@@ -471,6 +524,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
             try {
 
+                validateProfileImage(photoFile);
+
+            }
+            catch(error) {
+
+                showError(error.message);
+
+                return;
+
+            }
+
+            try {
+
                 showLoading(
 
                     "Creating your account..."
@@ -495,6 +561,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 });
 
+                const photoURL = await uploadProfileImage(user, photoFile);
+
+                if (photoURL) {
+
+                    await user.updateProfile({
+
+                        photoURL
+
+                    });
+
+                }
+
                 await db
 
                     .collection("users")
@@ -511,7 +589,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
                         email: email,
 
-                        photo: "",
+                        photo: photoURL || "images/avatar.png",
+
+                        photoURL: photoURL || "images/avatar.png",
 
                         role: "user",
 

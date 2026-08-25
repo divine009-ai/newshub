@@ -19,12 +19,11 @@
 
     <link rel="preconnect"
         href="https://fonts.googleapis.com">
-<link rel="icon" type="image/png" href="https://files.catbox.moe/dk5u9r.png">
-    
+
     <link rel="preconnect"
         href="https://fonts.gstatic.com"
         crossorigin>
-    <link rel="icon" type="image/png" href="https://files.catbox.moe/siw8z0.png">
+
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
 
@@ -40,7 +39,7 @@
 
     <link rel="stylesheet"
         href="css/layout.css">
-
+<link rel="icon" type="image/png" href="https://files.catbox.moe/dk5u9r.png">
     <link rel="stylesheet"
         href="css/components.css">
 
@@ -325,6 +324,22 @@
 
                             </div>
 
+                            <div class="form-group">
+
+                                <label>
+
+                                    Profile Picture (Optional)
+
+                                </label>
+
+                                <input
+                                    type="file"
+                                    id="registerPhoto"
+                                    class="input"
+                                    accept="image/png,image/jpeg,image/webp">
+
+                            </div>
+
                             <label class="developer-request">
 
                                 <input
@@ -536,6 +551,8 @@
 
     <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore-compat.js"></script>
 
+    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-storage-compat.js"></script>
+
     <!--=========================================
         FIREBASE
     ==========================================-->
@@ -564,7 +581,7 @@
         LOGIN
     ==========================================-->
 
-    <script src="js/pages/login.js"></script>
+    <script src="js/pages/login.js?v=2"></script>
 
 </body>
 

@@ -97,7 +97,7 @@ class CategoryPage {
                 api.getTrendingNews(),
                 api.getPopularNews(),
                 api.getBreakingNews(),
-                api.getSidebarAdvertisement()
+                api.getAdvertisements("sidebar", this.category.toLowerCase() === "latest" ? "" : this.canonicalCategory(this.category))
             ]);
 
             this.renderArticles(articles);
