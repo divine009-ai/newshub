@@ -8,6 +8,40 @@ class AdvertisementRenderer {
 
         this.mediaTimeout = 5000;
         this.popupKey = "newshub:lastPopupAd";
+        this.userInteracted = false;
+        this.pendingPopups = [];
+        this.interactionEvents = ["pointerdown", "keydown", "touchstart", "click"];
+        this.bindInteractionUnlock();
+
+    }
+
+    bindInteractionUnlock() {
+
+        const unlock = event => {
+
+            const target = event?.target;
+
+            if (target && target.closest && target.closest(".ad-popup")) return;
+
+            this.userInteracted = true;
+
+            this.interactionEvents.forEach(type => {
+
+                document.removeEventListener(type, unlock, true);
+
+            });
+
+            const pending = [...this.pendingPopups];
+            this.pendingPopups = [];
+            pending.forEach(args => this.renderPopup(...args));
+
+        };
+
+        this.interactionEvents.forEach(type => {
+
+            document.addEventListener(type, unlock, true);
+
+        });
 
     }
 
@@ -51,7 +85,7 @@ class AdvertisementRenderer {
 
             const url = new URL(value);
             const params = options.autoplay
-                ? "?autoplay=1&mute=0&playsinline=1"
+                ? "?autoplay=1&mute=0&playsinline=1&controls=0"
                 : "";
 
             if (url.hostname.includes("youtu.be")) {
@@ -69,6 +103,7 @@ class AdvertisementRenderer {
                     url.searchParams.set("autoplay", "1");
                     url.searchParams.set("mute", "0");
                     url.searchParams.set("playsinline", "1");
+                    url.searchParams.set("controls", "0");
                     return url.toString();
 
                 }
@@ -115,7 +150,7 @@ class AdvertisementRenderer {
             }
 
             return `
-                <video ${shouldAutoplay ? "autoplay" : ""} playsinline controls preload="${shouldAutoplay ? "auto" : "metadata"}">
+                <video ${shouldAutoplay ? "autoplay" : ""} playsinline ${shouldAutoplay ? "" : "controls"} preload="${shouldAutoplay ? "auto" : "metadata"}">
                     <source src="${url}">
                 </video>
             `;
@@ -265,6 +300,19 @@ class AdvertisementRenderer {
 
     showPopup(ads = [], failedIds = new Set()) {
 
+        if (!this.userInteracted) {
+
+            this.pendingPopups = [[ads, failedIds]];
+            return;
+
+        }
+
+        this.renderPopup(ads, failedIds);
+
+    }
+
+    renderPopup(ads = [], failedIds = new Set()) {
+
         const popupAds = this.activePopups(ads)
             .filter(ad => !failedIds.has(ad.id));
         const ad = this.pickRotatingAd(popupAds);
@@ -332,7 +380,7 @@ class AdvertisementRenderer {
             video.volume = 1;
             video.play().catch(() => {
 
-                // Some browsers block unmuted autoplay until the visitor interacts with the page.
+                video.removeAttribute("autoplay");
 
             });
 

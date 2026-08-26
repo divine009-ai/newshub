@@ -262,15 +262,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 showLoading("Signing you in...");
 
-                await auth.setPersistence(
-
-                    rememberMe.checked
-
-                        ? firebase.auth.Auth.Persistence.LOCAL
-
-                        : firebase.auth.Auth.Persistence.SESSION
-
-                );
+                await auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
 
                 const credential =
 
@@ -753,6 +745,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     "Checking developer account..."
 
                 );
+
+                await auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
 
                 const credential =
 

@@ -14,7 +14,7 @@ const authReady = new Promise(resolve => {
 
     }
 
-    auth.onAuthStateChanged(async user => {
+    const beginAuthWatch = () => auth.onAuthStateChanged(async user => {
 
         if (!user) {
 
@@ -102,6 +102,21 @@ const authReady = new Promise(resolve => {
         }
 
     });
+
+    if (typeof firebase !== "undefined" &&
+        firebase.auth?.Auth?.Persistence?.LOCAL &&
+        auth.setPersistence) {
+
+        auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+            .then(beginAuthWatch)
+            .catch(() => beginAuthWatch());
+
+    }
+    else {
+
+        beginAuthWatch();
+
+    }
 
 });
 

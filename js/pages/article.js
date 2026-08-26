@@ -591,16 +591,38 @@ class ArticlePage {
     initCommentForm() {
 
         const form = document.getElementById("commentForm");
+
+        if (!form || form.dataset.ready === "true") return;
+
+        form.dataset.ready = "true";
+
+        if (!window.currentUser || !window.currentUserProfile) {
+
+            const next = encodeURIComponent(`article.html?id=${this.articleId}`);
+
+            form.classList.add("comment-auth-required");
+            form.innerHTML = `
+                <h3>Join the conversation</h3>
+                <p>Create an account or log in to comment on this article.</p>
+                <div class="comment-auth-actions">
+                    <a class="button button--primary" href="login.html?next=${next}">Log In</a>
+                    <a class="button button--outline" href="login.html?mode=register&next=${next}">Create Account</a>
+                </div>
+            `;
+
+            return;
+
+        }
+
         const name = document.getElementById("commentName");
         const message = document.getElementById("commentMessage");
 
-        if (!form || !name || !message || form.dataset.ready === "true") return;
-
-        form.dataset.ready = "true";
+        if (!name || !message) return;
 
         if (window.currentUserProfile) {
 
             name.value = window.currentUserProfile.name || window.currentUserProfile.username || "";
+            name.readOnly = true;
 
         }
 
@@ -608,7 +630,24 @@ class ArticlePage {
 
             event.preventDefault();
 
-            const username = name.value.trim() || window.currentUserProfile?.name || "Reader";
+            if (!window.currentUser || !window.currentUserProfile) {
+
+                if (typeof toast !== "undefined") {
+
+                    toast.warning("Login Required", "Please log in or create an account before commenting.");
+
+                }
+
+                window.location.href = `login.html?next=${encodeURIComponent(`article.html?id=${this.articleId}`)}`;
+                return;
+
+            }
+
+            const username =
+                window.currentUserProfile.name ||
+                window.currentUserProfile.username ||
+                name.value.trim() ||
+                "Reader";
             const text = message.value.trim();
 
             if (!text) {
@@ -630,7 +669,7 @@ class ArticlePage {
                     username,
                     message: text,
                     likes: 0,
-                    userId: window.currentUser?.uid || null
+                    userId: window.currentUser.uid
                 });
 
                 message.value = "";
