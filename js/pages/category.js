@@ -92,12 +92,11 @@ class CategoryPage {
 
             }
 
-            const [articles, trending, popular, breaking, advertisement] = await Promise.all([
+            const [articles, trending, popular, breaking] = await Promise.all([
                 this.loadArticles(),
                 api.getTrendingNews(),
                 api.getPopularNews(),
-                api.getBreakingNews(),
-                api.getAdvertisements("sidebar", this.category.toLowerCase() === "latest" ? "" : this.canonicalCategory(this.category))
+                api.getBreakingNews()
             ]);
 
             this.renderArticles(articles);
@@ -106,8 +105,6 @@ class CategoryPage {
 
                 sidebar.renderTrending(trending);
                 sidebar.renderPopular(popular);
-                sidebar.renderAdvertisement(advertisement);
-
             }
 
             if (typeof breakingNews !== "undefined") {
@@ -118,6 +115,8 @@ class CategoryPage {
 
             if (typeof loader !== "undefined") loader.hide();
 
+            this.loadAdvertisements();
+
         }
         catch (error) {
 
@@ -126,6 +125,42 @@ class CategoryPage {
             if (typeof loader !== "undefined") loader.hide();
 
             this.renderError("Unable to load articles for this page.");
+
+        }
+
+    }
+
+    async loadAdvertisements() {
+
+        try {
+
+            const category = this.category.toLowerCase() === "latest"
+                ? ""
+                : this.canonicalCategory(this.category);
+
+            const [normalAds, popupAds] = await Promise.all([
+                api.getAdvertisements("sidebar", category),
+                api.getAdvertisements("popup", category)
+            ]);
+
+            if (typeof sidebar !== "undefined") {
+
+                sidebar.renderAdvertisement(normalAds);
+
+            }
+
+            if (window.advertisementRenderer) {
+
+                advertisementRenderer.showPopup(popupAds);
+
+            }
+
+        }
+        catch(error) {
+
+            console.warn("Advertisements failed to load:", error);
+
+            if (typeof sidebar !== "undefined") sidebar.renderAdvertisement([]);
 
         }
 

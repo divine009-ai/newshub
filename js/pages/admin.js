@@ -203,7 +203,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
             }
 
-            currentUser = doc.data();
+            currentUser = {
+                uid: user.uid,
+                ...doc.data()
+            };
 
             if (
 
@@ -229,7 +232,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 currentUser.name;
 
-            if (currentUser.photoURL || currentUser.photo) {
+            if (window.NewsHubAvatar) {
+
+                adminPhoto.src =
+
+                    NewsHubAvatar.src(currentUser);
+
+                adminPhoto.classList.toggle("admin-ring", currentUser.role === "admin");
+
+            }
+
+            else if (currentUser.photoURL || currentUser.photo) {
 
                 adminPhoto.src =
 
@@ -2196,389 +2209,7 @@ function initializeUserActions() {
 
 
 
-renderUsersPage();/*==========================================================
-    ADVERTISEMENTS
-==========================================================*/
-
-async function renderAdvertisementsPage() {
-
-    try {
-
-        loader.show("Loading advertisements...");
-
-        const snapshot = await db
-
-            .collection("advertisements")
-
-            .get();
-
-        let rows = "";
-
-        snapshot.forEach(doc => {
-
-            const ad = doc.data();
-
-            rows += `
-
-                <tr>
-
-                    <td>${doc.id}</td>
-
-                    <td>${ad.title || "-"}</td>
-
-                    <td>
-
-                        <span class="badge ${ad.active ? "active" : "blocked"}">
-
-                            ${ad.active ? "Active" : "Inactive"}
-
-                        </span>
-
-                    </td>
-
-                    <td>
-
-                        <div class="table-actions">
-
-                            <button
-
-                                class="edit-ad"
-
-                                data-id="${doc.id}">
-
-                                <i class="fa-solid fa-pen"></i>
-
-                            </button>
-
-                        </div>
-
-                    </td>
-
-                </tr>
-
-            `;
-
-        });
-
-        pages.advertisements.innerHTML = `
-
-            <div class="admin-card">
-
-                <div class="admin-card-header">
-
-                    <div>
-
-                        <h3>
-
-                            Advertisements
-
-                        </h3>
-
-                        <p>
-
-                            Manage all advertisement positions.
-
-                        </p>
-
-                    </div>
-
-                </div>
-
-                <table class="admin-table">
-
-                    <thead>
-
-                        <tr>
-
-                            <th>Position</th>
-
-                            <th>Title</th>
-
-                            <th>Status</th>
-
-                            <th>Action</th>
-
-                        </tr>
-
-                    </thead>
-
-                    <tbody>
-
-                        ${rows}
-
-                    </tbody>
-
-                </table>
-
-            </div>
-
-        `;
-
-        initializeAdvertisementActions();
-
-        loader.hide();
-
-    }
-
-    catch(error){
-
-        loader.hide();
-
-        modal.error(error.message);
-
-    }
-
-}
-
-
-
-/*==========================================================
-    EDIT ADVERTISEMENT
-==========================================================*/
-
-function initializeAdvertisementActions() {
-
-    document
-
-    .querySelectorAll(".edit-ad")
-
-    .forEach(button=>{
-
-        button.addEventListener("click",async()=>{
-
-            try{
-
-                loader.show("Loading advertisement...");
-
-                const doc = await db
-
-                .collection("advertisements")
-
-                .doc(button.dataset.id)
-
-                .get();
-
-                loader.hide();
-
-                if(!doc.exists){
-
-                    modal.error(
-
-                        "Advertisement not found."
-
-                    );
-
-                    return;
-
-                }
-
-                const ad = doc.data();
-
-                pages.advertisements.innerHTML = `
-
-                    <div class="admin-card">
-
-                        <div class="admin-card-header">
-
-                            <h3>
-
-                                Edit Advertisement
-
-                            </h3>
-
-                        </div>
-
-                        <form
-                            id="advertisementForm"
-                            class="admin-form">
-
-                            <div class="form-group">
-
-                                <label>
-
-                                    Position
-
-                                </label>
-
-                                <input
-
-                                    value="${button.dataset.id}"
-
-                                    readonly>
-
-                            </div>
-
-                            <div class="form-group">
-
-                                <label>
-
-                                    Title
-
-                                </label>
-
-                                <input
-
-                                    id="adTitle"
-
-                                    value="${ad.title || ""}">
-
-                            </div>
-
-                            <div class="form-group">
-
-                                <label>
-
-                                    Image URL
-
-                                </label>
-
-                                <input
-
-                                    id="adImage"
-
-                                    value="${ad.image || ""}">
-
-                            </div>
-
-                            <div class="form-group">
-
-                                <label>
-
-                                    Redirect URL
-
-                                </label>
-
-                                <input
-
-                                    id="adLink"
-
-                                    value="${ad.link || ""}">
-
-                            </div>
-
-                            <label>
-
-                                <input
-
-                                    type="checkbox"
-
-                                    id="adActive"
-
-                                    ${ad.active ? "checked" : ""}>
-
-                                Advertisement Active
-
-                            </label>
-
-                            <button
-
-                                class="admin-btn primary"
-
-                                type="submit">
-
-                                Save Advertisement
-
-                            </button>
-
-                        </form>
-
-                    </div>
-
-                `;
-
-                document
-
-                .getElementById(
-
-                    "advertisementForm"
-
-                )
-
-                .addEventListener("submit",async e=>{
-
-                    e.preventDefault();
-
-                    try{
-
-                        loader.show(
-
-                            "Saving advertisement..."
-
-                        );
-
-                        await db
-
-                        .collection("advertisements")
-
-                        .doc(button.dataset.id)
-
-                        .update({
-
-                            title:
-
-                                document.getElementById("adTitle").value,
-
-                            image:
-
-                                document.getElementById("adImage").value,
-
-                            link:
-
-                                document.getElementById("adLink").value,
-
-                            active:
-
-                                document.getElementById("adActive").checked
-
-                        });
-
-                        loader.hide();
-
-                        toast.success(
-
-                            "Advertisement updated."
-
-                        );
-
-                        renderAdvertisementsPage();
-
-                    }
-
-                    catch(error){
-
-                        loader.hide();
-
-                        modal.error(
-
-                            error.message
-
-                        );
-
-                    }
-
-                });
-
-            }
-
-            catch(error){
-
-                loader.hide();
-
-                modal.error(
-
-                    error.message
-
-                );
-
-            }
-
-        });
-
-    });
-
-}
-
-
+renderUsersPage();
 
 function escapeAdmin(value = "") {
 
@@ -2634,9 +2265,28 @@ function advertisementForm(ad = {}, id = "") {
                     </div>
                 </div>
 
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Advertisement Type</label>
+                        <select id="adType">
+                            ${["image", "video"].map(type => `
+                                <option value="${type}" ${String(ad.type || "image") === type ? "selected" : ""}>${type.toUpperCase()}</option>
+                            `).join("")}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Advertisement Mode</label>
+                        <select id="adMode">
+                            ${["normal", "popup"].map(mode => `
+                                <option value="${mode}" ${String(ad.mode || "normal") === mode ? "selected" : ""}>${mode.toUpperCase()}</option>
+                            `).join("")}
+                        </select>
+                    </div>
+                </div>
+
                 <div class="form-group">
-                    <label>Image/Media URL</label>
-                    <input id="adImage" value="${escapeAdmin(ad.image || "")}" required>
+                    <label>Media URL</label>
+                    <input id="adImage" value="${escapeAdmin(ad.media || ad.image || "")}" required>
                 </div>
 
                 <div class="form-group">
@@ -2653,6 +2303,11 @@ function advertisementForm(ad = {}, id = "") {
                         <label>End Date</label>
                         <input type="date" id="adEndDate" value="${escapeAdmin(ad.endDate || "")}">
                     </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Popup Skip Delay (seconds)</label>
+                    <input type="number" min="0" max="60" id="adSkipDelay" value="${escapeAdmin(ad.skipDelay || 5)}">
                 </div>
 
                 <label>
@@ -2673,6 +2328,8 @@ function collectAdvertisementFormData() {
 
     const image = document.getElementById("adImage").value.trim();
     const link = document.getElementById("adLink").value.trim();
+    const type = document.getElementById("adType").value;
+    const mode = document.getElementById("adMode").value;
 
     if (!image) {
 
@@ -2698,13 +2355,29 @@ function collectAdvertisementFormData() {
 
     }
 
+    if (mode === "popup" && type !== "video") {
+
+        throw new Error("Popup advertisements must use video.");
+
+    }
+
+    if (type === "video" && !isSupportedVideoUrl(image)) {
+
+        throw new Error("Video advertisement URL is invalid. Use a direct video URL or YouTube URL.");
+
+    }
+
     return {
         title: document.getElementById("adTitle").value.trim(),
         advertiser: document.getElementById("adAdvertiser").value.trim(),
         image,
+        media: image,
         link,
         category: document.getElementById("adCategory").value,
         position: document.getElementById("adPosition").value,
+        type,
+        mode,
+        skipDelay: Number(document.getElementById("adSkipDelay").value || 5),
         startDate: document.getElementById("adStartDate").value,
         endDate: document.getElementById("adEndDate").value,
         active: document.getElementById("adActive").checked,
@@ -2733,6 +2406,8 @@ async function renderAdvertisementsPage() {
                     <td>${escapeAdmin(ad.advertiser || "-")}</td>
                     <td>${escapeAdmin(ad.position || "-")}</td>
                     <td>${escapeAdmin(ad.category || "global")}</td>
+                    <td>${escapeAdmin((ad.type || "image").toUpperCase())}</td>
+                    <td>${escapeAdmin((ad.mode || "normal").toUpperCase())}</td>
                     <td>
                         <span class="badge ${ad.active ? "active" : "blocked"}">
                             ${ad.active ? "Active" : "Inactive"}
@@ -2776,12 +2451,14 @@ async function renderAdvertisementsPage() {
                             <th>Advertiser</th>
                             <th>Position</th>
                             <th>Category</th>
+                            <th>Type</th>
+                            <th>Mode</th>
                             <th>Status</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        ${rows || '<tr><td colspan="6">No advertisements yet.</td></tr>'}
+                        ${rows || '<tr><td colspan="8">No advertisements yet.</td></tr>'}
                     </tbody>
                 </table>
             </div>

@@ -148,9 +148,29 @@ class Sidebar {
                 ? [ad]
                 : [];
 
+        const wrapper = this.adLink.parentElement;
+
         if (ads.length === 0) {
 
-            this.adImage.style.display = "none";
+            if (wrapper && window.advertisementRenderer) {
+
+                advertisementRenderer.renderCarousel(wrapper, []);
+
+            }
+
+            else {
+
+                this.adImage.style.display = "none";
+
+            }
+
+            return;
+
+        }
+
+        if (wrapper && window.advertisementRenderer) {
+
+            advertisementRenderer.renderCarousel(wrapper, ads);
 
             return;
 
@@ -168,8 +188,6 @@ class Sidebar {
         this.adLink.rel = "noopener";
 
         if (ads.length > 1) {
-
-            const wrapper = this.adLink.parentElement;
 
             wrapper.querySelectorAll(".sidebar-ad-extra").forEach(element => element.remove());
 

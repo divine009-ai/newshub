@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile | NewsHub</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/navbar.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/site.css?v=6">
+</head>
+
+<body>
+    <div id="navbar"></div>
+
+    <main class="profile-page section">
+        <div class="container">
+            <section class="profile-card card">
+                <div class="profile-card__header">
+                    <div>
+                        <p class="badge">Account</p>
+                        <h1>Edit Profile</h1>
+                        <p>Update your name and profile picture.</p>
+                    </div>
+                    <img id="profilePreview" class="profile-avatar profile-avatar--large" alt="Profile preview">
+                </div>
+
+                <form id="profileForm" class="profile-form">
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input id="profileName" class="input" type="text" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Profile Picture</label>
+                        <input id="profilePhoto" class="input" type="file" accept="image/png,image/jpeg,image/webp">
+                    </div>
+
+                    <div class="profile-actions">
+                        <button type="submit" class="button button--primary">Save Profile</button>
+                        <button type="button" id="removeProfilePhoto" class="button button--outline">Remove Picture</button>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </main>
+
+    <div id="footer"></div>
+
+    <div id="overlay-root"></div>
+    <div id="toast-root"></div>
+    <div id="modal-root"></div>
+    <div id="loader-root"></div>
+
+    <script src="js/config.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore-compat.js"></script>
+    <script src="js/firebase.js"></script>
+    <script src="js/components/avatar.js"></script>
+    <script src="js/components/navbar.js?v=7"></script>
+    <script src="js/components/footer.js?v=2"></script>
+    <script src="js/components/modal.js"></script>
+    <script src="js/components/toast.js"></script>
+    <script src="js/components/loader.js"></script>
+    <script src="js/api.js?v=3"></script>
+    <script src="js/authGuard.js"></script>
+    <script src="js/pages/profile.js"></script>
+</body>
+
+</html>

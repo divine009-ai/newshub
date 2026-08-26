@@ -83,9 +83,7 @@ class Home {
 
             popular,
 
-            breaking,
-
-            advertisement
+            breaking
 
         ] = await Promise.all([
 
@@ -105,9 +103,7 @@ class Home {
 
             api.getPopularNews(),
 
-            api.getBreakingNews(),
-
-            api.getAdvertisements("sidebar")
+            api.getBreakingNews()
 
         ]);
 
@@ -151,9 +147,37 @@ class Home {
 
         sidebar.renderPopular(popular);
 
-        sidebar.renderAdvertisement(advertisement);
-
         breakingNews.setNews(breaking);
+
+        this.loadAdvertisements();
+
+    }
+
+    async loadAdvertisements() {
+
+        try {
+
+            const [normalAds, popupAds] = await Promise.all([
+                api.getAdvertisements("sidebar"),
+                api.getAdvertisements("popup")
+            ]);
+
+            sidebar.renderAdvertisement(normalAds);
+
+            if (window.advertisementRenderer) {
+
+                advertisementRenderer.showPopup(popupAds);
+
+            }
+
+        }
+        catch(error) {
+
+            console.warn("Advertisements failed to load:", error);
+
+            sidebar.renderAdvertisement([]);
+
+        }
 
     }
 

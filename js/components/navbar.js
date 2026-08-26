@@ -108,16 +108,15 @@ class Navbar {
 
                 </div>
 
-                <a
-                    href="#navbarMenu"
+                <button
+                    type="button"
                     id="menuToggle"
                     class="navbar__icon navbar__mobile-button"
-                    role="button"
                     aria-label="Open navigation menu">
 
                     <i class="fa-solid fa-bars"></i>
 
-                </a>
+                </button>
 
             </div>
 
@@ -152,6 +151,21 @@ class Navbar {
         if (!button || !menu) return;
 
         button.setAttribute("aria-expanded", "false");
+        button.setAttribute("aria-label", "Open navigation menu");
+
+        button.addEventListener("click", event => {
+
+            event.preventDefault();
+            event.stopPropagation();
+            this.toggleMobileMenu();
+
+        });
+
+        menu.addEventListener("click", event => {
+
+            event.stopPropagation();
+
+        });
 
         menu.querySelectorAll("a").forEach(link => {
 
@@ -160,6 +174,26 @@ class Navbar {
                 this.closeMobileMenu();
 
             });
+
+        });
+
+        document.addEventListener("click", event => {
+
+            if (!this.container.contains(event.target)) {
+
+                this.closeMobileMenu();
+
+            }
+
+        });
+
+        window.addEventListener("resize", () => {
+
+            if (window.innerWidth > 768) {
+
+                this.closeMobileMenu();
+
+            }
 
         });
 
@@ -175,6 +209,8 @@ class Navbar {
         const isOpen = menu.classList.toggle("show");
 
         button.setAttribute("aria-expanded", String(isOpen));
+        button.setAttribute("aria-label", isOpen ? "Close navigation menu" : "Open navigation menu");
+        button.innerHTML = `<i class="fa-solid ${isOpen ? "fa-xmark" : "fa-bars"}"></i>`;
 
     }
 
@@ -187,6 +223,8 @@ class Navbar {
 
         menu.classList.remove("show");
         button.setAttribute("aria-expanded", "false");
+        button.setAttribute("aria-label", "Open navigation menu");
+        button.innerHTML = `<i class="fa-solid fa-bars"></i>`;
 
     }
 
@@ -196,7 +234,10 @@ class Navbar {
 
         if (!button) return;
 
-        button.addEventListener("click", () => {
+        button.addEventListener("click", event => {
+
+            event.preventDefault();
+            event.stopPropagation();
 
             document.body.classList.toggle("dark-mode");
 
@@ -262,9 +303,16 @@ class Navbar {
             profile.approved &&
             profile.status !== "blocked";
 
+        const avatar = window.NewsHubAvatar
+            ? NewsHubAvatar.imageHtml(profile, "navbar__avatar")
+            : "";
+
         authAction.innerHTML = `
             <div class="navbar__user">
-                <span>${profile.name || profile.username || "Account"}</span>
+                <a href="profile.html" class="navbar__profile-link">
+                    ${avatar}
+                    <span>${profile.name || profile.username || "Account"}</span>
+                </a>
                 ${canAdmin ? '<a href="admin.html">Admin</a>' : ""}
                 <button id="navbarLogout" type="button">
                     <i class="fa-solid fa-right-from-bracket"></i>
@@ -276,7 +324,9 @@ class Navbar {
 
         if (logout) {
 
-            logout.addEventListener("click", async () => {
+            logout.addEventListener("click", async event => {
+
+                event.stopPropagation();
 
                 if (typeof auth !== "undefined") {
 

@@ -211,6 +211,16 @@ class Footer {
 
                     </li>
 
+                    <li>
+
+                        <a href="profile.html">
+
+                            Profile
+
+                        </a>
+
+                    </li>
+
                 </ul>
 
             </div>

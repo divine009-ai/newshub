@@ -16,6 +16,27 @@ class API {
         HELPERS
     ==========================================*/
 
+    defaultArticleImage(data = {}) {
+
+        const title = String(data.category || "News").slice(0, 18);
+        const svg = `
+            <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760">
+                <defs>
+                    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+                        <stop stop-color="#07111f" offset="0"/>
+                        <stop stop-color="#4f7cff" offset=".55"/>
+                        <stop stop-color="#22d3ee" offset="1"/>
+                    </linearGradient>
+                </defs>
+                <rect width="1200" height="760" fill="url(#g)"/>
+                <text x="70" y="410" fill="#fff" font-family="Arial, sans-serif" font-size="86" font-weight="700">${title}</text>
+            </svg>
+        `.trim();
+
+        return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+
+    }
+
     normalizeRecord(collection, id, data) {
 
         if (collection !== "articles") {
@@ -34,7 +55,7 @@ class API {
         return {
             id,
             ...data,
-            image: data.coverImage || data.image || "images/avatar.png",
+            image: data.coverImage || data.image || this.defaultArticleImage(data),
             video: data.coverVideo || data.video || "",
             date: data.date || (createdDate ? createdDate.toLocaleDateString() : ""),
             views: data.views || 0,
@@ -431,8 +452,6 @@ class API {
 
             .collection("advertisements")
 
-            .where("position", "==", position)
-
             .where("active", "==", true)
 
             .get();
@@ -446,11 +465,29 @@ class API {
         const now = new Date();
         const requestedCategory = String(category || "").toLowerCase();
 
+        const requestedPosition = String(position || "").toLowerCase();
+
         return snapshot.docs
             .map(doc => ({ id: doc.id, ...doc.data() }))
             .filter(ad => {
 
                 const adCategory = String(ad.category || "global").toLowerCase();
+                const adPosition = String(ad.position || "sidebar").toLowerCase();
+                const adMode = String(ad.mode || "normal").toLowerCase();
+
+                if (ad.published === false) return false;
+
+                if (requestedPosition === "popup") {
+
+                    if (adMode !== "popup") return false;
+
+                }
+                else {
+
+                    if (adMode === "popup") return false;
+                    if (adPosition !== requestedPosition) return false;
+
+                }
 
                 if (adCategory !== "global" && requestedCategory && adCategory !== requestedCategory) {
 

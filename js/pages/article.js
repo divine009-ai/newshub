@@ -10,6 +10,7 @@ class ArticlePage {
         this.params = new URLSearchParams(window.location.search);
         this.articleId = this.params.get("id");
         this.article = null;
+        this.userProfileCache = new Map();
 
     }
 
@@ -156,7 +157,9 @@ class ArticlePage {
 
         if (image) {
 
-            image.src = article.image || "images/avatar.png";
+            image.src = article.image || (window.api && api.defaultArticleImage
+                ? api.defaultArticleImage(article)
+                : "");
             image.alt = title;
 
         }
@@ -310,8 +313,6 @@ class ArticlePage {
             trending,
             popular,
             breaking,
-            sidebarAd,
-            articleAd,
             comments
         ] = await Promise.all([
             api.getRelatedArticles(this.article.category || "", this.articleId),
@@ -320,28 +321,63 @@ class ArticlePage {
             api.getTrendingNews(),
             api.getPopularNews(),
             api.getBreakingNews(),
-            api.getAdvertisements("sidebar", this.article.category || ""),
-            api.getAdvertisements("article", this.article.category || ""),
             api.getComments(this.articleId)
         ]);
 
         this.renderRelated(related);
         this.renderNavigation(previous, next);
-        this.renderArticleAd(articleAd);
-        this.renderComments(comments);
+        await this.renderComments(comments);
         this.initCommentForm();
 
         if (typeof sidebar !== "undefined") {
 
             sidebar.renderTrending(trending);
             sidebar.renderPopular(popular);
-            sidebar.renderAdvertisement(sidebarAd);
 
         }
 
         if (typeof breakingNews !== "undefined") {
 
             breakingNews.setNews(breaking);
+
+        }
+
+        this.loadAdvertisements();
+
+    }
+
+    async loadAdvertisements() {
+
+        try {
+
+            const [sidebarAd, articleAd, popupAds] = await Promise.all([
+                api.getAdvertisements("sidebar", this.article.category || ""),
+                api.getAdvertisements("article", this.article.category || ""),
+                api.getAdvertisements("popup", this.article.category || "")
+            ]);
+
+            if (typeof sidebar !== "undefined") {
+
+                sidebar.renderAdvertisement(sidebarAd);
+
+            }
+
+            this.renderArticleAd(articleAd);
+
+            if (window.advertisementRenderer) {
+
+                advertisementRenderer.showPopup(popupAds);
+
+            }
+
+        }
+        catch(error) {
+
+            console.warn("Advertisements failed to load:", error);
+
+            if (typeof sidebar !== "undefined") sidebar.renderAdvertisement([]);
+
+            this.renderArticleAd([]);
 
         }
 
@@ -436,16 +472,24 @@ class ArticlePage {
 
         }
 
+        const wrapper = image.closest(".article-ad");
+
+        if (wrapper && window.advertisementRenderer) {
+
+            advertisementRenderer.renderCarousel(wrapper, ads);
+
+            return;
+
+        }
+
         const firstAd = ads[0];
 
-        image.closest(".article-ad")?.classList.remove("hidden");
+        wrapper?.classList.remove("hidden");
         image.src = firstAd.image || "";
         image.alt = firstAd.title || "Advertisement";
         link.href = firstAd.link || "#";
         link.target = "_blank";
         link.rel = "noopener";
-
-        const wrapper = image.closest(".article-ad");
 
         wrapper.querySelectorAll(".article-ad-extra").forEach(element => element.remove());
 
@@ -467,22 +511,79 @@ class ArticlePage {
 
     }
 
-    renderComments(comments = []) {
+    async getCommentProfile(comment) {
+
+        const userId = comment.userId;
+
+        if (!userId) {
+
+            return {
+                name: comment.username || comment.name || "Reader"
+            };
+
+        }
+
+        if (this.userProfileCache.has(userId)) {
+
+            return this.userProfileCache.get(userId);
+
+        }
+
+        try {
+
+            const profile = await api.getUser(userId);
+            const merged = {
+                uid: userId,
+                name: comment.username || profile?.name || profile?.username || "Reader",
+                ...profile
+            };
+
+            this.userProfileCache.set(userId, merged);
+
+            return merged;
+
+        }
+        catch(error) {
+
+            console.warn("Could not load comment user profile:", error);
+
+            return {
+                uid: userId,
+                name: comment.username || comment.name || "Reader"
+            };
+
+        }
+
+    }
+
+    async renderComments(comments = []) {
 
         const container = document.getElementById("commentsContainer");
 
         if (!container) return;
 
+        const profiles = await Promise.all(comments.map(comment => this.getCommentProfile(comment)));
+
         container.innerHTML = comments.length
-            ? comments.map(comment => `
+            ? comments.map((comment, index) => {
+                const profile = profiles[index] || {};
+                const avatar = window.NewsHubAvatar
+                    ? NewsHubAvatar.imageHtml(profile, "profile-avatar comment-avatar")
+                    : "";
+
+                return `
                 <div class="comment">
-                    <div class="comment-header">
-                        <span class="comment-name">${this.escape(comment.username || comment.name || "Reader")}</span>
-                        <span class="comment-date">${this.formatDate(comment.createdAt)}</span>
+                    ${avatar}
+                    <div class="comment-body">
+                        <div class="comment-header">
+                            <span class="comment-name">${this.escape(profile.name || comment.username || comment.name || "Reader")}</span>
+                            <span class="comment-date">${this.formatDate(comment.createdAt)}</span>
+                        </div>
+                        <p class="comment-text">${this.escape(comment.message || "")}</p>
                     </div>
-                    <p class="comment-text">${this.escape(comment.message || "")}</p>
                 </div>
-            `).join("")
+            `;
+            }).join("")
             : '<div class="news-empty">Be the first to comment.</div>';
 
     }
@@ -540,7 +641,7 @@ class ArticlePage {
 
                 }
 
-                this.renderComments(await api.getComments(this.articleId));
+                await this.renderComments(await api.getComments(this.articleId));
 
             }
             catch (error) {

@@ -224,48 +224,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function validateProfileImage(file) {
 
-        if (!file) return;
-
-        const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
-        const maxSize = 2 * 1024 * 1024;
-
-        if (!allowedTypes.includes(file.type)) {
-
-            throw new Error("Please select a valid image file: JPG, PNG or WebP.");
-
-        }
-
-        if (file.size > maxSize) {
-
-            throw new Error("Profile picture must be 2MB or smaller.");
-
-        }
-
-    }
-
-    async function uploadProfileImage(user, file) {
-
         if (!file) return "";
 
-        validateProfileImage(file);
+        if (!window.NewsHubAvatar) {
 
-        if (typeof firebase.storage !== "function") {
-
-            throw new Error("Firebase Storage is not available.");
+            throw new Error("Profile image tools are not ready.");
 
         }
 
-        const extension = file.name.split(".").pop().toLowerCase();
-        const ref = firebase
-            .storage()
-            .ref()
-            .child(`profile-pictures/${user.uid}.${extension}`);
-
-        await ref.put(file, {
-            contentType: file.type
-        });
-
-        return await ref.getDownloadURL();
+        NewsHubAvatar.validateFile(file);
 
     }    /*======================================================
         LOGIN
@@ -561,17 +528,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 });
 
-                const photoURL = await uploadProfileImage(user, photoFile);
-
-                if (photoURL) {
-
-                    await user.updateProfile({
-
-                        photoURL
-
-                    });
-
-                }
+                const photoDataUrl = photoFile && window.NewsHubAvatar
+                    ? await NewsHubAvatar.compressFile(photoFile)
+                    : "";
 
                 await db
 
@@ -589,9 +548,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
                         email: email,
 
-                        photo: photoURL || "images/avatar.png",
+                        photo: photoDataUrl,
 
-                        photoURL: photoURL || "images/avatar.png",
+                        photoURL: photoDataUrl,
+
+                        photoDataUrl,
 
                         role: "user",
 
