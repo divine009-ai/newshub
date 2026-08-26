@@ -264,15 +264,32 @@ class Modal {
         SUCCESS
     ==========================================*/
 
+    normalizeText(title, message, fallbackTitle) {
+
+        if (message === undefined || message === null || message === "") {
+
+            return {
+                title: fallbackTitle,
+                message: title || ""
+            };
+
+        }
+
+        return { title, message };
+
+    }
+
     success(title,message,onConfirm=null){
+
+        const text = this.normalizeText(title, message, "Success");
 
         this.create({
 
             type:"success",
 
-            title,
+            title:text.title,
 
-            message,
+            message:text.message,
 
             confirmText:"OK",
 
@@ -288,13 +305,15 @@ class Modal {
 
     error(title,message){
 
+        const text = this.normalizeText(title, message, "Error");
+
         this.create({
 
             type:"error",
 
-            title,
+            title:text.title,
 
-            message
+            message:text.message
 
         });
 
@@ -306,13 +325,15 @@ class Modal {
 
     warning(title,message){
 
+        const text = this.normalizeText(title, message, "Warning");
+
         this.create({
 
             type:"warning",
 
-            title,
+            title:text.title,
 
-            message
+            message:text.message
 
         });
 
@@ -324,13 +345,15 @@ class Modal {
 
     info(title,message){
 
+        const text = this.normalizeText(title, message, "Notice");
+
         this.create({
 
             type:"info",
 
-            title,
+            title:text.title,
 
-            message
+            message:text.message
 
         });
 
@@ -373,6 +396,46 @@ class Modal {
             onConfirm,
 
             onCancel
+
+        });
+
+    }
+
+    confirmAsync({
+
+        title = "Please Confirm",
+
+        message = "Are you sure?",
+
+        confirmText = "Yes",
+
+        cancelText = "No"
+
+    } = {}) {
+
+        return new Promise(resolve => {
+
+            this.confirm({
+
+                title,
+
+                message,
+
+                confirmText,
+
+                cancelText,
+
+                onConfirm: () => resolve(true),
+
+                onCancel: () => resolve(false)
+
+            });
+
+            const overlay = this.root?.querySelector(".modal__overlay");
+            const close = this.root?.querySelector(".modal__close");
+
+            overlay?.addEventListener("click", () => resolve(false), { once: true });
+            close?.addEventListener("click", () => resolve(false), { once: true });
 
         });
 

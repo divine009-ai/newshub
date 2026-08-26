@@ -396,6 +396,12 @@ class API {
 
     async addComment(comment) {
 
+        if (!comment || !comment.userId) {
+
+            throw new Error("Please log in or create an account before commenting.");
+
+        }
+
         await this.db
 
             .collection("comments")

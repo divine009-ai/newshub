@@ -186,7 +186,42 @@ class ArticlePage {
 
         }
 
-        this.setupShareLinks(title);
+        this.setupShareLinks(title, article);
+
+    }
+
+    setMeta(property, content, attribute = "property") {
+
+        if (!content) return;
+
+        let meta = document.head.querySelector(`meta[${attribute}="${property}"]`);
+
+        if (!meta) {
+
+            meta = document.createElement("meta");
+            meta.setAttribute(attribute, property);
+            document.head.appendChild(meta);
+
+        }
+
+        meta.setAttribute("content", content);
+
+    }
+
+    absoluteUrl(value = "") {
+
+        if (!value || value.startsWith("data:")) return value;
+
+        try {
+
+            return new URL(value, window.location.href).href;
+
+        }
+        catch(error) {
+
+            return value;
+
+        }
 
     }
 
@@ -280,17 +315,32 @@ class ArticlePage {
 
     }
 
-    setupShareLinks(title) {
+    setupShareLinks(title, article = {}) {
 
         const links = document.querySelectorAll(".article-share .social-links a");
-        const url = encodeURIComponent(window.location.href);
+        const articleUrl = window.location.href;
+        const imageUrl = this.absoluteUrl(article.image || (window.api && api.defaultArticleImage
+            ? api.defaultArticleImage(article)
+            : ""));
+        const description = article.description || article.excerpt || "";
+        const encodedUrl = encodeURIComponent(articleUrl);
         const text = encodeURIComponent(title);
         const targets = [
-            `https://www.facebook.com/sharer/sharer.php?u=${url}`,
-            `https://twitter.com/intent/tweet?url=${url}&text=${text}`,
-            `https://wa.me/?text=${text}%20${url}`,
-            `https://www.linkedin.com/shareArticle?mini=true&url=${url}&title=${text}`
+            `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
+            `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${text}`,
+            `https://wa.me/?text=${text}%20${encodedUrl}`,
+            `https://www.linkedin.com/shareArticle?mini=true&url=${encodedUrl}&title=${text}`
         ];
+
+        this.setMeta("og:type", "article");
+        this.setMeta("og:title", title);
+        this.setMeta("og:description", description);
+        this.setMeta("og:url", articleUrl);
+        this.setMeta("og:image", imageUrl);
+        this.setMeta("twitter:card", "summary_large_image", "name");
+        this.setMeta("twitter:title", title, "name");
+        this.setMeta("twitter:description", description, "name");
+        this.setMeta("twitter:image", imageUrl, "name");
 
         links.forEach((link, index) => {
 
@@ -299,6 +349,19 @@ class ArticlePage {
             link.rel = "noopener";
 
         });
+
+        const shareCard = document.querySelector(".article-share");
+
+        if (shareCard && !shareCard.querySelector(".article-share-preview")) {
+
+            shareCard.insertAdjacentHTML("beforeend", `
+                <a class="article-share-preview" href="${this.escape(articleUrl)}">
+                    <img src="${this.escape(imageUrl)}" alt="${this.escape(title)}">
+                    <span>${this.escape(articleUrl)}</span>
+                </a>
+            `);
+
+        }
 
     }
 
@@ -350,9 +413,10 @@ class ArticlePage {
 
         try {
 
-            const [sidebarAd, articleAd, popupAds] = await Promise.all([
+            const [sidebarAd, articleAd, homepageAds, popupAds] = await Promise.all([
                 api.getAdvertisements("sidebar", this.article.category || ""),
                 api.getAdvertisements("article", this.article.category || ""),
+                api.getAdvertisements("homepage", this.article.category || ""),
                 api.getAdvertisements("popup", this.article.category || "")
             ]);
 
@@ -366,6 +430,7 @@ class ArticlePage {
 
             if (window.advertisementRenderer) {
 
+                advertisementRenderer.renderFloatingAd([...homepageAds, ...sidebarAd]);
                 advertisementRenderer.showPopup(popupAds);
 
             }
@@ -544,8 +609,6 @@ class ArticlePage {
 
         }
         catch(error) {
-
-            console.warn("Could not load comment user profile:", error);
 
             return {
                 uid: userId,

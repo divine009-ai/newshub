@@ -79,6 +79,23 @@ document.addEventListener("DOMContentLoaded", () => {
     const sidebarLinks =
         document.querySelectorAll(".sidebar-link");
 
+    async function adminConfirm(message, title = "Please Confirm") {
+
+        if (typeof modal !== "undefined" && modal.confirmAsync) {
+
+            return modal.confirmAsync({
+                title,
+                message,
+                confirmText: "Yes",
+                cancelText: "No"
+            });
+
+        }
+
+        return confirm(message);
+
+    }
+
 
 
     /*======================================================
@@ -1310,15 +1327,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                         button.dataset.id;
 
-                    if(
-
-                        !confirm(
-
-                            "Delete this article?"
-
-                        )
-
-                    ) return;
+                    if (!(await adminConfirm("Delete this article?", "Delete Article"))) return;
 
                     try{
 
@@ -2119,15 +2128,7 @@ function initializeUserActions() {
 
         button.addEventListener("click",async()=>{
 
-            if(
-
-                !confirm(
-
-                    "Delete this user?"
-
-                )
-
-            ) return;
+            if (!(await adminConfirm("Delete this user?", "Delete User"))) return;
 
             try{
 
@@ -2355,12 +2356,6 @@ function collectAdvertisementFormData() {
 
     }
 
-    if (mode === "popup" && type !== "video") {
-
-        throw new Error("Popup advertisements must use video.");
-
-    }
-
     if (type === "video" && !isSupportedVideoUrl(image)) {
 
         throw new Error("Video advertisement URL is invalid. Use a direct video URL or YouTube URL.");
@@ -2536,7 +2531,7 @@ function initializeAdvertisementActions() {
 
         button.addEventListener("click", async () => {
 
-            if (!confirm("Delete this advertisement?")) return;
+            if (!(await adminConfirm("Delete this advertisement?", "Delete Advertisement"))) return;
 
             try {
 
@@ -2822,15 +2817,7 @@ function initializeCommentActions() {
 
         button.addEventListener("click",async()=>{
 
-            if(
-
-                !confirm(
-
-                    "Delete this comment?"
-
-                )
-
-            ) return;
+            if (!(await adminConfirm("Delete this comment?", "Delete Comment"))) return;
 
             try{
 
@@ -3084,15 +3071,7 @@ function initializeNewsletterActions() {
 
         button.addEventListener("click",async()=>{
 
-            if(
-
-                !confirm(
-
-                    "Delete this subscriber?"
-
-                )
-
-            ) return;
+            if (!(await adminConfirm("Delete this subscriber?", "Delete Subscriber"))) return;
 
             try{
 

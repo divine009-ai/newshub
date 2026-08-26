@@ -157,8 +157,9 @@ class Home {
 
         try {
 
-            const [normalAds, popupAds] = await Promise.all([
+            const [normalAds, homepageAds, popupAds] = await Promise.all([
                 api.getAdvertisements("sidebar"),
+                api.getAdvertisements("homepage"),
                 api.getAdvertisements("popup")
             ]);
 
@@ -166,6 +167,7 @@ class Home {
 
             if (window.advertisementRenderer) {
 
+                advertisementRenderer.renderFloatingAd([...homepageAds, ...normalAds]);
                 advertisementRenderer.showPopup(popupAds);
 
             }

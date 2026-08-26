@@ -138,8 +138,9 @@ class CategoryPage {
                 ? ""
                 : this.canonicalCategory(this.category);
 
-            const [normalAds, popupAds] = await Promise.all([
+            const [normalAds, homepageAds, popupAds] = await Promise.all([
                 api.getAdvertisements("sidebar", category),
+                api.getAdvertisements("homepage", category),
                 api.getAdvertisements("popup", category)
             ]);
 
@@ -151,6 +152,7 @@ class CategoryPage {
 
             if (window.advertisementRenderer) {
 
+                advertisementRenderer.renderFloatingAd([...homepageAds, ...normalAds]);
                 advertisementRenderer.showPopup(popupAds);
 
             }

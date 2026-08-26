@@ -66,6 +66,31 @@ document.addEventListener("DOMContentLoaded", () => {
     const applyDeveloper =
         document.getElementById("applyDeveloper");
 
+    const pageParams = new URLSearchParams(window.location.search);
+
+    function safeNextUrl() {
+
+        const next = pageParams.get("next");
+
+        if (!next) return "index.html";
+
+        try {
+
+            const url = new URL(next, window.location.href);
+
+            if (url.origin !== window.location.origin) return "index.html";
+
+            return `${url.pathname.replace(/^\/+/, "")}${url.search}${url.hash}` || "index.html";
+
+        }
+        catch(error) {
+
+            return "index.html";
+
+        }
+
+    }
+
 
 
     /*======================================================
@@ -172,9 +197,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function showSuccess(message) {
 
-        if (typeof toast !== "undefined") {
+        if (typeof modal !== "undefined") {
 
-            toast.success(message);
+            modal.success("Success", message);
 
         }
 
@@ -190,7 +215,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (typeof modal !== "undefined") {
 
-            modal.error(message);
+            modal.error("Login Error", message);
 
         }
 
@@ -219,6 +244,12 @@ document.addEventListener("DOMContentLoaded", () => {
             loader.hide();
 
         }
+
+    }
+
+    if (pageParams.get("mode") === "register") {
+
+        openRegister();
 
     }
 
@@ -340,11 +371,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 setTimeout(() => {
 
-                    window.location.href =
+                    window.location.href = safeNextUrl();
 
-                        "index.html";
-
-                }, 1200);
+                }, 1800);
 
             }
 

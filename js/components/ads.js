@@ -8,6 +8,9 @@ class AdvertisementRenderer {
 
         this.mediaTimeout = 5000;
         this.popupKey = "newshub:lastPopupAd";
+        this.floatingKey = "newshub:lastFloatingAd";
+        this.popupShownKey = "newshub:lastPopupShownAt";
+        this.popupCooldown = 10 * 60 * 1000;
         this.userInteracted = false;
         this.pendingPopups = [];
         this.interactionEvents = ["pointerdown", "keydown", "touchstart", "click"];
@@ -60,8 +63,7 @@ class AdvertisementRenderer {
         return ads.filter(ad =>
             ad &&
             ad.active !== false &&
-            String(ad.mode || "").toLowerCase() === "popup" &&
-            String(ad.type || "video").toLowerCase() === "video"
+            String(ad.mode || "").toLowerCase() === "popup"
         );
 
     }
@@ -130,6 +132,7 @@ class AdvertisementRenderer {
         const url = this.mediaUrl(ad);
         const title = ad.title || "Advertisement";
         const shouldAutoplay = options.autoplay === true;
+        const eager = options.eager === true;
 
         if (this.isVideo(ad)) {
 
@@ -141,7 +144,7 @@ class AdvertisementRenderer {
                     <iframe
                         src="${embed}"
                         title="${title}"
-                        loading="lazy"
+                        loading="${eager ? "eager" : "lazy"}"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                         allowfullscreen>
                     </iframe>
@@ -157,7 +160,36 @@ class AdvertisementRenderer {
 
         }
 
-        return `<img src="${url}" alt="${title}" loading="lazy">`;
+        return `<img src="${url}" alt="${title}" loading="${eager ? "eager" : "lazy"}" ${eager ? 'fetchpriority="high"' : ""}>`;
+
+    }
+
+    shouldShowPopupNow() {
+
+        const lastShown = Number(localStorage.getItem(this.popupShownKey) || 0);
+
+        return !lastShown || Date.now() - lastShown > this.popupCooldown;
+
+    }
+
+    markPopupShown() {
+
+        localStorage.setItem(this.popupShownKey, String(Date.now()));
+
+    }
+
+    preloadPopupMedia(ad) {
+
+        const url = this.mediaUrl(ad);
+
+        if (!url || this.youtubeEmbedUrl(url)) return;
+
+        const link = document.createElement("link");
+
+        link.rel = "preload";
+        link.href = url;
+        link.as = this.isVideo(ad) ? "video" : "image";
+        document.head.appendChild(link);
 
     }
 
@@ -284,21 +316,23 @@ class AdvertisementRenderer {
 
     }
 
-    pickRotatingAd(ads = []) {
+    pickRotatingAd(ads = [], storageKey = this.popupKey) {
 
         if (ads.length <= 1) return ads[0] || null;
 
-        const lastId = localStorage.getItem(this.popupKey);
+        const lastId = localStorage.getItem(storageKey);
         const currentIndex = ads.findIndex(ad => ad.id === lastId);
         const next = ads[(currentIndex + 1) % ads.length] || ads[0];
 
-        localStorage.setItem(this.popupKey, next.id || "");
+        localStorage.setItem(storageKey, next.id || "");
 
         return next;
 
     }
 
     showPopup(ads = [], failedIds = new Set()) {
+
+        if (!this.shouldShowPopupNow()) return;
 
         if (!this.userInteracted) {
 
@@ -319,6 +353,9 @@ class AdvertisementRenderer {
 
         if (!ad) return;
 
+        this.preloadPopupMedia(ad);
+        this.markPopupShown();
+
         const root = document.getElementById("modal-root") || document.body;
         const delay = Number(ad.skipDelay || 5) * 1000;
         const media = this.mediaUrl(ad);
@@ -337,9 +374,8 @@ class AdvertisementRenderer {
                 <a class="ad-popup__media" href="${link}" target="_blank" rel="noopener">
                     ${this.mediaHtml({
                         ...ad,
-                        type: "video",
                         image: media
-                    }, { autoplay: true })}
+                    }, { autoplay: this.isVideo(ad), eager: true })}
                 </a>
                 ${ad.title ? `<a class="ad-popup__caption" href="${link}" target="_blank" rel="noopener">${ad.title}</a>` : ""}
             </div>
@@ -362,7 +398,7 @@ class AdvertisementRenderer {
 
             failedIds.add(ad.id);
             popup.remove();
-            this.showPopup(ads, failedIds);
+            this.renderPopup(ads, failedIds);
 
         };
 
@@ -393,6 +429,32 @@ class AdvertisementRenderer {
             }, this.mediaTimeout);
 
         }
+
+    }
+
+    renderFloatingAd(ads = []) {
+
+        const normalAds = this.activeNormal(ads);
+        const ad = this.pickRotatingAd(normalAds, this.floatingKey);
+        const existing = document.querySelector(".site-ad-rail");
+
+        if (existing) existing.remove();
+        if (!ad) return;
+
+        const rail = document.createElement("aside");
+
+        rail.className = "site-ad-rail";
+        rail.setAttribute("aria-label", "Advertisement");
+        rail.innerHTML = `
+            <a href="${ad.link || "#"}" target="_blank" rel="noopener">
+                <span>Advertisement</span>
+                <div class="site-ad-rail__media">
+                    ${this.mediaHtml(ad, { eager: true })}
+                </div>
+            </a>
+        `;
+
+        document.body.appendChild(rail);
 
     }
 
