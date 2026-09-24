@@ -28,9 +28,44 @@ class Navbar {
 
     }
 
-    createNavigation() {
+    primaryNavigation() {
 
-        return CONFIG.navigation.map(item => {
+        return CONFIG.primaryNavigation || CONFIG.navigation || [];
+
+    }
+
+    categoryNavigation() {
+
+        return CONFIG.categories || (CONFIG.navigation || []).filter(item => {
+
+            return item.link.startsWith("category.html?") &&
+                !item.link.includes("category=latest");
+
+        });
+
+    }
+
+    categoryIsActive() {
+
+        if (this.currentPage !== "category.html") return false;
+
+        const currentCategory = (this.params.get("category") || "").toLowerCase();
+
+        return this.categoryNavigation().some(item => {
+
+            const category = new URL(item.link, window.location.href)
+                .searchParams
+                .get("category");
+
+            return String(category || "").toLowerCase() === currentCategory;
+
+        });
+
+    }
+
+    createLinks(items = []) {
+
+        return items.map(item => {
 
             const active = this.isActive(item)
                 ? "active"
@@ -48,6 +83,32 @@ class Navbar {
 
     }
 
+    createNavigation() {
+
+        const categories = this.categoryNavigation();
+        const categoryActive = this.categoryIsActive() ? "active" : "";
+
+        return `
+            ${this.createLinks(this.primaryNavigation())}
+            <li class="navbar__item navbar__item--categories">
+                <details class="navbar__categories" id="navbarCategories">
+                    <summary class="navbar__link navbar__category-toggle ${categoryActive}">
+                        Categories
+                        <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
+                    </summary>
+                    <div class="navbar__category-menu">
+                        ${categories.map(item => `
+                            <a href="${item.link}" class="${this.isActive(item) ? "active" : ""}">
+                                ${item.title}
+                            </a>
+                        `).join("")}
+                    </div>
+                </details>
+            </li>
+        `;
+
+    }
+
     render() {
 
         if (!this.container) return;
@@ -62,7 +123,8 @@ class Navbar {
 
             <a href="index.html" class="navbar__logo">
 
-                ${CONFIG.app.name}
+                <img src="${CONFIG.app.logo}" alt="${CONFIG.app.name}">
+                <span>${CONFIG.app.name}</span>
 
             </a>
 
@@ -147,6 +209,7 @@ class Navbar {
         const button = document.getElementById("menuToggle");
 
         const menu = document.getElementById("navbarMenu");
+        const categories = document.getElementById("navbarCategories");
 
         if (!button || !menu) return;
 
@@ -183,6 +246,8 @@ class Navbar {
 
                 this.closeMobileMenu();
 
+                if (categories) categories.open = false;
+
             }
 
         });
@@ -192,6 +257,8 @@ class Navbar {
             if (window.innerWidth > 768) {
 
                 this.closeMobileMenu();
+
+                if (categories) categories.open = false;
 
             }
 
@@ -303,8 +370,8 @@ class Navbar {
             profile.approved &&
             profile.status !== "blocked";
 
-        const avatar = window.NewsHubAvatar
-            ? NewsHubAvatar.imageHtml(profile, "navbar__avatar")
+        const avatar = window.HitzoneAfricaAvatar
+            ? HitzoneAfricaAvatar.imageHtml(profile, "navbar__avatar")
             : "";
 
         authAction.innerHTML = `
@@ -346,7 +413,7 @@ class Navbar {
 
         this.updateAuth(window.currentUserProfile || null);
 
-        window.addEventListener("newshub:user", event => {
+        window.addEventListener("hitzoneafrica:user", event => {
 
             this.updateAuth(event.detail);
 
@@ -358,8 +425,8 @@ class Navbar {
 
         this.render();
 
-        window.newshubNavbar = this;
-        window.newshubToggleNavbar = () => this.toggleMobileMenu();
+        window.hitzoneAfricaNavbar = this;
+        window.hitzoneAfricaToggleNavbar = () => this.toggleMobileMenu();
 
         this.mobileMenu();
 

@@ -162,6 +162,72 @@ class API {
 
     }
 
+    async getVideoNews(limit = 30) {
+
+        const snapshot = await this.db
+            .collection("articles")
+            .where("published", "==", true)
+            .orderBy("createdAt", "desc")
+            .limit(limit)
+            .get();
+
+        return this.mapDocuments(snapshot, "articles")
+            .filter(article => String(article.video || article.coverVideo || "").trim());
+
+    }
+
+    async getMusicTracks() {
+
+        const snapshot = await this.db
+            .collection("music")
+            .where("published", "==", true)
+            .limit(100)
+            .get();
+
+        return snapshot.docs
+            .map(doc => ({ id: doc.id, ...doc.data() }))
+            .sort((left, right) => {
+
+                const leftOrder = Number(left.order || 0);
+                const rightOrder = Number(right.order || 0);
+
+                if (leftOrder !== rightOrder) return leftOrder - rightOrder;
+
+                const leftDate = left.createdAt?.toMillis?.() || 0;
+                const rightDate = right.createdAt?.toMillis?.() || 0;
+
+                return rightDate - leftDate;
+
+            });
+
+    }
+
+    async getModels() {
+
+        const snapshot = await this.db
+            .collection("models")
+            .where("published", "==", true)
+            .limit(100)
+            .get();
+
+        return snapshot.docs
+            .map(doc => ({ id: doc.id, ...doc.data() }))
+            .sort((left, right) => {
+
+                const leftOrder = Number(left.order || 0);
+                const rightOrder = Number(right.order || 0);
+
+                if (leftOrder !== rightOrder) return leftOrder - rightOrder;
+
+                const leftDate = left.createdAt?.toMillis?.() || 0;
+                const rightDate = right.createdAt?.toMillis?.() || 0;
+
+                return rightDate - leftDate;
+
+            });
+
+    }
+
     /*==========================================
         CATEGORY
     ==========================================*/
@@ -452,6 +518,20 @@ class API {
         ADVERTISEMENTS
     ==========================================*/
 
+    advertisementIsActive(ad, now = new Date()) {
+
+        if (!ad || ad.active === false || ad.published === false) return false;
+
+        const start = ad.startDate ? new Date(ad.startDate) : null;
+        const end = ad.endDate ? new Date(ad.endDate) : null;
+
+        if (start && !Number.isNaN(start.getTime()) && start > now) return false;
+        if (end && !Number.isNaN(end.getTime()) && end < now) return false;
+
+        return true;
+
+    }
+
     async getAdvertisements(position, category = "") {
 
         const snapshot = await this.db
@@ -481,7 +561,7 @@ class API {
                 const adPosition = String(ad.position || "sidebar").toLowerCase();
                 const adMode = String(ad.mode || "normal").toLowerCase();
 
-                if (ad.published === false) return false;
+                if (!this.advertisementIsActive(ad, now)) return false;
 
                 if (requestedPosition === "popup") {
 
@@ -507,13 +587,28 @@ class API {
 
                 }
 
-                const start = ad.startDate ? new Date(ad.startDate) : null;
-                const end = ad.endDate ? new Date(ad.endDate) : null;
-
-                if (start && !Number.isNaN(start.getTime()) && start > now) return false;
-                if (end && !Number.isNaN(end.getTime()) && end < now) return false;
-
                 return true;
+
+            });
+
+    }
+
+    async getAdvertisementGallery() {
+
+        const snapshot = await this.db
+            .collection("advertisements")
+            .where("active", "==", true)
+            .get();
+
+        const now = new Date();
+
+        return snapshot.docs
+            .map(doc => ({ id: doc.id, ...doc.data() }))
+            .filter(ad => {
+
+                return this.advertisementIsActive(ad, now) &&
+                    ad.showInGallery === true &&
+                    String(ad.mode || "normal").toLowerCase() !== "popup";
 
             });
 

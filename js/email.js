@@ -2,7 +2,7 @@
 
 /*==========================================================
     EMAIL.JS
-    NewsHub Email Service
+    Hitzone Africa Email Service
 ==========================================================*/
 
 const EMAIL_CONFIG = {

@@ -29,7 +29,7 @@ class CategoryPage {
 
     canonicalCategory(value) {
 
-        const categories = CONFIG.navigation
+        const categories = (CONFIG.categories || CONFIG.navigation)
             .map(item => new URL(item.link, window.location.href).searchParams.get("category"))
             .filter(Boolean);
 
@@ -60,7 +60,7 @@ class CategoryPage {
 
         const label = this.pageLabel();
 
-        document.title = `${label} | NewsHub`;
+        document.title = `${label} | Hitzone Africa`;
 
         if (this.title) this.title.textContent = label;
 
@@ -69,7 +69,7 @@ class CategoryPage {
         if (!this.description) return;
 
         this.description.textContent = this.searchTerm
-            ? "Stories matching your search across NewsHub."
+            ? "Stories matching your search across Hitzone Africa."
             : label === "Latest News"
                 ? "The newest published stories from across every desk."
                 : `Latest published stories in ${label}.`;
@@ -226,7 +226,7 @@ class CategoryPage {
                     </h3>
                     <p>${this.escape(article.description || "")}</p>
                     <div class="news-card__meta">
-                        <span><i class="fa-solid fa-user"></i>${this.escape(article.author || "NewsHub")}</span>
+                        <span><i class="fa-solid fa-user"></i>${this.escape(article.author || "Hitzone Africa")}</span>
                         <span><i class="fa-solid fa-calendar"></i>${this.escape(article.date || "")}</span>
                     </div>
                 </div>

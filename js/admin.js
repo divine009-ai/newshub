@@ -63,6 +63,12 @@ document.addEventListener("DOMContentLoaded", () => {
         advertisements:
             document.getElementById("advertisementsPage"),
 
+        models:
+            document.getElementById("modelsPage"),
+
+        music:
+            document.getElementById("musicPage"),
+
         comments:
             document.getElementById("commentsPage"),
 
@@ -249,11 +255,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 currentUser.name;
 
-            if (window.NewsHubAvatar) {
+            if (window.HitzoneAfricaAvatar) {
 
                 adminPhoto.src =
 
-                    NewsHubAvatar.src(currentUser);
+                    HitzoneAfricaAvatar.src(currentUser);
 
                 adminPhoto.classList.toggle("admin-ring", currentUser.role === "admin");
 
@@ -687,6 +693,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
                                 <option>
 
+                                    Politics
+
+                                </option>
+
+                                <option>
+
+                                    Africa
+
+                                </option>
+
+                                <option>
+
+                                    Business
+
+                                </option>
+
+                                <option>
+
                                     Technology
 
                                 </option>
@@ -699,12 +723,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
                                 <option>
 
-                                    Business
-
-                                </option>
-
-                                <option>
-
                                     Sports
 
                                 </option>
@@ -712,30 +730,6 @@ document.addEventListener("DOMContentLoaded", () => {
                                 <option>
 
                                     Entertainment
-
-                                </option>
-
-                                <option>
-
-                                    AI
-
-                                </option>
-
-                                <option>
-
-                                    World
-
-                                </option>
-
-                                <option>
-
-                                    Education
-
-                                </option>
-
-                                <option>
-
-                                    Lifestyle
 
                                 </option>
 
@@ -754,7 +748,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             <input
                                 type="text"
                                 id="articleTags"
-                                placeholder="AI, Apple, Gaming">
+                                placeholder="Politics, Africa, Technology">
 
                         </div>
 
@@ -991,7 +985,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         return (
             /\.(mp4|webm|ogg)(\?.*)?$/i.test(value) ||
-            /(?:youtube\.com|youtu\.be)/i.test(value)
+            /(?:youtube\.com|youtu\.be|x\.com|twitter\.com|facebook\.com)/i.test(value)
         );
 
     }
@@ -1016,6 +1010,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
         }
 
+        const categoryInput = document.getElementById("articleCategory");
+        const category = categoryInput.dataset.originalCategory &&
+            categoryInput.dataset.categoryTouched !== "true"
+            ? categoryInput.dataset.originalCategory
+            : categoryInput.value;
+
         const data = {
             title,
             slug: document.getElementById("articleSlug").value.trim() || createSlug(title),
@@ -1025,14 +1025,14 @@ document.addEventListener("DOMContentLoaded", () => {
             image: imageUrl,
             coverVideo: videoUrl,
             video: videoUrl,
-            category: document.getElementById("articleCategory").value,
+            category,
             tags: document
                 .getElementById("articleTags")
                 .value
                 .split(",")
                 .map(tag => tag.trim())
                 .filter(Boolean),
-            author: document.getElementById("articleAuthor").value.trim() || currentUser?.name || "NewsHub",
+            author: document.getElementById("articleAuthor").value.trim() || currentUser?.name || "Hitzone Africa",
             featured: document.getElementById("featured").checked,
             breaking: document.getElementById("breaking").checked,
             published: document.getElementById("published").checked,
@@ -1468,8 +1468,21 @@ async function editArticle(articleId) {
         document.getElementById("articleDescription").value =
             article.description || "";
 
-        document.getElementById("articleCategory").value =
-            article.category || "Technology";
+        const categoryInput = document.getElementById("articleCategory");
+        const categoryOptions = Array.from(categoryInput.options)
+            .map(option => option.value);
+        const existingCategory = article.category || "Technology";
+
+        categoryInput.value = categoryOptions.includes(existingCategory)
+            ? existingCategory
+            : "Politics";
+        categoryInput.dataset.originalCategory = existingCategory;
+        categoryInput.dataset.categoryTouched = "false";
+        categoryInput.addEventListener("change", () => {
+
+            categoryInput.dataset.categoryTouched = "true";
+
+        });
 
         document.getElementById("articleTags").value =
             article.tags
@@ -2223,6 +2236,12 @@ function escapeAdmin(value = "") {
 
 }
 
+function displayAdminBrand(value = "") {
+
+    return String(value || "").replace(/\bnews\s*hub\b/gi, "Hitzone Africa");
+
+}
+
 function advertisementForm(ad = {}, id = "") {
 
     return `
@@ -2239,11 +2258,11 @@ function advertisementForm(ad = {}, id = "") {
                 <div class="form-row">
                     <div class="form-group">
                         <label>Title</label>
-                        <input id="adTitle" value="${escapeAdmin(ad.title || "")}" required>
+                        <input id="adTitle" value="${escapeAdmin(displayAdminBrand(ad.title || ""))}" required>
                     </div>
                     <div class="form-group">
                         <label>Advertiser</label>
-                        <input id="adAdvertiser" value="${escapeAdmin(ad.advertiser || "")}">
+                        <input id="adAdvertiser" value="${escapeAdmin(displayAdminBrand(ad.advertiser || ""))}">
                     </div>
                 </div>
 
@@ -2259,7 +2278,7 @@ function advertisementForm(ad = {}, id = "") {
                     <div class="form-group">
                         <label>Category</label>
                         <select id="adCategory">
-                            ${["global", "Technology", "Gaming", "Business", "Sports", "Entertainment", "AI", "World"].map(category => `
+                            ${["global", "Politics", "Africa", "Business", "Technology", "Gaming", "Sports", "Entertainment"].map(category => `
                                 <option value="${category}" ${String(ad.category || "global") === category ? "selected" : ""}>${category}</option>
                             `).join("")}
                         </select>
@@ -2310,6 +2329,11 @@ function advertisementForm(ad = {}, id = "") {
                     <label>Popup Skip Delay (seconds)</label>
                     <input type="number" min="0" max="60" id="adSkipDelay" value="${escapeAdmin(ad.skipDelay || 5)}">
                 </div>
+
+                <label>
+                    <input type="checkbox" id="adShowInGallery" ${ad.showInGallery === true ? "checked" : ""}>
+                    Show this normal campaign in the public gallery
+                </label>
 
                 <label>
                     <input type="checkbox" id="adActive" ${ad.active !== false ? "checked" : ""}>
@@ -2373,6 +2397,7 @@ function collectAdvertisementFormData() {
         type,
         mode,
         skipDelay: Number(document.getElementById("adSkipDelay").value || 5),
+        showInGallery: document.getElementById("adShowInGallery").checked,
         startDate: document.getElementById("adStartDate").value,
         endDate: document.getElementById("adEndDate").value,
         active: document.getElementById("adActive").checked,
@@ -2397,8 +2422,8 @@ async function renderAdvertisementsPage() {
 
             return `
                 <tr>
-                    <td>${escapeAdmin(ad.title || "-")}</td>
-                    <td>${escapeAdmin(ad.advertiser || "-")}</td>
+                    <td>${escapeAdmin(displayAdminBrand(ad.title || "-"))}</td>
+                    <td>${escapeAdmin(displayAdminBrand(ad.advertiser || "-"))}</td>
                     <td>${escapeAdmin(ad.position || "-")}</td>
                     <td>${escapeAdmin(ad.category || "global")}</td>
                     <td>${escapeAdmin((ad.type || "image").toUpperCase())}</td>
@@ -2661,7 +2686,501 @@ function initializeAdvertisementForm() {
 
 }
 
-renderAdvertisementsPage();/*==========================================================
+renderAdvertisementsPage();
+
+/*==========================================================
+    MODELS
+==========================================================*/
+
+function modelForm(model = {}, id = "") {
+
+    const categoryOptions = ["Campaign", "Fashion", "Lifestyle", "Talent", "Other"];
+
+    return '<div class="admin-card">' +
+        '<div class="admin-card-header"><div><h3>' +
+        (id ? "Edit Model" : "Create Model") +
+        '</h3><p>Publish featured profiles to the public Models section.</p></div>' +
+        '<button class="admin-btn" type="button" id="cancelModelForm">Cancel</button></div>' +
+        '<form id="modelForm" class="admin-form" data-id="' + escapeAdmin(id) + '">' +
+        '<div class="form-row"><div class="form-group"><label>Name</label>' +
+        '<input id="modelName" value="' + escapeAdmin(model.name || "") + '" required></div>' +
+        '<div class="form-group"><label>Role</label>' +
+        '<input id="modelRole" value="' + escapeAdmin(model.role || "") + '" placeholder="e.g. Campaign model"></div></div>' +
+        '<div class="form-row"><div class="form-group"><label>Location</label>' +
+        '<input id="modelLocation" value="' + escapeAdmin(model.location || "") + '"></div>' +
+        '<div class="form-group"><label>Category</label><select id="modelCategory">' +
+        categoryOptions.map(category => '<option value="' + escapeAdmin(category) + '"' +
+            (String(model.category || "Campaign") === category ? " selected" : "") +
+            ">" + escapeAdmin(category) + "</option>").join("") +
+        "</select></div></div>" +
+        '<div class="form-row"><div class="form-group"><label>Profile Image URL</label>' +
+        '<input id="modelImageUrl" type="url" value="' +
+        escapeAdmin(model.imageUrl || model.image || model.photo || "") +
+        '" placeholder="https://..."></div>' +
+        '<div class="form-group"><label>Profile Link</label>' +
+        '<input id="modelProfileUrl" type="url" value="' +
+        escapeAdmin(model.profileUrl || model.link || "") +
+        '" placeholder="https://..."></div></div>' +
+        '<div class="form-row"><div class="form-group"><label>Display Order</label>' +
+        '<input id="modelOrder" type="number" min="0" value="' +
+        escapeAdmin(model.order || 0) + '"></div></div>' +
+        '<label><input type="checkbox" id="modelPublished" ' +
+        (model.published !== false ? "checked" : "") +
+        '> Publish this profile</label>' +
+        '<button class="admin-btn primary" type="submit">' +
+        (id ? "Save Model" : "Create Model") + "</button></form></div>";
+
+}
+
+function collectModelFormData() {
+
+    const name = document.getElementById("modelName").value.trim();
+    const imageUrl = document.getElementById("modelImageUrl").value.trim();
+    const profileUrl = document.getElementById("modelProfileUrl").value.trim();
+
+    if (!name) throw new Error("Model name is required.");
+    if (!isValidOptionalUrl(imageUrl)) throw new Error("Profile image URL must start with http:// or https://.");
+    if (!isValidOptionalUrl(profileUrl)) throw new Error("Profile link must start with http:// or https://.");
+
+    return {
+        name,
+        role: document.getElementById("modelRole").value.trim(),
+        location: document.getElementById("modelLocation").value.trim(),
+        category: document.getElementById("modelCategory").value,
+        imageUrl,
+        profileUrl,
+        order: Number(document.getElementById("modelOrder").value || 0),
+        published: document.getElementById("modelPublished").checked,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    };
+
+}
+
+async function renderModelsPage() {
+
+    try {
+
+        loader.show("Loading models...");
+
+        const snapshot = await db.collection("models").get();
+        const records = snapshot.docs
+            .map(doc => ({ id: doc.id, ...doc.data() }))
+            .sort((left, right) => {
+
+                const leftOrder = Number(left.order || 0);
+                const rightOrder = Number(right.order || 0);
+
+                return leftOrder === rightOrder
+                    ? String(left.name || "").localeCompare(String(right.name || ""))
+                    : leftOrder - rightOrder;
+
+            });
+        const rows = records.map(model => {
+
+            return "<tr><td>" + escapeAdmin(model.name || "-") + "</td>" +
+                "<td>" + escapeAdmin(model.role || "-") + "</td>" +
+                "<td>" + escapeAdmin(model.category || "-") + "</td>" +
+                '<td><span class="badge ' + (model.published !== false ? "published" : "blocked") +
+                '">' + (model.published !== false ? "Published" : "Draft") + "</span></td>" +
+                '<td><div class="table-actions">' +
+                '<button class="edit-model" data-id="' + model.id + '" aria-label="Edit model"><i class="fa-solid fa-pen"></i></button>' +
+                '<button class="delete-model" data-id="' + model.id + '" aria-label="Delete model"><i class="fa-solid fa-trash"></i></button>' +
+                "</div></td></tr>";
+
+        }).join("");
+
+        pages.models.innerHTML = '<div class="admin-card"><div class="admin-card-header">' +
+            "<div><h3>Models</h3><p>Manage the profiles that appear on the public Advertise page.</p></div>" +
+            '<button class="admin-btn primary" type="button" id="createModel"><i class="fa-solid fa-plus"></i> Create Model</button>' +
+            "</div><table class=\"admin-table\"><thead><tr><th>Name</th><th>Role</th><th>Category</th><th>Status</th><th>Actions</th></tr></thead><tbody>" +
+            (rows || '<tr><td colspan="5">No model profiles yet.</td></tr>') +
+            "</tbody></table></div>";
+
+        initializeModelActions();
+        loader.hide();
+
+    }
+    catch(error) {
+
+        loader.hide();
+        console.error("Failed to load models:", error);
+        modal.error(error.message || "Failed to load models.");
+
+    }
+
+}
+
+function initializeModelActions() {
+
+    const create = document.getElementById("createModel");
+
+    if (create) {
+
+        create.addEventListener("click", () => {
+
+            pages.models.innerHTML = modelForm();
+            initializeModelForm();
+
+        });
+
+    }
+
+    document.querySelectorAll(".edit-model").forEach(button => {
+
+        button.addEventListener("click", async () => {
+
+            try {
+
+                loader.show("Loading model...");
+                const doc = await db.collection("models").doc(button.dataset.id).get();
+                loader.hide();
+
+                if (!doc.exists) {
+
+                    modal.error("Model profile not found.");
+                    return;
+
+                }
+
+                pages.models.innerHTML = modelForm(doc.data(), doc.id);
+                initializeModelForm();
+
+            }
+            catch(error) {
+
+                loader.hide();
+                console.error("Failed to load model:", error);
+                modal.error(error.message || "Failed to load model.");
+
+            }
+
+        });
+
+    });
+
+    document.querySelectorAll(".delete-model").forEach(button => {
+
+        button.addEventListener("click", async () => {
+
+            if (!(await adminConfirm("Delete this model profile?", "Delete Model"))) return;
+
+            try {
+
+                loader.show("Deleting model...");
+                await db.collection("models").doc(button.dataset.id).delete();
+                loader.hide();
+                toast.success("Model deleted successfully.");
+                renderModelsPage();
+
+            }
+            catch(error) {
+
+                loader.hide();
+                console.error("Failed to delete model:", error);
+                modal.error(error.message || "Failed to delete model.");
+
+            }
+
+        });
+
+    });
+
+}
+
+function initializeModelForm() {
+
+    const form = document.getElementById("modelForm");
+    const cancel = document.getElementById("cancelModelForm");
+
+    if (cancel) cancel.addEventListener("click", renderModelsPage);
+    if (!form) return;
+
+    form.addEventListener("submit", async event => {
+
+        event.preventDefault();
+
+        try {
+
+            const id = form.dataset.id;
+            const data = collectModelFormData();
+
+            loader.show(id ? "Saving model..." : "Creating model...");
+
+            if (id) {
+
+                await db.collection("models").doc(id).update(data);
+                toast.success("Model updated.");
+
+            }
+            else {
+
+                await db.collection("models").add({
+                    ...data,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                toast.success("Model created successfully.");
+
+            }
+
+            loader.hide();
+            renderModelsPage();
+
+        }
+        catch(error) {
+
+            loader.hide();
+            console.error("Failed to save model:", error);
+            modal.error(error.message || "Failed to save model.");
+
+        }
+
+    });
+
+}
+
+/*==========================================================
+    MUSIC
+==========================================================*/
+
+function musicForm(track = {}, id = "") {
+
+    return '<div class="admin-card"><div class="admin-card-header"><div><h3>' +
+        (id ? "Edit Track" : "Create Track") +
+        '</h3><p>Only publish music and downloads you have permission to distribute.</p></div>' +
+        '<button class="admin-btn" type="button" id="cancelMusicForm">Cancel</button></div>' +
+        '<form id="musicForm" class="admin-form" data-id="' + escapeAdmin(id) + '">' +
+        '<div class="form-row"><div class="form-group"><label>Title</label>' +
+        '<input id="musicTitle" value="' + escapeAdmin(track.title || track.name || "") + '" required></div>' +
+        '<div class="form-group"><label>Artist</label>' +
+        '<input id="musicArtist" value="' + escapeAdmin(track.artist || track.author || "") + '" required></div></div>' +
+        '<div class="form-row"><div class="form-group"><label>Genre</label>' +
+        '<input id="musicGenre" value="' + escapeAdmin(track.genre || "") + '"></div>' +
+        '<div class="form-group"><label>Display Order</label>' +
+        '<input id="musicOrder" type="number" min="0" value="' + escapeAdmin(track.order || 0) + '"></div></div>' +
+        '<div class="form-group"><label>Cover Image URL</label>' +
+        '<input id="musicCoverImage" type="url" value="' + escapeAdmin(track.coverImage || track.image || "") + '" placeholder="https://..."></div>' +
+        '<div class="form-group"><label>Preview Audio URL</label>' +
+        '<input id="musicPreviewUrl" type="url" value="' + escapeAdmin(track.previewUrl || track.audioUrl || track.streamUrl || "") + '" placeholder="https://..."></div>' +
+        '<div class="form-group"><label>Authorized Download URL</label>' +
+        '<input id="musicDownloadUrl" type="url" value="' + escapeAdmin(track.downloadUrl || "") + '" placeholder="https://..."></div>' +
+        '<label><input type="checkbox" id="musicDownloadAllowed" ' +
+        (track.downloadAllowed === true ? "checked" : "") +
+        '> This file is authorized for download</label>' +
+        '<label><input type="checkbox" id="musicPublished" ' +
+        (track.published !== false ? "checked" : "") +
+        '> Publish this track</label>' +
+        '<button class="admin-btn primary" type="submit">' +
+        (id ? "Save Track" : "Create Track") + "</button></form></div>";
+
+}
+
+function collectMusicFormData() {
+
+    const title = document.getElementById("musicTitle").value.trim();
+    const artist = document.getElementById("musicArtist").value.trim();
+    const coverImage = document.getElementById("musicCoverImage").value.trim();
+    const previewUrl = document.getElementById("musicPreviewUrl").value.trim();
+    const downloadUrl = document.getElementById("musicDownloadUrl").value.trim();
+    const downloadAllowed = document.getElementById("musicDownloadAllowed").checked;
+
+    if (!title) throw new Error("Track title is required.");
+    if (!artist) throw new Error("Artist is required.");
+    if (!isValidOptionalUrl(coverImage)) throw new Error("Cover image URL must start with http:// or https://.");
+    if (!isValidOptionalUrl(previewUrl)) throw new Error("Preview URL must start with http:// or https://.");
+    if (!isValidOptionalUrl(downloadUrl)) throw new Error("Download URL must start with http:// or https://.");
+    if (downloadAllowed && !downloadUrl) throw new Error("Add an authorized download URL before enabling downloads.");
+
+    return {
+        title,
+        artist,
+        genre: document.getElementById("musicGenre").value.trim(),
+        coverImage,
+        previewUrl,
+        downloadUrl,
+        downloadAllowed,
+        order: Number(document.getElementById("musicOrder").value || 0),
+        published: document.getElementById("musicPublished").checked,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    };
+
+}
+
+async function renderMusicPage() {
+
+    try {
+
+        loader.show("Loading music...");
+
+        const snapshot = await db.collection("music").get();
+        const records = snapshot.docs
+            .map(doc => ({ id: doc.id, ...doc.data() }))
+            .sort((left, right) => Number(left.order || 0) - Number(right.order || 0));
+        const rows = records.map(track => {
+
+            return "<tr><td>" + escapeAdmin(track.title || track.name || "-") + "</td>" +
+                "<td>" + escapeAdmin(track.artist || track.author || "-") + "</td>" +
+                "<td>" + escapeAdmin(track.genre || "-") + "</td>" +
+                '<td><span class="badge ' + (track.downloadAllowed ? "published" : "pending") +
+                '">' + (track.downloadAllowed ? "Download enabled" : "Stream only") + "</span></td>" +
+                '<td><span class="badge ' + (track.published !== false ? "published" : "blocked") +
+                '">' + (track.published !== false ? "Published" : "Draft") + "</span></td>" +
+                '<td><div class="table-actions">' +
+                '<button class="edit-music" data-id="' + track.id + '" aria-label="Edit track"><i class="fa-solid fa-pen"></i></button>' +
+                '<button class="delete-music" data-id="' + track.id + '" aria-label="Delete track"><i class="fa-solid fa-trash"></i></button>' +
+                "</div></td></tr>";
+
+        }).join("");
+
+        pages.music.innerHTML = '<div class="admin-card"><div class="admin-card-header">' +
+            "<div><h3>Music</h3><p>Manage authorized tracks, previews, and downloads.</p></div>" +
+            '<button class="admin-btn primary" type="button" id="createMusic"><i class="fa-solid fa-plus"></i> Create Track</button>' +
+            "</div><table class=\"admin-table\"><thead><tr><th>Title</th><th>Artist</th><th>Genre</th><th>Availability</th><th>Status</th><th>Actions</th></tr></thead><tbody>" +
+            (rows || '<tr><td colspan="6">No music tracks yet.</td></tr>') +
+            "</tbody></table></div>";
+
+        initializeMusicActions();
+        loader.hide();
+
+    }
+    catch(error) {
+
+        loader.hide();
+        console.error("Failed to load music:", error);
+        modal.error(error.message || "Failed to load music.");
+
+    }
+
+}
+
+function initializeMusicActions() {
+
+    const create = document.getElementById("createMusic");
+
+    if (create) {
+
+        create.addEventListener("click", () => {
+
+            pages.music.innerHTML = musicForm();
+            initializeMusicForm();
+
+        });
+
+    }
+
+    document.querySelectorAll(".edit-music").forEach(button => {
+
+        button.addEventListener("click", async () => {
+
+            try {
+
+                loader.show("Loading track...");
+                const doc = await db.collection("music").doc(button.dataset.id).get();
+                loader.hide();
+
+                if (!doc.exists) {
+
+                    modal.error("Music track not found.");
+                    return;
+
+                }
+
+                pages.music.innerHTML = musicForm(doc.data(), doc.id);
+                initializeMusicForm();
+
+            }
+            catch(error) {
+
+                loader.hide();
+                console.error("Failed to load track:", error);
+                modal.error(error.message || "Failed to load track.");
+
+            }
+
+        });
+
+    });
+
+    document.querySelectorAll(".delete-music").forEach(button => {
+
+        button.addEventListener("click", async () => {
+
+            if (!(await adminConfirm("Delete this music track?", "Delete Track"))) return;
+
+            try {
+
+                loader.show("Deleting track...");
+                await db.collection("music").doc(button.dataset.id).delete();
+                loader.hide();
+                toast.success("Music track deleted successfully.");
+                renderMusicPage();
+
+            }
+            catch(error) {
+
+                loader.hide();
+                console.error("Failed to delete track:", error);
+                modal.error(error.message || "Failed to delete track.");
+
+            }
+
+        });
+
+    });
+
+}
+
+function initializeMusicForm() {
+
+    const form = document.getElementById("musicForm");
+    const cancel = document.getElementById("cancelMusicForm");
+
+    if (cancel) cancel.addEventListener("click", renderMusicPage);
+    if (!form) return;
+
+    form.addEventListener("submit", async event => {
+
+        event.preventDefault();
+
+        try {
+
+            const id = form.dataset.id;
+            const data = collectMusicFormData();
+
+            loader.show(id ? "Saving track..." : "Creating track...");
+
+            if (id) {
+
+                await db.collection("music").doc(id).update(data);
+                toast.success("Music track updated.");
+
+            }
+            else {
+
+                await db.collection("music").add({
+                    ...data,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                toast.success("Music track created successfully.");
+
+            }
+
+            loader.hide();
+            renderMusicPage();
+
+        }
+        catch(error) {
+
+            loader.hide();
+            console.error("Failed to save track:", error);
+            modal.error(error.message || "Failed to save track.");
+
+        }
+
+    });
+
+}
+
+/*==========================================================
     COMMENTS
 ==========================================================*/
 
@@ -3303,7 +3822,7 @@ async function renderSettingsPage() {
 
                     </div>
 
-                    ${["facebook", "instagram", "twitter", "youtube", "tiktok", "linkedin"].map(platform => `
+                    ${["facebook", "instagram", "twitter", "youtube", "whatsapp", "tiktok", "linkedin"].map(platform => `
                         <div class="form-group">
                             <label>${platform === "twitter" ? "X/Twitter" : platform.charAt(0).toUpperCase() + platform.slice(1)}</label>
                             <input
@@ -3381,7 +3900,7 @@ function initializeSettings() {
 
             const social = {};
 
-            ["facebook", "instagram", "twitter", "youtube", "tiktok", "linkedin"].forEach(platform => {
+            ["facebook", "instagram", "twitter", "youtube", "whatsapp", "tiktok", "linkedin"].forEach(platform => {
 
                 const value = document.getElementById(`social_${platform}`).value.trim();
 
@@ -3501,6 +4020,18 @@ function loadCurrentPage(page){
 
             break;
 
+        case "models":
+
+            renderModelsPage();
+
+            break;
+
+        case "music":
+
+            renderMusicPage();
+
+            break;
+
         case "comments":
 
             renderCommentsPage();
@@ -3603,6 +4134,22 @@ window.refreshAdvertisements = ()=>{
 
 
 
+window.refreshModels = ()=>{
+
+    renderModelsPage();
+
+};
+
+
+
+window.refreshMusic = ()=>{
+
+    renderMusicPage();
+
+};
+
+
+
 window.refreshComments = ()=>{
 
     renderCommentsPage();
@@ -3633,7 +4180,7 @@ window.refreshSettings = ()=>{
 
 console.log(
 
-    "NewsHub CMS Loaded Successfully."
+    "Hitzone Africa CMS Loaded Successfully."
 
 );
 

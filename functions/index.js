@@ -29,7 +29,7 @@ function articleEmail({ article, articleId, siteUrl }) {
   return `
     <div style="font-family:Arial,sans-serif;background:#07111f;color:#f8fafc;padding:28px">
       <div style="max-width:640px;margin:auto;background:#101b2d;border:1px solid rgba(148,163,184,.25);padding:26px;border-radius:8px">
-        <h1 style="margin:0 0 8px;color:#fff">NewsHub</h1>
+        <h1 style="margin:0 0 8px;color:#fff">Hitzone Africa</h1>
         <p style="margin:0 0 22px;color:#94a3b8">A new story has just been published.</p>
         ${image ? `<img src="${image}" alt="" style="width:100%;border-radius:8px;margin-bottom:22px">` : ""}
         <h2 style="color:#fff;margin:0 0 12px">${article.title || "New Article"}</h2>
@@ -77,14 +77,14 @@ exports.sendArticleNewsletter = functions.firestore
 
     const transporter = getTransporter();
     const config = functions.config();
-    const siteUrl = config.newshub?.site_url || "https://news-a0114.web.app";
+    const siteUrl = config.hitzoneafrica?.site_url || "https://news-a0114.web.app";
     const from = config.smtp.from || config.smtp.user;
     const article = articleDoc.data();
 
     await transporter.sendMail({
       from,
       bcc: emails,
-      subject: `New on NewsHub: ${article.title || "Latest story"}`,
+      subject: `New on Hitzone Africa: ${article.title || "Latest story"}`,
       html: articleEmail({ article, articleId, siteUrl })
     });
 

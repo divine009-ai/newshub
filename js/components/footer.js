@@ -12,7 +12,9 @@ class Footer {
 
     createNavigation() {
 
-        return CONFIG.navigation.map(item => {
+        const categories = CONFIG.categories || CONFIG.navigation || [];
+
+        return categories.map(item => {
 
             return `
                 <li>
@@ -33,6 +35,7 @@ class Footer {
             instagram: "fa-instagram",
             twitter: "fa-x-twitter",
             youtube: "fa-youtube",
+            whatsapp: "fa-whatsapp",
             tiktok: "fa-tiktok",
             linkedin: "fa-linkedin-in"
         };
@@ -111,11 +114,9 @@ class Footer {
 
             <div class="footer__column">
 
-                <h2 class="footer__logo">
-
-                    ${CONFIG.app.name}
-
-                </h2>
+                <a href="index.html" class="footer__logo" aria-label="${CONFIG.app.name}">
+                    <img src="${CONFIG.app.logo}" alt="${CONFIG.app.name}">
+                </a>
 
                 <p>
 
@@ -175,7 +176,7 @@ class Footer {
 
                         <a href="category.html?category=latest">
 
-                            Latest News
+                            Explore
 
                         </a>
 
@@ -183,9 +184,9 @@ class Footer {
 
                     <li>
 
-                        <a href="category.html?category=Technology">
+                        <a href="videos.html">
 
-                            Technology
+                            Videos
 
                         </a>
 
@@ -193,9 +194,19 @@ class Footer {
 
                     <li>
 
-                        <a href="category.html?category=Gaming">
+                        <a href="music.html">
 
-                            Gaming
+                            Music
+
+                        </a>
+
+                    </li>
+
+                    <li>
+
+                        <a href="advertise.html">
+
+                            Advertisement
 
                         </a>
 

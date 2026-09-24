@@ -735,3 +735,84 @@ body:has(.admin-wrapper){
         font-size:1.8rem;
     }
 }
+
+/*==========================================================
+    HITZONE AFRICA CMS REFRESH
+==========================================================*/
+
+:root{
+    --admin-ink:#F8FAFC;
+    --admin-muted:#94A3B8;
+    --admin-line:rgba(255,255,255,.09);
+    --admin-soft:rgba(255,255,255,.055);
+}
+
+.admin-wrapper{
+    background:
+        radial-gradient(circle at 20% 0%, rgba(59,130,246,.18), transparent 32rem),
+        radial-gradient(circle at 100% 20%, rgba(6,182,212,.1), transparent 28rem),
+        linear-gradient(180deg,#060912 0%,#0B1120 100%);
+}
+
+.admin-logo{
+    gap:10px;
+}
+
+.admin-logo img{
+    width:170px;
+    max-width:100%;
+    height:auto;
+    display:block;
+}
+
+.admin-logo i{
+    display:none;
+}
+
+.admin-logo span{
+    padding:4px 8px;
+    border:1px solid rgba(6,182,212,.22);
+    border-radius:8px;
+    color:#7dd3fc;
+    font-size:.74rem;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+}
+
+.admin-sidebar.collapsed .admin-logo img{
+    width:48px;
+    height:48px;
+    object-fit:cover;
+    object-position:center;
+    border-radius:8px;
+}
+
+.admin-card,
+.dashboard-card,
+.quick-card{
+    background:rgba(255,255,255,.06);
+    border-color:rgba(255,255,255,.09);
+    box-shadow:0 20px 55px rgba(0,0,0,.28);
+}
+
+.admin-header{
+    background:rgba(6,9,18,.72);
+    border-bottom:1px solid rgba(255,255,255,.08);
+    backdrop-filter:blur(18px);
+}
+
+.sidebar-link.active{
+    background:linear-gradient(135deg,rgba(59,130,246,.28),rgba(6,182,212,.12));
+}
+
+@media (max-width:992px){
+    .admin-logo img{
+        width:160px;
+    }
+
+    .admin-sidebar.collapsed .admin-logo img{
+        width:160px;
+        height:auto;
+        object-fit:contain;
+    }
+}

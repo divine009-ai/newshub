@@ -20,7 +20,7 @@ const authReady = new Promise(resolve => {
 
             window.currentUser = null;
             window.currentUserProfile = null;
-            window.dispatchEvent(new CustomEvent("newshub:user", {
+            window.dispatchEvent(new CustomEvent("hitzoneafrica:user", {
                 detail: null
             }));
             resolve(null);
@@ -50,7 +50,7 @@ const authReady = new Promise(resolve => {
 
                 }
 
-                window.dispatchEvent(new CustomEvent("newshub:user", {
+                window.dispatchEvent(new CustomEvent("hitzoneafrica:user", {
                     detail: null
                 }));
                 resolve(null);
@@ -73,12 +73,12 @@ const authReady = new Promise(resolve => {
 
                     toast.error(
                         "Account Blocked",
-                        "This account can no longer access NewsHub."
+                        "This account can no longer access Hitzone Africa."
                     );
 
                 }
 
-                window.dispatchEvent(new CustomEvent("newshub:user", {
+                window.dispatchEvent(new CustomEvent("hitzoneafrica:user", {
                     detail: null
                 }));
                 resolve(null);
@@ -88,7 +88,7 @@ const authReady = new Promise(resolve => {
 
             window.currentUser = user;
             window.currentUserProfile = profile;
-            window.dispatchEvent(new CustomEvent("newshub:user", {
+            window.dispatchEvent(new CustomEvent("hitzoneafrica:user", {
                 detail: profile
             }));
             resolve(profile);

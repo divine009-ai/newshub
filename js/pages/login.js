@@ -257,13 +257,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (!file) return "";
 
-        if (!window.NewsHubAvatar) {
+        if (!window.HitzoneAfricaAvatar) {
 
             throw new Error("Profile image tools are not ready.");
 
         }
 
-        NewsHubAvatar.validateFile(file);
+        HitzoneAfricaAvatar.validateFile(file);
 
     }    /*======================================================
         LOGIN
@@ -549,8 +549,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 });
 
-                const photoDataUrl = photoFile && window.NewsHubAvatar
-                    ? await NewsHubAvatar.compressFile(photoFile)
+                const photoDataUrl = photoFile && window.HitzoneAfricaAvatar
+                    ? await HitzoneAfricaAvatar.compressFile(photoFile)
                     : "";
 
                 await db

@@ -249,11 +249,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 currentUser.name;
 
-            if (window.NewsHubAvatar) {
+            if (window.HitzoneAfricaAvatar) {
 
                 adminPhoto.src =
 
-                    NewsHubAvatar.src(currentUser);
+                    HitzoneAfricaAvatar.src(currentUser);
 
                 adminPhoto.classList.toggle("admin-ring", currentUser.role === "admin");
 
@@ -687,6 +687,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
                                 <option>
 
+                                    Politics
+
+                                </option>
+
+                                <option>
+
+                                    Africa
+
+                                </option>
+
+                                <option>
+
+                                    Business
+
+                                </option>
+
+                                <option>
+
                                     Technology
 
                                 </option>
@@ -699,12 +717,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
                                 <option>
 
-                                    Business
-
-                                </option>
-
-                                <option>
-
                                     Sports
 
                                 </option>
@@ -712,30 +724,6 @@ document.addEventListener("DOMContentLoaded", () => {
                                 <option>
 
                                     Entertainment
-
-                                </option>
-
-                                <option>
-
-                                    AI
-
-                                </option>
-
-                                <option>
-
-                                    World
-
-                                </option>
-
-                                <option>
-
-                                    Education
-
-                                </option>
-
-                                <option>
-
-                                    Lifestyle
 
                                 </option>
 
@@ -754,7 +742,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             <input
                                 type="text"
                                 id="articleTags"
-                                placeholder="AI, Apple, Gaming">
+                                placeholder="Politics, Africa, Technology">
 
                         </div>
 
@@ -991,7 +979,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         return (
             /\.(mp4|webm|ogg)(\?.*)?$/i.test(value) ||
-            /(?:youtube\.com|youtu\.be)/i.test(value)
+            /(?:youtube\.com|youtu\.be|x\.com|twitter\.com|facebook\.com)/i.test(value)
         );
 
     }
@@ -1032,7 +1020,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 .split(",")
                 .map(tag => tag.trim())
                 .filter(Boolean),
-            author: document.getElementById("articleAuthor").value.trim() || currentUser?.name || "NewsHub",
+            author: document.getElementById("articleAuthor").value.trim() || currentUser?.name || "Hitzone Africa",
             featured: document.getElementById("featured").checked,
             breaking: document.getElementById("breaking").checked,
             published: document.getElementById("published").checked,
@@ -2223,6 +2211,12 @@ function escapeAdmin(value = "") {
 
 }
 
+function displayAdminBrand(value = "") {
+
+    return String(value || "").replace(/\bnews\s*hub\b/gi, "Hitzone Africa");
+
+}
+
 function advertisementForm(ad = {}, id = "") {
 
     return `
@@ -2239,11 +2233,11 @@ function advertisementForm(ad = {}, id = "") {
                 <div class="form-row">
                     <div class="form-group">
                         <label>Title</label>
-                        <input id="adTitle" value="${escapeAdmin(ad.title || "")}" required>
+                        <input id="adTitle" value="${escapeAdmin(displayAdminBrand(ad.title || ""))}" required>
                     </div>
                     <div class="form-group">
                         <label>Advertiser</label>
-                        <input id="adAdvertiser" value="${escapeAdmin(ad.advertiser || "")}">
+                        <input id="adAdvertiser" value="${escapeAdmin(displayAdminBrand(ad.advertiser || ""))}">
                     </div>
                 </div>
 
@@ -2259,7 +2253,7 @@ function advertisementForm(ad = {}, id = "") {
                     <div class="form-group">
                         <label>Category</label>
                         <select id="adCategory">
-                            ${["global", "Technology", "Gaming", "Business", "Sports", "Entertainment", "AI", "World"].map(category => `
+                            ${["global", "Politics", "Africa", "Business", "Technology", "Gaming", "Sports", "Entertainment"].map(category => `
                                 <option value="${category}" ${String(ad.category || "global") === category ? "selected" : ""}>${category}</option>
                             `).join("")}
                         </select>
@@ -2397,8 +2391,8 @@ async function renderAdvertisementsPage() {
 
             return `
                 <tr>
-                    <td>${escapeAdmin(ad.title || "-")}</td>
-                    <td>${escapeAdmin(ad.advertiser || "-")}</td>
+                    <td>${escapeAdmin(displayAdminBrand(ad.title || "-"))}</td>
+                    <td>${escapeAdmin(displayAdminBrand(ad.advertiser || "-"))}</td>
                     <td>${escapeAdmin(ad.position || "-")}</td>
                     <td>${escapeAdmin(ad.category || "global")}</td>
                     <td>${escapeAdmin((ad.type || "image").toUpperCase())}</td>
@@ -3303,7 +3297,7 @@ async function renderSettingsPage() {
 
                     </div>
 
-                    ${["facebook", "instagram", "twitter", "youtube", "tiktok", "linkedin"].map(platform => `
+                    ${["facebook", "instagram", "twitter", "youtube", "whatsapp", "tiktok", "linkedin"].map(platform => `
                         <div class="form-group">
                             <label>${platform === "twitter" ? "X/Twitter" : platform.charAt(0).toUpperCase() + platform.slice(1)}</label>
                             <input
@@ -3381,7 +3375,7 @@ function initializeSettings() {
 
             const social = {};
 
-            ["facebook", "instagram", "twitter", "youtube", "tiktok", "linkedin"].forEach(platform => {
+            ["facebook", "instagram", "twitter", "youtube", "whatsapp", "tiktok", "linkedin"].forEach(platform => {
 
                 const value = document.getElementById(`social_${platform}`).value.trim();
 
@@ -3633,7 +3627,7 @@ window.refreshSettings = ()=>{
 
 console.log(
 
-    "NewsHub CMS Loaded Successfully."
+    "Hitzone Africa CMS Loaded Successfully."
 
 );
 

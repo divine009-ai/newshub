@@ -1,5 +1,5 @@
 /*==========================================================
-    NEWSHUB CONFIGURATION
+    Hitzone Africa CONFIGURATION
     Version: 1.0
 ==========================================================*/
 
@@ -11,13 +11,13 @@ const CONFIG = {
 
     app: {
 
-        name: "NewsHub",
+        name: "Hitzone Africa",
 
         version: "1.0.0",
 
-        slogan: "Latest News Around The World",
+        slogan: "Africa's Stories. Global Reach.",
 
-        logo: "assets/images/logo.png",
+        logo: "assets/images/hitzone-africa-logo.png",
 
         favicon: "assets/images/favicon.png"
 
@@ -49,7 +49,7 @@ const CONFIG = {
 
     theme: {
 
-        default: "light",
+        default: "dark",
 
         primaryColor: "#2563eb",
 
@@ -63,11 +63,50 @@ const CONFIG = {
         NAVIGATION
     ==========================================*/
 
-    navigation: [
+    primaryNavigation: [
 
         {
             title: "Home",
             link: "index.html"
+        },
+
+        {
+            title: "Explore",
+            link: "category.html?category=latest"
+        },
+
+        {
+            title: "Videos",
+            link: "videos.html"
+        },
+
+        {
+            title: "Music",
+            link: "music.html"
+        },
+
+        {
+            title: "Advertisement",
+            link: "advertise.html"
+        }
+
+    ],
+
+    categories: [
+
+        {
+            title: "Politics",
+            link: "category.html?category=Politics"
+        },
+
+        {
+            title: "Africa",
+            link: "category.html?category=Africa"
+        },
+
+        {
+            title: "Business",
+            link: "category.html?category=Business"
         },
 
         {
@@ -81,8 +120,52 @@ const CONFIG = {
         },
 
         {
+            title: "Sports",
+            link: "category.html?category=Sports"
+        },
+
+        {
+            title: "Entertainment",
+            link: "category.html?category=Entertainment"
+        }
+
+    ],
+
+    navigation: [
+
+        {
+            title: "Home",
+            link: "index.html"
+        },
+
+        {
+            title: "Explore",
+            link: "category.html?category=latest"
+        },
+
+        {
+            title: "Politics",
+            link: "category.html?category=Politics"
+        },
+
+        {
+            title: "Africa",
+            link: "category.html?category=Africa"
+        },
+
+        {
             title: "Business",
             link: "category.html?category=Business"
+        },
+
+        {
+            title: "Technology",
+            link: "category.html?category=Technology"
+        },
+
+        {
+            title: "Gaming",
+            link: "category.html?category=Gaming"
         },
 
         {
@@ -96,13 +179,18 @@ const CONFIG = {
         },
 
         {
-            title: "AI",
-            link: "category.html?category=AI"
+            title: "Videos",
+            link: "videos.html"
         },
 
         {
-            title: "World",
-            link: "category.html?category=World"
+            title: "Music",
+            link: "music.html"
+        },
+
+        {
+            title: "Advertisement",
+            link: "advertise.html"
         }
 
     ],
@@ -123,6 +211,8 @@ const CONFIG = {
 
         youtube: "#",
 
+        whatsapp: "#",
+
         linkedin: "#"
 
     },
@@ -135,9 +225,9 @@ const CONFIG = {
 
     contact: {
 
-        email: "info@newshub.com",
+        email: "info.erenyeager2k7.com",
 
-        phone: "+2340000000000",
+        phone: "+2349073434443",
 
         address: "Nigeria"
 

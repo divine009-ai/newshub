@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Music & Downloads | Hitzone Africa</title><link rel="icon" href="assets/images/favicon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="css/main.css"><link rel="stylesheet" href="css/layout.css"><link rel="stylesheet" href="css/navbar.css"><link rel="stylesheet" href="css/responsive.css"><link rel="stylesheet" href="css/site.css?v=12">
+</head>
+<body>
+<div id="navbar"></div>
+<main class="music-page"><div class="container">
+    <header class="music-page__header"><span class="eyebrow">HITZONE AFRICA</span><h1>Music & Downloads</h1><p>Discover creator-authorized tracks and find legitimate options for media you own or are allowed to save.</p><form id="musicSearch" class="music-search"><label class="sr-only" for="musicQuery">Search music</label><input id="musicQuery" class="input" type="search" placeholder="Search title, artist or genre"><button class="button button--primary" type="submit"><i class="fa-solid fa-magnifying-glass"></i> Search</button></form></header>
+    <section aria-labelledby="musicLibraryTitle"><div class="section-header"><div><span class="eyebrow">LISTEN</span><h2 id="musicLibraryTitle">Music library</h2></div></div><div id="musicResults" class="music-results"><div class="empty-state"><i class="fa-solid fa-spinner fa-spin"></i><p>Loading music...</p></div></div></section>
+    <section class="downloader-panel" aria-labelledby="videoLinkTitle"><div class="section-header"><div><span class="eyebrow">MEDIA CHECK</span><h2 id="videoLinkTitle">Social video links</h2></div></div><p>Paste a public video link to identify its source. Downloads are available only for direct, Hitzone Africa-hosted media that has been authorized for download; social platforms remain linked to their official options.</p><form id="videoDownloadForm" class="music-search"><label class="sr-only" for="videoUrl">Public video URL</label><input id="videoUrl" class="input" type="url" placeholder="Paste a public TikTok, Instagram, Facebook, X or YouTube URL" required><button class="button button--primary" type="submit">Check link</button></form><div id="videoDownloadStatus" class="download-status" aria-live="polite"></div></section>
+</div></main><div id="footer"></div>
+<script src="js/config.js?v=4"></script><script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore-compat.js"></script><script src="js/firebase.js"></script><script src="js/components/avatar.js"></script><script src="js/components/navbar.js?v=9"></script><script src="js/components/bottomNav.js?v=3"></script><script src="js/components/footer.js?v=5"></script><script src="js/components/ads.js?v=4"></script><script src="js/api.js?v=7"></script><script src="js/authGuard.js?v=2"></script><script src="js/pages/music.js?v=4"></script>
+</body></html>

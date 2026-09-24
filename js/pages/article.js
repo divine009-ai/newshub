@@ -142,12 +142,12 @@ class ArticlePage {
         const title = article.title || "Untitled Article";
         const date = article.date || this.formatDate(article.createdAt);
 
-        document.title = `${title} | NewsHub`;
+        document.title = `${title} | Hitzone Africa`;
         this.setText("articleCategory", category);
         this.setText("articleCategoryLink", category);
         this.setText("breadcrumbTitle", title);
         this.setText("articleTitle", title);
-        this.setText("articleAuthor", article.author || "NewsHub");
+        this.setText("articleAuthor", article.author || "Hitzone Africa");
         this.setText("articleDate", date);
         this.setText("articleViews", `${(article.views || 0) + 1}`);
         this.setText("articleReadTime", this.readTime(article.content));
@@ -247,7 +247,10 @@ class ArticlePage {
 
                 }
 
-                const id = url.searchParams.get("v");
+                const id = url.searchParams.get("v") ||
+                    (url.pathname.startsWith("/shorts/")
+                        ? url.pathname.split("/").filter(Boolean).pop()
+                        : "");
 
                 return id ? `https://www.youtube.com/embed/${this.escape(id)}` : "";
 
@@ -307,6 +310,40 @@ class ArticlePage {
                 </iframe>
             `;
             return;
+
+        }
+
+        try {
+
+            const external = new URL(url);
+
+            if (["http:", "https:"].includes(external.protocol)) {
+
+                const host = external.hostname.toLowerCase();
+                const platform = /facebook\.com/.test(host)
+                    ? "Facebook"
+                    : /(^|\.)x\.com$|twitter\.com/.test(host)
+                        ? "X"
+                        : "the original publisher";
+                const image = this.article?.image || "";
+
+                container.classList.remove("hidden");
+                container.innerHTML = '<a class="article-video__fallback" href="' +
+                    this.escape(external.href) +
+                    '" target="_blank" rel="noopener">' +
+                    (image
+                        ? '<img src="' + this.escape(image) + '" alt="">'
+                        : '<span class="article-video__fallback-icon"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>') +
+                    '<span>Watch on ' + this.escape(platform) +
+                    '<i class="fa-solid fa-arrow-up-right-from-square"></i></span></a>';
+                return;
+
+            }
+
+        }
+        catch(error) {
+
+            console.warn("Article video URL is invalid.", error);
 
         }
 
@@ -466,7 +503,7 @@ class ArticlePage {
                     </h3>
                     <p>${this.escape(article.description || "")}</p>
                     <div class="news-card__meta">
-                        <span><i class="fa-solid fa-user"></i>${this.escape(article.author || "NewsHub")}</span>
+                        <span><i class="fa-solid fa-user"></i>${this.escape(article.author || "Hitzone Africa")}</span>
                         <span><i class="fa-solid fa-calendar"></i>${this.escape(article.date || this.formatDate(article.createdAt))}</span>
                     </div>
                 </div>
@@ -630,8 +667,8 @@ class ArticlePage {
         container.innerHTML = comments.length
             ? comments.map((comment, index) => {
                 const profile = profiles[index] || {};
-                const avatar = window.NewsHubAvatar
-                    ? NewsHubAvatar.imageHtml(profile, "profile-avatar comment-avatar")
+                const avatar = window.HitzoneAfricaAvatar
+                    ? HitzoneAfricaAvatar.imageHtml(profile, "profile-avatar comment-avatar")
                     : "";
 
                 return `

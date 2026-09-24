@@ -404,6 +404,10 @@ p,
     gap:18px;
 }
 
+.hero__side--empty{
+    display:none;
+}
+
 .hero__side .news-card{
     display:grid;
     grid-template-columns:150px minmax(0,1fr);
@@ -1253,5 +1257,837 @@ p,
     .site-ad-rail__media video,
     .site-ad-rail__media iframe{
         height:52px;
+    }
+}
+
+/* Mobile editorial video feed and persistent navigation */
+.mobile-bottom-nav{display:none}
+.videos-page{min-height:calc(100vh - 120px);padding:56px 0 80px;background:#f8fafc;color:#0f172a}
+.videos-page .container{max-width:980px}
+.videos-page__header{display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:28px}
+.videos-page__header h1{margin:6px 0;font-size:clamp(2.2rem,5vw,4rem);color:#0b1220}
+.videos-page__header p{margin:0;color:#64748b}
+.eyebrow{font-size:.72rem;font-weight:800;letter-spacing:.14em;color:#1677e8}
+.videos-page__see-all{color:#1677e8;font-weight:700;white-space:nowrap}
+.video-filters{display:flex;gap:10px;overflow-x:auto;padding-bottom:20px;scrollbar-width:none}
+.video-filters::-webkit-scrollbar{display:none}
+.video-filter{border:0;border-radius:999px;background:#e9eef5;color:#334155;padding:11px 18px;min-height:42px;white-space:nowrap;cursor:pointer;font:inherit;font-weight:600}
+.video-filter.is-active{background:#1677e8;color:#fff}
+.video-feed{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+.video-feed__card{background:#fff;border-bottom:1px solid #dce3ec;overflow:hidden}
+.video-feed__card--featured{grid-column:1 / -1}
+.video-feed__media{aspect-ratio:16 / 9;background:#dbe4ef;overflow:hidden}
+.video-feed__player,.video-feed__fallback{display:block;width:100%;height:100%;border:0;object-fit:cover}
+.video-feed__fallback{position:relative;color:#fff}
+.video-feed__fallback img{width:100%;height:100%;object-fit:cover;filter:brightness(.75)}
+.video-feed__fallback span{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:#1677e8;padding:11px 15px;border-radius:6px;white-space:nowrap;font-weight:700}
+.video-feed__body{padding:14px 2px 16px}
+.video-feed__title{display:block;color:#0f172a;font-weight:800;font-size:1.12rem;line-height:1.3}
+.video-feed__card--featured .video-feed__title{font-size:clamp(1.45rem,3vw,2.2rem)}
+.video-feed__meta{display:flex;gap:14px;flex-wrap:wrap;margin-top:10px;color:#64748b;font-size:.84rem}
+.video-feed__meta i{color:#1677e8;margin-right:4px}
+.empty-state{grid-column:1 / -1;text-align:center;padding:72px 20px;color:#64748b}.empty-state i{font-size:2rem;color:#1677e8;margin-bottom:12px}
+@media (max-width:768px){
+    body{padding-bottom:76px}
+    .mobile-bottom-nav{position:fixed;z-index:1000;display:grid;grid-template-columns:repeat(5,1fr);left:0;right:0;bottom:0;padding:8px 6px calc(8px + env(safe-area-inset-bottom));background:rgba(255,255,255,.96);border-top:1px solid #dbe3ee;box-shadow:0 -8px 24px rgba(15,23,42,.08);backdrop-filter:blur(18px)}
+    .mobile-bottom-nav__item{display:flex;flex-direction:column;align-items:center;gap:5px;color:#475569;font-size:.69rem;font-weight:600;text-decoration:none;min-height:48px;justify-content:center}
+    .mobile-bottom-nav__item i{font-size:1.08rem}.mobile-bottom-nav__item.is-active{color:#1677e8}.mobile-bottom-nav__item.is-active i{transform:translateY(-1px)}
+    .videos-page{padding:28px 0 24px}.videos-page__header{align-items:start;margin-bottom:18px}.videos-page__header p{font-size:.9rem}.video-feed{display:block}.video-feed__card{margin-bottom:20px}.video-feed__card--featured{margin-inline:-2px}.video-feed__body{padding-inline:2px}
+}
+@media (max-width:430px){.videos-page .container{padding-inline:16px}.videos-page__header h1{font-size:2rem}.videos-page__see-all{font-size:.86rem}.video-feed__title{font-size:1.05rem}}
+.advertise-page{padding:56px 0 90px}.advertise-page__header{max-width:720px;padding:52px 0 64px}.advertise-page__header h1{font-size:clamp(2.3rem,6vw,4.8rem);margin:8px 0 14px}.advertise-page__header p{color:#64748b;font-size:1.1rem;max-width:560px;margin-bottom:24px}.advertise-gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}.advertise-gallery__item{background:#fff;border-bottom:1px solid #dbe3ee;overflow:hidden}.advertise-gallery__item img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover}.advertise-gallery__item span{display:block;padding:14px;font-weight:700;color:#0f172a}.advertise-models{margin-top:64px;padding-top:34px;border-top:1px solid #dbe3ee}.muted{color:#64748b}@media(max-width:768px){.advertise-page{padding:28px 0 30px}.advertise-page__header{padding:24px 0 40px}.advertise-gallery{grid-template-columns:1fr 1fr}}@media(max-width:430px){.advertise-gallery{grid-template-columns:1fr}}
+.music-page{min-height:calc(100vh - 120px);padding:56px 0 90px;background:#f8fafc;color:#0f172a}.music-page .container{max-width:980px}.music-page__header{padding-bottom:40px}.music-page__header h1{font-size:clamp(2.3rem,6vw,4.5rem);margin:8px 0 12px;color:#0b1220}.music-page__header p{color:#64748b;max-width:620px}.music-search{display:flex;gap:10px;margin-top:24px;max-width:760px}.music-search .input{flex:1;min-width:0;background:#fff;color:#0f172a;border:1px solid #dbe3ee}.music-results{display:grid;gap:0;background:#fff}.music-track{display:grid;grid-template-columns:96px minmax(0,1fr) auto;gap:16px;align-items:center;padding:16px;border-bottom:1px solid #e2e8f0}.music-track>img{width:96px;height:96px;border-radius:8px;object-fit:cover;background:#e2e8f0}.music-track h3{margin:0 0 5px;color:#0f172a;font-size:1.05rem}.music-track p{margin:0 0 10px;color:#64748b}.music-track audio{width:min(100%,360px);height:34px}.music-download{display:inline-flex;gap:7px;align-items:center;color:#1677e8;font-weight:700;white-space:nowrap}.music-unavailable{color:#94a3b8;font-size:.85rem;white-space:nowrap}.downloader-panel{margin-top:58px;padding-top:34px;border-top:1px solid #dbe3ee}.downloader-panel p{color:#64748b;max-width:720px}.download-status{display:flex;flex-wrap:wrap;gap:12px;margin-top:14px;align-items:center;color:#475569}.download-status a{color:#1677e8;font-weight:700}.download-status__ok{color:#15803d}.download-status__error{color:#b91c1c}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}@media(max-width:768px){.music-page{padding:28px 0 30px}.music-page__header{padding-bottom:28px}.music-search{flex-direction:column}.music-search .button{width:100%}.music-track{grid-template-columns:72px minmax(0,1fr);gap:12px}.music-track>img{width:72px;height:72px}.music-track>div:last-child{grid-column:2}.music-track audio{width:100%;max-width:100%}}@media(max-width:430px){.music-page .container{padding-inline:16px}.music-page__header h1{font-size:2.15rem}}
+
+/*==========================================================
+    HITZONE AFRICA EDITORIAL REFRESH
+==========================================================*/
+
+:root{
+    --primary:#3B82F6;
+    --primary-light:#38BDF8;
+    --primary-dark:#1D4ED8;
+    --accent:#8B5CF6;
+    --accent-cyan:#06B6D4;
+    --background:#060912;
+    --surface:#0B1120;
+    --surface-solid:#0B1120;
+    --surface-soft:rgba(255,255,255,.055);
+    --text:#F8FAFC;
+    --text-light:#94A3B8;
+    --muted:#64748B;
+    --border:rgba(255,255,255,.09);
+    --glass:rgba(255,255,255,.055);
+    --glass-strong:rgba(255,255,255,.085);
+    --shadow-sm:0 16px 40px rgba(0,0,0,.26);
+    --shadow-md:0 24px 65px rgba(0,0,0,.36);
+    --shadow-lg:0 34px 90px rgba(0,0,0,.48);
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    background:
+        radial-gradient(circle at 50% -10%, rgba(59,130,246,.2), transparent 34rem),
+        radial-gradient(circle at 100% 10%, rgba(6,182,212,.12), transparent 28rem),
+        linear-gradient(180deg,#060912 0%,#0B1120 48%,#060912 100%);
+    color:var(--text);
+}
+
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    z-index:-1;
+    pointer-events:none;
+    background:
+        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px);
+    background-size:72px 72px;
+    mask-image:linear-gradient(180deg,rgba(0,0,0,.7),transparent 72%);
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible{
+    outline:2px solid var(--accent-cyan);
+    outline-offset:3px;
+}
+
+.container{
+    width:min(92%,1240px);
+}
+
+.navbar{
+    background:rgba(6,9,18,.78);
+    border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.navbar__top{
+    min-height:76px;
+}
+
+.navbar__logo{
+    min-width:0;
+    gap:10px;
+}
+
+.navbar__logo::before{
+    display:none;
+}
+
+.navbar__logo img{
+    width:180px;
+    height:auto;
+    max-height:60px;
+    object-fit:contain;
+}
+
+.navbar__logo span{
+    position:absolute;
+    width:1px;
+    height:1px;
+    overflow:hidden;
+    clip:rect(0 0 0 0);
+}
+
+.navbar__list{
+    justify-content:center;
+}
+
+.navbar__link{
+    padding:16px 14px;
+    font-size:.92rem;
+    letter-spacing:.01em;
+}
+
+.hero.section{
+    padding-top:30px;
+}
+
+.hero__grid{
+    grid-template-columns:minmax(0,1.45fr) minmax(320px,.75fr);
+}
+
+.hero__grid--featured-only{
+    grid-template-columns:1fr;
+}
+
+.hero__featured{
+    min-height:clamp(480px,56vw,680px);
+}
+
+.brand-hero-fallback{
+    min-height:clamp(480px,56vw,680px);
+    display:grid;
+    place-items:center;
+    align-content:center;
+    gap:18px;
+    padding:clamp(28px,5vw,64px);
+    overflow:hidden;
+    border:1px solid rgba(255,255,255,.09);
+    border-radius:8px;
+    background:
+        linear-gradient(180deg,rgba(6,9,18,.32),rgba(6,9,18,.9)),
+        url("../assets/images/hitzone-africa-hero.png") center bottom / cover no-repeat,
+        #060912;
+    box-shadow:var(--shadow-lg);
+    text-align:center;
+}
+
+.brand-hero-fallback img{
+    width:min(420px,76%);
+    max-height:250px;
+    object-fit:contain;
+    height:auto;
+    filter:drop-shadow(0 18px 36px rgba(0,0,0,.45));
+}
+
+.brand-hero-fallback p{
+    max-width:520px;
+    color:#e2e8f0;
+    font-size:clamp(1rem,1.8vw,1.35rem);
+    font-weight:800;
+}
+
+.brand-hero-fallback__actions{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:12px;
+    flex-wrap:wrap;
+}
+
+.brand-community{
+    display:inline-flex;
+    align-items:center;
+    gap:12px;
+    min-height:48px;
+    padding:8px 10px 8px 18px;
+    border:1px solid rgba(255,255,255,.16);
+    border-radius:8px;
+    background:rgba(255,255,255,.07);
+    color:#f8fafc;
+    box-shadow:0 16px 36px rgba(0,0,0,.24);
+    backdrop-filter:blur(14px);
+}
+
+.brand-community span{
+    font-size:.92rem;
+    font-weight:800;
+    white-space:nowrap;
+}
+
+.brand-community__links{
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.brand-community__social{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:34px;
+    height:34px;
+    border-radius:8px;
+    background:rgba(59,130,246,.18);
+    color:#e0f2fe;
+    transition:transform .2s ease, background .2s ease, color .2s ease;
+}
+
+.brand-community__social:hover{
+    transform:translateY(-2px);
+    background:linear-gradient(135deg,var(--primary),var(--accent-cyan));
+    color:#fff;
+}
+
+.hero__featured img{
+    height:clamp(480px,56vw,680px);
+}
+
+.hero__featured .news-card__content{
+    padding:clamp(26px,4vw,54px);
+}
+
+.hero__featured h2{
+    font-size:clamp(2rem,4.2vw,4.6rem);
+    max-width:900px;
+}
+
+.hero__featured p{
+    font-size:1.04rem;
+    line-height:1.85;
+}
+
+.news-section{
+    margin-bottom:56px;
+}
+
+.section-header{
+    align-items:end;
+    margin-bottom:22px;
+}
+
+.section-header h2{
+    font-size:clamp(1.55rem,2.4vw,2.25rem);
+}
+
+.section-header h2::after,
+.section-header h3::after{
+    content:"";
+    display:block;
+    width:54px;
+    height:2px;
+    margin-top:10px;
+    background:linear-gradient(90deg,var(--primary),transparent);
+}
+
+.news-grid{
+    gap:22px;
+}
+
+.news-card{
+    border-color:rgba(255,255,255,.08);
+    background:linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,.04));
+}
+
+.news-card > a,
+.news-card__image{
+    overflow:hidden;
+    background:#020617;
+}
+
+.news-card img,
+.news-card__image img{
+    transition:transform .35s ease, opacity .35s ease;
+}
+
+.news-card:hover img{
+    transform:scale(1.045);
+}
+
+.layout{
+    align-items:start;
+}
+
+.article{
+    max-width:100%;
+    border-color:rgba(255,255,255,.08);
+}
+
+.article h1{
+    font-size:clamp(2.2rem,5vw,4.7rem);
+}
+
+.article-content{
+    margin-inline:auto;
+    font-size:1.1rem;
+    line-height:1.95;
+}
+
+.article-cover img{
+    width:100%;
+    aspect-ratio:16 / 9;
+    object-fit:cover;
+}
+
+.category-hero__inner,
+.newsletter-card,
+.profile-card{
+    background:
+        linear-gradient(135deg,rgba(59,130,246,.14),rgba(6,182,212,.045)),
+        rgba(255,255,255,.06);
+}
+
+.category-hero h1{
+    font-size:clamp(2rem,4.8vw,4.2rem);
+}
+
+.footer{
+    background:
+        linear-gradient(180deg,rgba(11,17,32,.94),#05070d),
+        #05070d;
+}
+
+.footer__logo{
+    display:inline-flex;
+    align-items:center;
+    margin-bottom:16px;
+}
+
+.footer__logo img{
+    width:220px;
+    max-width:100%;
+    height:auto;
+}
+
+.site-ad-rail{
+    border-color:rgba(6,182,212,.22);
+}
+
+@media (prefers-reduced-motion:reduce){
+    *,
+    *::before,
+    *::after{
+        scroll-behavior:auto !important;
+        transition:none !important;
+        animation:none !important;
+    }
+}
+
+@media (max-width:992px){
+    .hero__grid{
+        grid-template-columns:1fr;
+    }
+
+    .hero__featured{
+        order:1;
+    }
+
+    .hero__side{
+        order:2;
+        grid-template-columns:repeat(2,minmax(0,1fr));
+    }
+}
+
+@media (max-width:768px){
+    .navbar__logo img{
+        width:142px;
+        max-height:48px;
+    }
+
+    .navbar__actions{
+        margin-left:auto;
+    }
+
+    .navbar__menu.show{
+        display:block;
+    }
+
+    .navbar__list{
+        align-items:stretch;
+    }
+
+    .hero__side{
+        grid-template-columns:1fr;
+    }
+
+    .brand-hero-fallback{
+        min-height:440px;
+        padding:30px 22px;
+        background:
+            linear-gradient(180deg,rgba(6,9,18,.16),rgba(6,9,18,.88)),
+            url("../assets/images/hitzone-africa-hero.png") center bottom / cover no-repeat,
+            #060912;
+    }
+
+    .brand-hero-fallback img{
+        width:min(340px,82%);
+        max-height:210px;
+    }
+
+    .brand-community{
+        width:100%;
+        justify-content:space-between;
+    }
+
+    .article h1{
+        font-size:2.15rem;
+    }
+}
+
+@media (max-width:400px){
+    .navbar__logo img{
+        width:118px;
+    }
+
+    .brand-hero-fallback{
+        min-height:390px;
+    }
+
+    .brand-hero-fallback img{
+        width:min(290px,86%);
+    }
+
+    .brand-community{
+        flex-direction:column;
+        gap:10px;
+    }
+}
+
+/*==========================================================
+    PLATFORM NAVIGATION AND MEDIA PAGES
+==========================================================*/
+
+.navbar__item--categories{
+    position:relative;
+}
+
+.navbar__categories{
+    position:relative;
+}
+
+.navbar__category-toggle{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    list-style:none;
+    cursor:pointer;
+}
+
+.navbar__category-toggle::-webkit-details-marker{
+    display:none;
+}
+
+.navbar__category-toggle i{
+    font-size:.68rem;
+    transition:transform .2s ease;
+}
+
+.navbar__categories[open] .navbar__category-toggle i{
+    transform:rotate(180deg);
+}
+
+.navbar__category-menu{
+    position:absolute;
+    top:calc(100% - 2px);
+    left:0;
+    z-index:20;
+    width:min(580px,70vw);
+    display:grid;
+    grid-template-columns:repeat(3,minmax(120px,1fr));
+    gap:2px;
+    padding:12px;
+    border:1px solid rgba(148,163,184,.22);
+    border-radius:8px;
+    background:rgba(7,17,31,.98);
+    box-shadow:0 22px 55px rgba(0,0,0,.38);
+    backdrop-filter:blur(18px);
+}
+
+.navbar__category-menu a{
+    min-height:42px;
+    display:flex;
+    align-items:center;
+    padding:9px 11px;
+    border-radius:6px;
+    color:#cbd5e1;
+    font-size:.86rem;
+    font-weight:650;
+    transition:background .2s ease,color .2s ease;
+}
+
+.navbar__category-menu a:hover,
+.navbar__category-menu a.active{
+    background:rgba(59,130,246,.2);
+    color:#fff;
+}
+
+.advertise-page,
+.music-page,
+.videos-page{
+    position:relative;
+}
+
+.advertise-page::before,
+.music-page::before,
+.videos-page::before{
+    content:"";
+    position:absolute;
+    inset:0 0 auto;
+    height:240px;
+    pointer-events:none;
+    background:linear-gradient(180deg,rgba(59,130,246,.08),transparent);
+}
+
+.advertise-page .container,
+.music-page .container,
+.videos-page .container{
+    position:relative;
+}
+
+.advertise-page__header,
+.music-page__header,
+.videos-page__header{
+    position:relative;
+}
+
+.advertise-page__header .button,
+.music-search .button{
+    min-width:154px;
+    border-radius:8px;
+}
+
+.advertise-gallery{
+    align-items:stretch;
+}
+
+.advertise-gallery__link{
+    display:block;
+    min-width:0;
+    color:inherit;
+}
+
+.advertise-gallery__item{
+    height:100%;
+    border:1px solid #dbe3ee;
+    border-radius:8px;
+    background:#fff;
+    box-shadow:0 12px 28px rgba(15,23,42,.06);
+    transition:transform .24s ease,box-shadow .24s ease,border-color .24s ease;
+}
+
+.advertise-gallery__link:hover .advertise-gallery__item{
+    transform:translateY(-4px);
+    border-color:#9fc5f4;
+    box-shadow:0 18px 36px rgba(15,23,42,.12);
+}
+
+.advertise-gallery__media,
+.advertise-gallery__media img,
+.advertise-gallery__media video,
+.advertise-gallery__media iframe,
+.advertise-gallery__placeholder{
+    display:block;
+    width:100%;
+    aspect-ratio:4 / 3;
+    border:0;
+}
+
+.advertise-gallery__media{
+    overflow:hidden;
+    background:#e8eef7;
+}
+
+.advertise-gallery__media img,
+.advertise-gallery__media video{
+    object-fit:cover;
+}
+
+.advertise-gallery__placeholder,
+.advertise-model__placeholder{
+    display:grid;
+    place-items:center;
+    background:linear-gradient(135deg,#dbeafe,#ecfeff);
+    color:#1677e8;
+    font-size:2rem;
+}
+
+.advertise-gallery__copy{
+    display:grid;
+    gap:3px;
+    padding:15px 16px;
+}
+
+.advertise-gallery__copy span{
+    padding:0;
+    color:#0f172a;
+    font-weight:800;
+}
+
+.advertise-gallery__copy small{
+    color:#64748b;
+    font-size:.82rem;
+}
+
+.advertise-models{
+    margin-top:72px;
+}
+
+.advertise-models .muted{
+    max-width:640px;
+    margin-top:-8px;
+}
+
+.advertise-models__grid{
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:18px;
+    margin-top:26px;
+}
+
+.advertise-model__link{
+    display:block;
+    min-width:0;
+    color:inherit;
+}
+
+.advertise-model{
+    height:100%;
+    overflow:hidden;
+    border:1px solid #dbe3ee;
+    border-radius:8px;
+    background:#fff;
+    box-shadow:0 12px 28px rgba(15,23,42,.06);
+    transition:transform .24s ease,box-shadow .24s ease;
+}
+
+.advertise-model__link:hover .advertise-model{
+    transform:translateY(-4px);
+    box-shadow:0 18px 36px rgba(15,23,42,.12);
+}
+
+.advertise-model__image,
+.advertise-model__image img,
+.advertise-model__placeholder{
+    display:block;
+    width:100%;
+    aspect-ratio:1 / 1.14;
+}
+
+.advertise-model__image{
+    overflow:hidden;
+    background:#e8eef7;
+}
+
+.advertise-model__image img{
+    object-fit:cover;
+    transition:transform .32s ease;
+}
+
+.advertise-model__link:hover img{
+    transform:scale(1.04);
+}
+
+.advertise-model__copy{
+    padding:14px 15px 16px;
+}
+
+.advertise-model__copy h3{
+    color:#0f172a;
+    font-size:1rem;
+    line-height:1.3;
+}
+
+.advertise-model__copy p{
+    margin-top:5px;
+    color:#64748b;
+    font-size:.82rem;
+}
+
+.article-video{
+    overflow:hidden;
+    background:#020617;
+}
+
+.article-video__fallback{
+    position:relative;
+    display:grid;
+    min-height:280px;
+    place-items:center;
+    overflow:hidden;
+    color:#fff;
+    background:linear-gradient(135deg,#0b1220,#172554);
+}
+
+.article-video__fallback img{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    opacity:.52;
+}
+
+.article-video__fallback > span:last-child,
+.article-video__fallback-icon{
+    position:relative;
+    z-index:1;
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    min-height:46px;
+    padding:11px 16px;
+    border:1px solid rgba(255,255,255,.36);
+    border-radius:8px;
+    background:rgba(2,6,23,.66);
+    font-weight:800;
+    backdrop-filter:blur(10px);
+}
+
+.download-status{
+    align-items:flex-start;
+    padding:2px 0;
+}
+
+.download-status__preview{
+    display:block;
+    width:min(100%,420px);
+    margin-top:4px;
+    border-radius:8px;
+    background:#0f172a;
+}
+
+@media (max-width:992px){
+    .navbar__category-menu{
+        grid-template-columns:repeat(2,minmax(140px,1fr));
+    }
+
+    .advertise-models__grid{
+        grid-template-columns:repeat(3,minmax(0,1fr));
+    }
+}
+
+@media (max-width:768px){
+    .navbar__item--categories,
+    .navbar__categories{
+        width:100%;
+    }
+
+    .navbar__category-toggle{
+        justify-content:space-between;
+    }
+
+    .navbar__category-menu{
+        position:static;
+        width:100%;
+        margin:0;
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        border-radius:8px;
+        box-shadow:none;
+    }
+
+    .advertise-page__header .button,
+    .music-search .button{
+        min-width:0;
+    }
+
+    .advertise-models__grid{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+    }
+
+    .article-video__fallback{
+        min-height:220px;
+    }
+
+    .site-ad-rail{
+        bottom:calc(84px + env(safe-area-inset-bottom));
+    }
+
+    body:has(.site-ad-rail){
+        padding-bottom:158px;
+    }
+}
+
+@media (max-width:430px){
+    .navbar__category-menu{
+        grid-template-columns:1fr;
+    }
+
+    .advertise-gallery,
+    .advertise-models__grid{
+        grid-template-columns:1fr;
+    }
+
+    .advertise-gallery__media,
+    .advertise-gallery__media img,
+    .advertise-gallery__media video,
+    .advertise-gallery__media iframe,
+    .advertise-gallery__placeholder{
+        aspect-ratio:16 / 10;
     }
 }

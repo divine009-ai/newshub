@@ -38,7 +38,7 @@ class ProfilePage {
     render() {
 
         this.nameInput.value = this.profile.name || this.profile.username || "";
-        this.preview.src = NewsHubAvatar.src({
+        this.preview.src = HitzoneAfricaAvatar.src({
             ...this.profile,
             photoDataUrl: this.photoDataUrl
         });
@@ -57,7 +57,7 @@ class ProfilePage {
 
             try {
 
-                this.photoDataUrl = await NewsHubAvatar.compressFile(file);
+                this.photoDataUrl = await HitzoneAfricaAvatar.compressFile(file);
                 this.removePhoto = false;
                 this.render();
 
@@ -126,7 +126,7 @@ class ProfilePage {
             };
 
             window.currentUserProfile = this.profile;
-            window.dispatchEvent(new CustomEvent("newshub:user", {
+            window.dispatchEvent(new CustomEvent("hitzoneafrica:user", {
                 detail: this.profile
             }));
 

@@ -12,7 +12,7 @@
 
     <title>
 
-        NewsHub CMS
+        Hitzone Africa CMS
 
     </title>
 
@@ -52,9 +52,9 @@
 
     <link rel="stylesheet"
         href="css/responsive.css">
-<link rel="icon" type="image/png" href="https://files.catbox.moe/dk5u9r.png">
+<link rel="icon" type="image/png" href="assets/images/favicon.png">
     <link rel="stylesheet"
-        href="css/admin.css?v=3">
+        href="css/admin.css?v=4">
 
 </head>
 
@@ -75,13 +75,8 @@
 
             <div class="admin-logo">
 
-                <i class="fa-solid fa-newspaper"></i>
-
-                <span>
-
-                    NewsHub CMS
-
-                </span>
+                <img src="assets/images/hitzone-africa-logo.png" alt="Hitzone Africa CMS">
+                <span>CMS</span>
 
             </div>
 
@@ -200,6 +195,42 @@
                         <span>
 
                             Advertisements
+
+                        </span>
+
+                    </button>
+
+                </li>
+
+                <li>
+
+                    <button
+                        class="sidebar-link"
+                        data-page="models">
+
+                        <i class="fa-solid fa-people-group"></i>
+
+                        <span>
+
+                            Models
+
+                        </span>
+
+                    </button>
+
+                </li>
+
+                <li>
+
+                    <button
+                        class="sidebar-link"
+                        data-page="music">
+
+                        <i class="fa-solid fa-music"></i>
+
+                        <span>
+
+                            Music
 
                         </span>
 
@@ -428,6 +459,30 @@
             </section>
 
             <!--=====================================
+                MODELS
+            ======================================-->
+
+            <section
+                id="modelsPage"
+                class="admin-page hidden">
+
+                <!-- Models loaded by admin.js -->
+
+            </section>
+
+            <!--=====================================
+                MUSIC
+            ======================================-->
+
+            <section
+                id="musicPage"
+                class="admin-page hidden">
+
+                <!-- Music loaded by admin.js -->
+
+            </section>
+
+            <!--=====================================
                 COMMENTS
             ======================================-->
 
@@ -483,7 +538,7 @@
         CONFIG
     ==========================================-->
 
-    <script src="js/config.js"></script>
+    <script src="js/config.js?v=3"></script>
 
     <!--=========================================
         FIREBASE SDK
@@ -530,7 +585,7 @@
         <script src="js/email.js"></script>
 
         <!-- Admin Logic -->
-        <script src="js/admin.js?v=4"></script>
+        <script src="js/admin.js?v=5"></script>
 
 </body>
 

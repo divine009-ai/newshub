@@ -25,6 +25,9 @@ class Home {
         this.businessContainer =
             document.getElementById("businessNews");
 
+        this.userProfile = window.currentUserProfile || null;
+        this.social = CONFIG.social || {};
+
     }
 
     /*==========================================
@@ -35,6 +38,8 @@ class Home {
 
         try {
 
+            this.watchAuthActions();
+
             loader.show({
 
                 title:"Loading News",
@@ -44,6 +49,9 @@ class Home {
             });
 
             await this.loadHomePage();
+            await this.loadSocialSettings();
+            this.renderSocialLinks();
+            this.updateHeroActions(this.userProfile);
 
             loader.hide();
 
@@ -194,10 +202,14 @@ class Home {
         if(!article){
 
             this.featuredContainer.innerHTML = `
-                <div class="card">
-                    No featured article found.
+                <div class="brand-hero-fallback">
+                    <img src="${CONFIG.app.logo}" alt="${CONFIG.app.name}">
+                    <p>${CONFIG.app.slogan}</p>
+                    <div class="brand-hero-fallback__actions" id="brandHeroActions"></div>
                 </div>
             `;
+
+            this.updateHeroActions(this.userProfile);
 
             return;
 
@@ -263,6 +275,161 @@ class Home {
 
     }
 
+    isValidSocialUrl(value) {
+
+        if (!value || value === "#") return false;
+
+        try {
+
+            const url = new URL(value);
+
+            return ["http:", "https:"].includes(url.protocol);
+
+        }
+        catch(error) {
+
+            return false;
+
+        }
+
+    }
+
+    async loadSocialSettings() {
+
+        this.social = CONFIG.social || {};
+
+        if (typeof db === "undefined") return;
+
+        try {
+
+            const doc = await db
+                .collection("settings")
+                .doc("website")
+                .get();
+
+            if (doc.exists && doc.data().social) {
+
+                this.social = doc.data().social;
+
+            }
+
+        }
+        catch(error) {
+
+            console.warn("Social settings could not be loaded:", error);
+
+        }
+
+    }
+
+    socialLinks(className = "brand-community__social"){
+
+        const icons = {
+            facebook: "fa-brands fa-facebook-f",
+            twitter: "fa-brands fa-x-twitter",
+            instagram: "fa-brands fa-instagram",
+            youtube: "fa-brands fa-youtube",
+            whatsapp: "fa-brands fa-whatsapp",
+            tiktok: "fa-brands fa-tiktok",
+            linkedin: "fa-brands fa-linkedin-in"
+        };
+
+        return Object.entries(this.social || {})
+            .filter(([name]) => icons[name])
+            .filter(([, url]) => this.isValidSocialUrl(url))
+            .map(([name, url]) => `
+                <a
+                    href="${url}"
+                    class="${className}"
+                    aria-label="${name}"
+                    target="_blank"
+                    rel="noopener">
+                    <i class="${icons[name]}"></i>
+                </a>
+            `)
+            .join("");
+
+    }
+
+    renderSocialLinks(){
+
+        const container = document.getElementById("homepageSocialLinks");
+
+        if (!container) return;
+
+        container.innerHTML = this.socialLinks("");
+
+        const socialCard = container.closest(".sidebar-card");
+
+        if (socialCard) {
+
+            socialCard.hidden = container.children.length === 0;
+
+        }
+
+    }
+
+    updateHeroActions(profile = null){
+
+        const actions = document.getElementById("brandHeroActions");
+
+        if (!actions) return;
+
+        if (profile) {
+
+            const links = this.socialLinks();
+
+            actions.innerHTML = `
+                <a href="category.html?category=latest" class="button button--primary">
+                    Explore News
+                </a>
+                ${links ? `
+                    <div class="brand-community">
+                        <span>Join Our Community</span>
+                        <div class="brand-community__links">
+                            ${links}
+                        </div>
+                    </div>
+                ` : ""}
+            `;
+
+            return;
+
+        }
+
+        actions.innerHTML = `
+            <a href="category.html?category=latest" class="button button--primary">
+                Explore News
+            </a>
+            <a href="login.html" class="button button--outline">
+                Join Now
+            </a>
+        `;
+
+    }
+
+    watchAuthActions(){
+
+        window.addEventListener("hitzoneafrica:user", event => {
+
+            this.userProfile = event.detail || null;
+            this.updateHeroActions(this.userProfile);
+
+        });
+
+        if (window.authReady) {
+
+            window.authReady.then(profile => {
+
+                this.userProfile = profile || window.currentUserProfile || null;
+                this.updateHeroActions(this.userProfile);
+
+            });
+
+        }
+
+    }
+
     /*==========================================
         HERO SIDE
     ==========================================*/
@@ -270,6 +437,19 @@ class Home {
     renderHero(articles = []){
 
         if(!this.heroSideContainer) return;
+
+        if (articles.length === 0) {
+
+            this.heroSideContainer.innerHTML = "";
+            this.heroSideContainer.classList.add("hero__side--empty");
+            this.heroSideContainer.parentElement?.classList.add("hero__grid--featured-only");
+
+            return;
+
+        }
+
+        this.heroSideContainer.classList.remove("hero__side--empty");
+        this.heroSideContainer.parentElement?.classList.remove("hero__grid--featured-only");
 
         this.heroSideContainer.innerHTML = articles.map(article => `
 

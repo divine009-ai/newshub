@@ -2,7 +2,7 @@
     AVATAR HELPERS
 ==========================================================*/
 
-const NewsHubAvatar = {
+const HitzoneAfricaAvatar = {
 
     initials(profile = {}) {
 
@@ -19,7 +19,7 @@ const NewsHubAvatar = {
 
     color(profile = {}) {
 
-        const source = String(profile.uid || profile.email || profile.username || profile.name || "newshub");
+        const source = String(profile.uid || profile.email || profile.username || profile.name || "Hitzone Africa");
         let hash = 0;
 
         for (let index = 0; index < source.length; index++) {
@@ -149,4 +149,4 @@ const NewsHubAvatar = {
 
 };
 
-window.NewsHubAvatar = NewsHubAvatar;
+window.HitzoneAfricaAvatar = HitzoneAfricaAvatar;

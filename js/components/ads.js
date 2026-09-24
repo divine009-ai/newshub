@@ -7,14 +7,34 @@ class AdvertisementRenderer {
     constructor() {
 
         this.mediaTimeout = 5000;
-        this.popupKey = "newshub:lastPopupAd";
-        this.floatingKey = "newshub:lastFloatingAd";
-        this.popupShownKey = "newshub:lastPopupShownAt";
+        this.popupKey = "hitzoneafrica:lastPopupAd";
+        this.floatingKey = "hitzoneafrica:lastFloatingAd";
+        this.popupShownKey = "hitzoneafrica:lastPopupShownAt";
         this.popupCooldown = 10 * 60 * 1000;
         this.userInteracted = false;
         this.pendingPopups = [];
         this.interactionEvents = ["pointerdown", "keydown", "touchstart", "click"];
         this.bindInteractionUnlock();
+
+    }
+
+    escape(value = "") {
+
+        return String(value).replace(/[&<>"']/g, character => ({
+
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#039;"
+
+        })[character]);
+
+    }
+
+    displayTitle(value = "") {
+
+        return String(value || "").replace(/\bnews\s*hub\b/gi, "Hitzone Africa");
 
     }
 
@@ -130,7 +150,7 @@ class AdvertisementRenderer {
     mediaHtml(ad, options = {}) {
 
         const url = this.mediaUrl(ad);
-        const title = ad.title || "Advertisement";
+        const title = this.displayTitle(ad.title || "Advertisement");
         const shouldAutoplay = options.autoplay === true;
         const eager = options.eager === true;
 
@@ -142,8 +162,8 @@ class AdvertisementRenderer {
 
                 return `
                     <iframe
-                        src="${embed}"
-                        title="${title}"
+                        src="${this.escape(embed)}"
+                        title="${this.escape(title)}"
                         loading="${eager ? "eager" : "lazy"}"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                         allowfullscreen>
@@ -154,13 +174,13 @@ class AdvertisementRenderer {
 
             return `
                 <video ${shouldAutoplay ? "autoplay" : ""} playsinline ${shouldAutoplay ? "" : "controls"} preload="${shouldAutoplay ? "auto" : "metadata"}">
-                    <source src="${url}">
+                    <source src="${this.escape(url)}">
                 </video>
             `;
 
         }
 
-        return `<img src="${url}" alt="${title}" loading="${eager ? "eager" : "lazy"}" ${eager ? 'fetchpriority="high"' : ""}>`;
+        return `<img src="${this.escape(url)}" alt="${this.escape(title)}" loading="${eager ? "eager" : "lazy"}" ${eager ? 'fetchpriority="high"' : ""}>`;
 
     }
 
@@ -214,13 +234,13 @@ class AdvertisementRenderer {
                     ${normalAds.map((ad, index) => `
                         <a
                             class="ad-carousel__item ${index === 0 ? "active" : ""}"
-                            href="${ad.link || "#"}"
+                            href="${this.escape(ad.link || "#")}"
                             target="_blank"
                             rel="noopener">
                             <div class="ad-carousel__media">
                                 ${this.mediaHtml(ad)}
                             </div>
-                            ${ad.title ? `<span class="ad-carousel__caption">${ad.title}</span>` : ""}
+                            ${ad.title ? `<span class="ad-carousel__caption">${this.escape(this.displayTitle(ad.title))}</span>` : ""}
                         </a>
                     `).join("")}
                 </div>
@@ -359,7 +379,8 @@ class AdvertisementRenderer {
         const root = document.getElementById("modal-root") || document.body;
         const delay = Number(ad.skipDelay || 5) * 1000;
         const media = this.mediaUrl(ad);
-        const link = ad.link || "#";
+        const link = this.escape(ad.link || "#");
+        const title = this.displayTitle(ad.title || "");
 
         const popup = document.createElement("div");
 
@@ -377,7 +398,7 @@ class AdvertisementRenderer {
                         image: media
                     }, { autoplay: this.isVideo(ad), eager: true })}
                 </a>
-                ${ad.title ? `<a class="ad-popup__caption" href="${link}" target="_blank" rel="noopener">${ad.title}</a>` : ""}
+                ${title ? `<a class="ad-popup__caption" href="${link}" target="_blank" rel="noopener">${this.escape(title)}</a>` : ""}
             </div>
         `;
 
@@ -446,7 +467,7 @@ class AdvertisementRenderer {
         rail.className = "site-ad-rail";
         rail.setAttribute("aria-label", "Advertisement");
         rail.innerHTML = `
-            <a href="${ad.link || "#"}" target="_blank" rel="noopener">
+            <a href="${this.escape(ad.link || "#")}" target="_blank" rel="noopener">
                 <span>Advertisement</span>
                 <div class="site-ad-rail__media">
                     ${this.mediaHtml(ad, { eager: true })}
